@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Grades & Courses | reflectt-on </title>
+    <title>All Grades & Courses | reflectt-on</title>
 
     <style>
         * {
@@ -19,7 +19,6 @@
             padding-bottom: 40px;
         }
 
-        /* Header & Navigation */
         header {
             background: white;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -38,25 +37,39 @@
         }
 
         .logo {
-   		 font-size: 24px;
-    		font-weight: bold;
-    		color: #667eea;
-    		text-decoration: none;
-    		display: flex;
-    		align-items: center;
-   		gap: 12px;
-		}
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-	.logo img {
-    		height: 50px;  /* Increased from 40px */
-    		width: auto;
-    		object-fit: contain;
-		}
+        .logo img {
+            height: 50px;
+            width: auto;
+            object-fit: contain;
+        }
 
-	.logo span {
- 		color: #667eea;
-		}
+        .logo span {
+            color: #667eea;
+        }
 
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: #667eea;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
 
         nav ul {
             list-style: none;
@@ -409,62 +422,150 @@
             border-top: 2px solid #667eea;
         }
 
-
-	 footer p {
-   	 margin: 8px 0;
-   	 font-size: 10px;  /* Adjust this value */
-	}
+        footer p {
+            margin: 8px 0;
+            font-size: 10px;
+        }
 
         @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
             .header-container {
-                flex-direction: column;
-                gap: 15px;
-                padding: 15px 20px;
+                padding: 12px 15px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .logo img {
+                height: 35px;
+            }
+
+            nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+
+            nav.active {
+                max-height: 500px;
             }
 
             nav ul {
                 flex-direction: column;
-                gap: 15px;
-                text-align: center;
+                gap: 0;
+                padding: 10px 0;
+            }
+
+            nav li {
+                width: 100%;
+                border-bottom: 1px solid #f0f0f0;
+            }
+
+            nav li:last-child {
+                border-bottom: none;
+            }
+
+            nav > ul > li > a {
+                padding: 12px 20px;
+                display: flex;
+                justify-content: space-between;
+            }
+
+            nav a::after {
+                display: none;
             }
 
             .dropdown-menu {
                 position: static;
-                opacity: 1;
-                visibility: visible;
+                opacity: 0;
+                visibility: hidden;
+                max-height: 0;
+                overflow: hidden;
                 transform: none;
                 box-shadow: none;
-                background: #f5f7fa;
+                background: #f8f9fa;
                 border-radius: 0;
-                margin-top: 10px;
-                margin-left: -10px;
-                margin-right: -10px;
+                margin: 0;
+                transition: max-height 0.3s ease, opacity 0.3s ease;
             }
 
-            nav li:hover .dropdown-menu {
+            nav li.dropdown-open .dropdown-menu {
                 opacity: 1;
                 visibility: visible;
-                transform: none;
+                max-height: 400px;
             }
 
-            .banner-section,
-            .main-container,
-            .intro-section,
-            .grade-section {
-                padding: 20px;
-                margin: 20px;
+            .dropdown-menu a {
+                padding: 10px 30px;
+                font-size: 14px;
+            }
+
+            .dropdown-menu a:hover {
+                padding-left: 40px;
+            }
+
+            .menu-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .menu-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -7px);
+            }
+
+            .breadcrumb {
+                font-size: 12px;
+                padding: 10px;
+            }
+
+            .banner-section {
+                padding: 15px;
+                margin: 15px 15px 20px;
+            }
+
+            .banner-section img {
+                max-height: 140px;
+                margin-bottom: 10px;
             }
 
             .banner-content h1 {
-                font-size: 28px;
+                font-size: 20px;
+                margin-bottom: 6px;
+            }
+
+            .banner-content p {
+                font-size: 13px;
+            }
+
+            .main-container {
+                padding: 0 15px;
+            }
+
+            .intro-section,
+            .grade-section {
+                padding: 20px 15px;
+                margin-bottom: 20px;
             }
 
             .intro-title {
-                font-size: 24px;
+                font-size: 20px;
             }
 
-            .grade-section-title {
-                font-size: 22px;
+            .intro-text {
+                font-size: 14px;
             }
 
             .grade-section-header {
@@ -473,13 +574,70 @@
             }
 
             .grade-title-wrapper {
-                flex-direction: column;
-                gap: 5px;
+                flex-direction: row;
+                gap: 10px;
+            }
+
+            .grade-section-icon {
+                font-size: 28px;
+            }
+
+            .grade-section-title {
+                font-size: 22px;
+            }
+
+            .grade-description {
+                font-size: 14px;
+            }
+
+            .category-subtitle {
+                font-size: 16px;
+            }
+
+            .category-subtitle-icon {
+                font-size: 20px;
             }
 
             .quiz-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 12px;
+            }
+
+            .quiz-card {
+                padding: 12px 8px;
+            }
+
+            .quiz-card a {
+                font-size: 12px;
+                padding: 10px 6px;
+            }
+
+            .quiz-level {
+                font-size: 10px;
+            }
+
+            .coming-soon-overlay {
+                padding: 20px;
+            }
+
+            .coming-soon-overlay p {
+                font-size: 14px;
+            }
+
+            .info-box {
+                padding: 15px;
+            }
+
+            .info-box p {
+                font-size: 13px;
+            }
+
+            footer {
+                padding: 20px 15px;
+            }
+
+            footer p {
+                font-size: 9px;
             }
         }
 
@@ -493,7 +651,7 @@
             }
 
             .category-subtitle {
-                font-size: 16px;
+                font-size: 15px;
             }
         }
     </style>
@@ -501,16 +659,23 @@
 
 <body>
 
-    <!-- Header Navigation -->
     <header>
         <div class="header-container">
             <a href="index.html" class="logo">
-    <img src="images/logo.png" alt="reflectt-on logo">
-    <span>reflectt-on</span></a>
-            <nav>
+                <img src="images/logo.png" alt="reflectt-on logo">
+                <span>reflectt-on</span>
+            </a>
+            
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <nav id="mainNav">
                 <ul>
                     <li><a href="index.html">Home</a></li>
-                    <li>
+                    <li onclick="toggleDropdown(event)">
                         <a href="grades.html">
                             Grades
                             <span class="dropdown-arrow">▼</span>
@@ -539,7 +704,7 @@
     </div>
 
     <div class="banner-section">
-        <img src="images/banner.png" alt="reflectt-on quizzes Grades">
+        <img src="images/banner.png" alt="reflectt-on Grades">
         <div class="banner-content">
             <h1>📚 Select Your Grade & Subjects</h1>
             <p>Choose your grade level to access comprehensive quizzes and study materials</p>
@@ -555,177 +720,151 @@
             </p>
         </div>
 
-        <!-- ===== GRADE 6 TEMPLATE ===== -->
-        <!-- COPY THIS ENTIRE SECTION TO ADD A NEW GRADE -->
+        <!-- GRADE 6 -->
         <div class="grade-section" id="grade-6">
             <div class="grade-section-header">
                 <div class="grade-title-wrapper">
                     <span class="grade-section-icon">📚</span>
-                    <h2 class="grade-section-title">Grade 6</h2> <!-- UPDATE: Change grade number -->
+                    <h2 class="grade-section-title">Grade 6</h2>
                 </div>
-                <span class="grade-section-badge available">✓ Available</span> <!-- UPDATE: Change to "coming-soon" if not ready -->
+                <span class="grade-section-badge available">✓ Available</span>
             </div>
             <p class="grade-description">
-                Foundation concepts including Mathematic, Chemistry, Biology and Physics fundamentals. Build strong conceptual understanding with multiple quizzes per topic.
-                <!-- UPDATE: Write appropriate description for the grade -->
+                Foundation concepts including Mathematics, Chemistry, Biology and Physics fundamentals. Build strong conceptual understanding with multiple quizzes per topic.
             </p>
 
-            <!-- ===== CATEGORY TEMPLATE ===== -->
-            <!-- COPY THIS SECTION TO ADD A NEW SUBJECT/CATEGORY -->
             <div class="category-within-grade">
                 <h3 class="category-subtitle">
-                    <span class="category-subtitle-icon">📏</span> <!-- UPDATE: Change emoji -->
-                    Unit of Measurement <!-- UPDATE: Change category name -->
-                </h3>
-                <div class="quiz-grid">
-                    <!-- ===== QUIZ CARD TEMPLATE ===== -->
-                    <!-- COPY THIS div.quiz-card TO ADD A NEW QUIZ -->
-                    <div class="quiz-card">
-                        <a href="grades/grade6/quizzes/unit_of_measurement1.html">Unit of Measurement – Quiz 1</a>
-                        <!-- UPDATE: 
-                             1. href path to your quiz file
-                             2. Link text (quiz title)
-                        -->
-                        <div class="quiz-level">Beginner Level</div>
-                        <!-- UPDATE: Change difficulty level (Beginner/Intermediate/Advanced) -->
-                    </div>
-
-                    <div class="quiz-card">
-                        <a href="grades/grade6/quizzes/unit_of_measurement2.html">Unit of Measurement – Quiz 2</a>
-                        <div class="quiz-level">Intermediate Level</div>
-                    </div>
-		   
-		    <div class="quiz-card">
-                    <a href="grades/grade6/quizzes/unit_of_measurement3.html">Unit of Measurement – Quiz 3</a>
-                    <div class="quiz-level">Advanced Level</div>
-                    </div>
-
-
-                </div>
-            </div>
-
-            <!-- Chemistry -->
-            <div class="category-within-grade">
-                <h3 class="category-subtitle">
-                    <span class="category-subtitle-icon">⚛️</span>
-                    Chemistry
+                    <span class="category-subtitle-icon">📏</span> Unit of Measurement
                 </h3>
                 <div class="quiz-grid">
                     <div class="quiz-card">
-                        <a href="grades/grade6/quizzes/atom_elements_compounds1.html">Atoms, Elements & Compounds – Quiz 1</a>
+                        <a href="grades/grade6/quizzes/unit_of_measurement1.html">Unit of Measurement — Quiz 1</a>
                         <div class="quiz-level">Beginner Level</div>
                     </div>
                     <div class="quiz-card">
-                        <a href="grades/grade6/quizzes/atom_elements_compounds2.html">Atoms, Elements & Compounds – Quiz 2</a>
+                        <a href="grades/grade6/quizzes/unit_of_measurement2.html">Unit of Measurement — Quiz 2</a>
                         <div class="quiz-level">Intermediate Level</div>
                     </div>
                     <div class="quiz-card">
-                        <a href="grades/grade6/quizzes/atom_elements_compounds3.html">Atoms, Elements & Compounds – Quiz 3</a>
+                        <a href="grades/grade6/quizzes/unit_of_measurement3.html">Unit of Measurement — Quiz 3</a>
                         <div class="quiz-level">Advanced Level</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Physics -->
             <div class="category-within-grade">
                 <h3 class="category-subtitle">
-                    <span class="category-subtitle-icon">💡</span>
-                    Physics
+                    <span class="category-subtitle-icon">⚛️</span> Chemistry
                 </h3>
                 <div class="quiz-grid">
                     <div class="quiz-card">
-                        <a href="grades/grade6/quizzes/physics_light1.html">Physics – Light – Quiz 1</a>
+                        <a href="grades/grade6/quizzes/atom_elements_compounds1.html">Atoms, Elements & Compounds — Quiz 1</a>
                         <div class="quiz-level">Beginner Level</div>
                     </div>
                     <div class="quiz-card">
-                        <a href="grades/grade6/quizzes/physics_light2.html">Physics – Light – Quiz 2</a>
+                        <a href="grades/grade6/quizzes/atom_elements_compounds2.html">Atoms, Elements & Compounds — Quiz 2</a>
                         <div class="quiz-level">Intermediate Level</div>
                     </div>
                     <div class="quiz-card">
-                        <a href="grades/grade6/quizzes/physics_quiz1.html">Physics – General </a>
+                        <a href="grades/grade6/quizzes/atom_elements_compounds3.html">Atoms, Elements & Compounds — Quiz 3</a>
+                        <div class="quiz-level">Advanced Level</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-within-grade">
+                <h3 class="category-subtitle">
+                    <span class="category-subtitle-icon">💡</span> Physics
+                </h3>
+                <div class="quiz-grid">
+                    <div class="quiz-card">
+                        <a href="grades/grade6/quizzes/physics_light1.html">Physics — Light — Quiz 1</a>
+                        <div class="quiz-level">Beginner Level</div>
+                    </div>
+                    <div class="quiz-card">
+                        <a href="grades/grade6/quizzes/physics_light2.html">Physics — Light — Quiz 2</a>
+                        <div class="quiz-level">Intermediate Level</div>
+                    </div>
+                    <div class="quiz-card">
+                        <a href="grades/grade6/quizzes/physics_quiz1.html">Physics — General</a>
                         <div class="quiz-level">Beginner Level</div>
                     </div>
                 </div>
             </div>
-	
-	<!-- Biology-->	
-	  <div class="category-within-grade">
-		<h3 class="category-subtitle">
-			<span class="category-subtitle-icon">🔬</span>
-			Biology
-		</h3>
-		<div class="quiz-grid">
-		   <div class="quiz-card">
-		     <a href="grades/grade6/quizzes/biology_organs1.html">Biology – Organs 1</a>
-			<div class="quiz-level">Beginner Level</div>
-			</div>
-		   <div class="quiz-card">
-		     <a href="grades/grade6/quizzes/biology_organs2.html">Biology – Organs 2</a>
-			<div class="quiz-level">Intermediate Level</div>
-			</div>
-	  </div>
-     </div>
 
-	<!-- Mathematics-->	
-	  <div class="category-within-grade">
-		<h3 class="category-subtitle">
-			<span class="category-subtitle-icon">📐</span>
-			Mathematics
-		</h3>
-		<div class="quiz-grid">
-		   <div class="quiz-card">
-		     <a href="grades/grade6/quizzes/math_quiz1.html">Mathematics – Quiz 1</a>
-			<div class="quiz-level">Beginner Level</div>
-			</div>
-		   <div class="quiz-card">
-		     <a href="grades/grade6/quizzes/math_quiz2.html">Mathematics – Quiz 2</a>
-			<div class="quiz-level">Beginner Level</div>
-			</div>
-	  </div>
-     </div>
-	
- <!------------------------------------------------------------------------------------------------------------------------->
+            <div class="category-within-grade">
+                <h3 class="category-subtitle">
+                    <span class="category-subtitle-icon">🔬</span> Biology
+                </h3>
+                <div class="quiz-grid">
+                    <div class="quiz-card">
+                        <a href="grades/grade6/quizzes/biology_organs1.html">Biology — Organs 1</a>
+                        <div class="quiz-level">Beginner Level</div>
+                    </div>
+                    <div class="quiz-card">
+                        <a href="grades/grade6/quizzes/biology_organs2.html">Biology — Organs 2</a>
+                        <div class="quiz-level">Intermediate Level</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-within-grade">
+                <h3 class="category-subtitle">
+                    <span class="category-subtitle-icon">📐</span> Mathematics
+                </h3>
+                <div class="quiz-grid">
+                    <div class="quiz-card">
+                        <a href="grades/grade6/quizzes/math_quiz1.html">Mathematics — Quiz 1</a>
+                        <div class="quiz-level">Beginner Level</div>
+                    </div>
+                    <div class="quiz-card">
+                        <a href="grades/grade6/quizzes/math_quiz2.html">Mathematics — Quiz 2</a>
+                        <div class="quiz-level">Beginner Level</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GRADE 7 -->
         <div class="grade-section" id="grade-7">
-    		<div class="grade-section-header">
-        	<div class="grade-title-wrapper">
-            	<span class="grade-section-icon">📚</span>
-            	<h2 class="grade-section-title">Grade 7</h2>
-        	</div>
-        	<span class="grade-section-badge available">✓ Available</span>
-    		</div>
-    	<p class="grade-description">
-        Advanced concepts building upon Grade 6 foundation. More complex topics across multiple subjects.</p>
-    <!-- Add your categories here -->
-    <div class="category-within-grade">
-        <h3 class="category-subtitle">
-            <span class="category-subtitle-icon">📐</span> Mathematics
-        </h3>
-        <div class="quiz-grid">
-            <div class="quiz-card">
-                <a href="grades/grade7/quizzes/math_quiz1.html">Mathematics – Quiz 1</a>
-                <div class="quiz-level">Beginner Level</div>
+            <div class="grade-section-header">
+                <div class="grade-title-wrapper">
+                    <span class="grade-section-icon">📚</span>
+                    <h2 class="grade-section-title">Grade 7</h2>
+                </div>
+                <span class="grade-section-badge available">✓ Available</span>
+            </div>
+            <p class="grade-description">
+                Advanced concepts building upon Grade 6 foundation. More complex topics across multiple subjects.
+            </p>
+
+            <div class="category-within-grade">
+                <h3 class="category-subtitle">
+                    <span class="category-subtitle-icon">📐</span> Mathematics
+                </h3>
+                <div class="quiz-grid">
+                    <div class="quiz-card">
+                        <a href="grades/grade7/quizzes/math_quiz1.html">Mathematics — Quiz 1</a>
+                        <div class="quiz-level">Beginner Level</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-within-grade">
+                <h3 class="category-subtitle">
+                    <span class="category-subtitle-icon">🔬</span> Biology
+                </h3>
+                <div class="quiz-grid">
+                    <div class="quiz-card">
+                        <a href="grades/grade7/quizzes/biology_organs1.html">Biology — Quiz 1</a>
+                        <div class="quiz-level">Beginner Level</div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-  <div class="category-within-grade">
-        <h3 class="category-subtitle">
-            <span class="category-subtitle-icon">🔬</span> Biology
-        </h3>
-        <div class="quiz-grid">
-            <div class="quiz-card">
-                <a href="grades/grade7/quizzes/biology_organs1.html">Biology – Quiz 1</a>
-                <div class="quiz-level">Beginner Level</div>
-            </div>
-        </div>
-    </div>
-
-</div>
-
- <!------------------------------------------------------------------------------------------------------------------------->
-
- <!-- ===== COMING SOON GRADES ===== -->
-
+        <!-- COMING SOON GRADES -->
         <div class="grade-section" id="grade-8">
             <div class="grade-section-header">
                 <div class="grade-title-wrapper">
@@ -806,20 +945,4 @@
             </div>
         </div>
 
-        <div class="info-box">
-            <p>💡 New grades are being added regularly. Stay tuned for more content! You can follow us on www.linkedin.com/in/bhagyashree-kardile-2773b63a3 for updates.</p>
-        </div>
-
-    </div>
-
-    <footer>
-        <p>&copy; 2024 reflectt-on quizzes. All rights reserved.</p>
-        <p>Empowering students with quality competitive exam preparation</p>
-<p>The content on reflectt-on is provided for general informational and educational purposes only to help with competitive exam preparation. While we aim to keep materials accurate and up to date, we make no guarantees about completeness, correctness, or exam success—use the resources at your own discretion and verify critical information independently.
-
-reflectt-on is not responsible for third-party sites linked from the website, user-submitted content, or any outcomes resulting from use of the site. By using reflectt-on you agree that the site and its owners are not liable for any direct or indirect loss arising from your reliance on the content. </p>
-
-    </footer>
-
-</body>
-</html>
+        

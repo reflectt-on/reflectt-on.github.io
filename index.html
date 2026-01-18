@@ -37,25 +37,41 @@
             padding: 15px 40px;
         }
 
-	.logo {
-   		 font-size: 24px;
-    		font-weight: bold;
-    		color: #667eea;
-    		text-decoration: none;
-    		display: flex;
-    		align-items: center;
-   		gap: 12px;
-		}
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-	.logo img {
-    		height: 50px;  /* Increased from 40px */
-    		width: auto;
-    		object-fit: contain;
-		}
+        .logo img {
+            height: 50px;
+            width: auto;
+            object-fit: contain;
+        }
 
-		.logo span {
- 		color: #667eea;
-		}
+        .logo span {
+            color: #667eea;
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: #667eea;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
 
         nav ul {
             list-style: none;
@@ -406,81 +422,266 @@
             border-top: 2px solid #667eea;
         }
 
-	 footer p {
-   	 margin: 8px 0;
-   	 font-size: 10px;  /* Adjust this value */
-	}
+        footer p {
+            margin: 8px 0;
+            font-size: 10px;
+        }
 
         /* Responsive Design */
         @media (max-width: 768px) {
+            /* HAMBURGER MENU FOR MOBILE */
+            .menu-toggle {
+                display: flex;
+            }
+
             .header-container {
-                flex-direction: column;
-                gap: 15px;
-                padding: 15px 20px;
+                padding: 12px 15px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .logo img {
+                height: 35px;
+            }
+
+            /* Hide navigation by default */
+            nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+
+            nav.active {
+                max-height: 500px;
             }
 
             nav ul {
                 flex-direction: column;
-                gap: 15px;
-                text-align: center;
+                gap: 0;
+                padding: 10px 0;
             }
 
+            nav li {
+                width: 100%;
+                border-bottom: 1px solid #f0f0f0;
+            }
+
+            nav li:last-child {
+                border-bottom: none;
+            }
+
+            nav > ul > li > a {
+                padding: 12px 20px;
+                display: flex;
+                justify-content: space-between;
+            }
+
+            nav a::after {
+                display: none;
+            }
+
+            /* Mobile dropdown menu */
             .dropdown-menu {
                 position: static;
-                opacity: 1;
-                visibility: visible;
+                opacity: 0;
+                visibility: hidden;
+                max-height: 0;
+                overflow: hidden;
                 transform: none;
                 box-shadow: none;
-                background: #f5f7fa;
+                background: #f8f9fa;
                 border-radius: 0;
-                margin-top: 10px;
-                margin-left: -10px;
-                margin-right: -10px;
+                margin: 0;
+                transition: max-height 0.3s ease, opacity 0.3s ease;
             }
 
-            nav li:hover .dropdown-menu {
+            nav li.dropdown-open .dropdown-menu {
                 opacity: 1;
                 visibility: visible;
-                transform: none;
+                max-height: 400px;
             }
 
-            .banner-section,
-            .main-container,
-            .welcome-section,
-            .featured-quizzes-section,
-            .why-choose-section {
-                padding: 20px;
-                margin: 20px;
+            .dropdown-menu a {
+                padding: 10px 30px;
+                font-size: 14px;
+            }
+
+            .dropdown-menu a:hover {
+                padding-left: 40px;
+            }
+
+            /* Animate hamburger to X */
+            .menu-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .menu-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -7px);
+            }
+
+            /* BANNER OPTIMIZATION */
+            .banner-section {
+                padding: 15px;
+                margin: 15px 15px 20px;
+            }
+
+            .banner-section img {
+                max-height: 140px;
+                margin-bottom: 10px;
             }
 
             .banner-content h1 {
-                font-size: 28px;
+                font-size: 20px;
+                margin-bottom: 6px;
+            }
+
+            .banner-content p {
+                font-size: 13px;
+            }
+
+            /* CONTENT OPTIMIZATION */
+            .main-container {
+                padding: 0 15px;
+            }
+
+            .welcome-section,
+            .featured-quizzes-section,
+            .why-choose-section {
+                padding: 20px 15px;
+                margin-bottom: 20px;
+            }
+
+            .welcome-title {
+                font-size: 22px;
+                margin-bottom: 10px;
+            }
+
+            .welcome-text {
+                font-size: 14px;
+                line-height: 1.6;
+                margin-bottom: 15px;
             }
 
             .section-title {
-                font-size: 24px;
+                font-size: 20px;
+                margin-bottom: 8px;
+            }
+
+            .section-subtitle {
+                font-size: 13px;
+                margin-bottom: 20px;
+            }
+
+            .category-title {
+                font-size: 17px;
+                margin-bottom: 15px;
+            }
+
+            .category-icon {
+                font-size: 22px;
+            }
+
+            .category-wrapper {
+                margin-bottom: 25px;
             }
 
             .quiz-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
+                gap: 12px;
+                margin-bottom: 15px;
+            }
+
+            .quiz-card {
+                padding: 12px 8px;
+            }
+
+            .quiz-card a {
+                font-size: 12px;
+                padding: 10px 6px;
+            }
+
+            .quiz-number {
+                font-size: 10px;
+                margin-top: 6px;
             }
 
             .features-grid {
                 grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .feature-card {
+                padding: 18px 15px;
+            }
+
+            .feature-icon {
+                font-size: 32px;
+                margin-bottom: 10px;
+            }
+
+            .cta-button,
+            .view-more-button {
+                padding: 10px 20px;
+                font-size: 13px;
+            }
+
+            footer {
+                padding: 20px 15px;
+                margin-top: 30px;
+            }
+
+            footer p {
+                font-size: 9px;
             }
         }
 
         @media (max-width: 480px) {
+            .logo {
+                font-size: 16px;
+            }
+
+            .logo img {
+                height: 28px;
+            }
+
+            .banner-section {
+                padding: 12px;
+                margin: 10px 10px 15px;
+            }
+
+            .banner-section img {
+                max-height: 110px;
+            }
+
+            .banner-content h1 {
+                font-size: 18px;
+            }
+
+            .banner-content p {
+                font-size: 12px;
+            }
+
             .quiz-grid {
                 grid-template-columns: 1fr;
             }
 
-            .banner-content h1 {
-                font-size: 24px;
+            .section-title {
+                font-size: 18px;
             }
 
-            .section-title {
+            .welcome-title {
                 font-size: 20px;
             }
         }
@@ -493,12 +694,21 @@
     <header>
         <div class="header-container">
             <a href="index.html" class="logo">
-    <img src="images/logo.png" alt="reflectt-on logo">
-    <span>reflectt-on</span></a>
-            <nav>
+                <img src="images/logo.png" alt="reflectt-on logo">
+                <span>reflectt-on</span>
+            </a>
+            
+            <!-- Hamburger Menu Toggle -->
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <nav id="mainNav">
                 <ul>
                     <li><a href="index.html">Home</a></li>
-                    <li>
+                    <li onclick="toggleDropdown(event)">
                         <a href="grades.html">
                             Grades
                             <span class="dropdown-arrow">▼</span>
@@ -527,7 +737,7 @@
         <img src="images/banner.png" alt="reflectt-on quizzes Banner">
         <div class="banner-content">
             <h1>🎯 Master Your Concepts</h1>
-            <p>Comprehensive quiz preparation for competitive exams – Grade 6 to 12</p>
+            <p>Comprehensive quiz preparation for competitive exams — Grade 6 to 12</p>
         </div>
     </div>
 
@@ -536,7 +746,7 @@
 
         <!-- Welcome Section -->
         <div class="welcome-section">
-            <h2 class="welcome-title">Welcome to reflectt-on </h2>
+            <h2 class="welcome-title">Welcome to reflectt-on</h2>
             <p class="welcome-text">
                 We believe that effective learning comes from consistent practice and conceptual clarity. Our platform provides comprehensive, well-structured quizzes designed specifically for competitive exam preparation across grades 6-12. Whether you're just starting your learning journey or preparing for advanced exams like IIT-JEE, NEET, CET etc., reflectt-on is your trusted partner.
             </p>
@@ -556,11 +766,11 @@
                 </h3>
                 <div class="quiz-grid">
                     <div class="quiz-card">
-                        <a href="grades/grade6/quizzes/unit-of-measurement/quiz-1.html">Unit of Measurement – Quiz 1</a>
+                        <a href="grades/grade6/quizzes/unit-of-measurement/quiz-1.html">Unit of Measurement — Quiz 1</a>
                         <div class="quiz-number">Beginner Level</div>
                     </div>
                     <div class="quiz-card">
-                        <a href="grades/grade6/quizzes/unit-of-measurement/quiz-2.html">Unit of Measurement – Quiz 2</a>
+                        <a href="grades/grade6/quizzes/unit-of-measurement/quiz-2.html">Unit of Measurement — Quiz 2</a>
                         <div class="quiz-number">Intermediate Level</div>
                     </div>
                 </div>
@@ -574,11 +784,11 @@
                 </h3>
                 <div class="quiz-grid">
                     <div class="quiz-card">
-                        <a href="grades/grade6/quizzes/atoms-elements-compounds/quiz-1.html">Atoms, Elements & Compounds – Quiz 1</a>
+                        <a href="grades/grade6/quizzes/atoms-elements-compounds/quiz-1.html">Atoms, Elements & Compounds — Quiz 1</a>
                         <div class="quiz-number">Beginner Level</div>
                     </div>
                     <div class="quiz-card">
-                        <a href="grades/grade6/quizzes/atoms-elements-compounds/quiz-2.html">Atoms, Elements & Compounds – Quiz 2</a>
+                        <a href="grades/grade6/quizzes/atoms-elements-compounds/quiz-2.html">Atoms, Elements & Compounds — Quiz 2</a>
                         <div class="quiz-number">Intermediate Level</div>
                     </div>
                 </div>
@@ -588,15 +798,15 @@
             <div class="category-wrapper">
                 <h3 class="category-title">
                     <span class="category-icon">💡</span>
-                    Physics – Light
+                    Physics — Light
                 </h3>
                 <div class="quiz-grid">
                     <div class="quiz-card">
-                        <a href="grades/grade6/quizzes/physics-light/quiz-1.html">Physics – Light – Quiz 1</a>
+                        <a href="grades/grade6/quizzes/physics-light/quiz-1.html">Physics — Light — Quiz 1</a>
                         <div class="quiz-number">Beginner Level</div>
                     </div>
                     <div class="quiz-card">
-                        <a href="grades/grade6/quizzes/physics-light/quiz-2.html">Physics – Light – Quiz 2</a>
+                        <a href="grades/grade6/quizzes/physics-light/quiz-2.html">Physics — Light — Quiz 2</a>
                         <div class="quiz-number">Intermediate Level</div>
                     </div>
                 </div>
@@ -646,8 +856,39 @@
         <p>Empowering students with quality competitive exam preparation</p>
         <p>The content on reflectt-on is provided for general informational and educational purposes only to help with competitive exam preparation. While we aim to keep materials accurate and up to date, we make no guarantees about completeness, correctness, or exam success—use the resources at your own discretion and verify critical information independently.
 
-reflectt-on is not responsible for third-party sites linked from the website, user-submitted content, or any outcomes resulting from use of the site. By using reflectt-on you agree that the site and its owners are not liable for any direct or indirect loss arising from your reliance on the content. </p>
+reflectt-on is not responsible for third-party sites linked from the website, user-submitted content, or any outcomes resulting from use of the site. By using reflectt-on you agree that the site and its owners are not liable for any direct or indirect loss arising from your reliance on the content.</p>
     </footer>
+
+    <script>
+        // Toggle mobile menu
+        function toggleMenu() {
+            const nav = document.getElementById('mainNav');
+            const toggle = document.querySelector('.menu-toggle');
+            nav.classList.toggle('active');
+            toggle.classList.toggle('active');
+        }
+
+        // Toggle dropdown on mobile
+        function toggleDropdown(event) {
+            if (window.innerWidth <= 768) {
+                event.preventDefault();
+                const li = event.currentTarget;
+                li.classList.toggle('dropdown-open');
+            }
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('mainNav');
+            const toggle = document.querySelector('.menu-toggle');
+            const header = document.querySelector('header');
+            
+            if (!header.contains(event.target) && nav.classList.contains('active')) {
+                nav.classList.remove('active');
+                toggle.classList.remove('active');
+            }
+        });
+    </script>
 
 </body>
 </html>

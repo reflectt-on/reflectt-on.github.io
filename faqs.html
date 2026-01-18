@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAQs | reflectt-on quizzes</title>
+    <title>FAQs | reflectt-on</title>
     
     <style>
         * {
@@ -19,7 +19,6 @@
             padding-bottom: 40px;
         }
 
-        /* Header & Navigation */
         header {
             background: white;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -37,26 +36,40 @@
             padding: 15px 40px;
         }
 
-	.logo {
-   		 font-size: 24px;
-    		font-weight: bold;
-    		color: #667eea;
-    		text-decoration: none;
-    		display: flex;
-    		align-items: center;
-   		gap: 12px;
-		}
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-	.logo img {
-    		height: 50px;  /* Increased from 40px */
-    		width: auto;
-    		object-fit: contain;
-		}
+        .logo img {
+            height: 50px;
+            width: auto;
+            object-fit: contain;
+        }
 
-	.logo span {
- 		color: #667eea;
-		}
+        .logo span {
+            color: #667eea;
+        }
 
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: #667eea;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
 
         nav ul {
             list-style: none;
@@ -185,43 +198,148 @@
             border-top: 2px solid #667eea;
         }
 
-	 footer p {
-   	 margin: 8px 0;
-   	 font-size: 10px;  /* Adjust this value */
-	}
+        footer p {
+            margin: 8px 0;
+            font-size: 10px;
+        }
 
         @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
             .header-container {
-                flex-direction: column;
-                gap: 15px;
-                padding: 15px 20px;
+                padding: 12px 15px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .logo img {
+                height: 35px;
+            }
+
+            nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+
+            nav.active {
+                max-height: 500px;
             }
 
             nav ul {
                 flex-direction: column;
-                gap: 15px;
-                text-align: center;
+                gap: 0;
+                padding: 10px 0;
+            }
+
+            nav li {
+                width: 100%;
+                border-bottom: 1px solid #f0f0f0;
+            }
+
+            nav li:last-child {
+                border-bottom: none;
+            }
+
+            nav > ul > li > a {
+                padding: 12px 20px;
+                display: flex;
+                justify-content: space-between;
+            }
+
+            nav a::after {
+                display: none;
+            }
+
+            .dropdown-menu {
+                position: static;
+                opacity: 0;
+                visibility: hidden;
+                max-height: 0;
+                overflow: hidden;
+                transform: none;
+                box-shadow: none;
+                background: #f8f9fa;
+                border-radius: 0;
+                margin: 0;
+                transition: max-height 0.3s ease, opacity 0.3s ease;
+            }
+
+            nav li.dropdown-open .dropdown-menu {
+                opacity: 1;
+                visibility: visible;
+                max-height: 400px;
+            }
+
+            .dropdown-menu a {
+                padding: 10px 30px;
+                font-size: 14px;
+            }
+
+            .dropdown-menu a:hover {
+                padding-left: 40px;
+            }
+
+            .menu-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .menu-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -7px);
             }
 
             .main-container,
             .welcome-section {
-                padding: 20px;
-                margin: 20px;
+                padding: 20px 15px;
+                margin: 20px 15px;
+            }
+
+            .welcome-title {
+                font-size: 24px;
+            }
+
+            footer {
+                padding: 20px 15px;
+            }
+
+            footer p {
+                font-size: 9px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header Navigation -->
     <header>
         <div class="header-container">
             <a href="index.html" class="logo">
-    <img src="images/logo.png" alt="reflectt-on logo">
-    <span>reflectt-on</span></a>
-            <nav>
+                <img src="images/logo.png" alt="reflectt-on logo">
+                <span>reflectt-on</span>
+            </a>
+            
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <nav id="mainNav">
                 <ul>
                     <li><a href="index.html">Home</a></li>
-                    <li>
+                    <li onclick="toggleDropdown(event)">
                         <a href="grades.html">
                             Grades
                             <span class="dropdown-arrow">▼</span>
@@ -245,7 +363,6 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <div class="main-container">
         <div class="welcome-section">
             <h2 class="welcome-title">Frequently Asked Questions</h2>
@@ -254,8 +371,8 @@
                 <h3 style="color: #333;">❓ General Questions</h3>
                 
                 <div style="margin: 20px 0; padding: 15px; background: #f9f9f9; border-left: 4px solid #667eea; border-radius: 4px;">
-                    <strong style="color: #333;">Q: What is reflectt-on quizzes?</strong>
-                    <p style="margin-top: 8px; color: #666; line-height: 1.6;">A: reflectt-on quizzes is a free online platform offering comprehensive quizzes for competitive exam preparation across grades 6-12. We focus on conceptual clarity and effective learning.</p>
+                    <strong style="color: #333;">Q: What is reflectt-on?</strong>
+                    <p style="margin-top: 8px; color: #666; line-height: 1.6;">A: reflectt-on is a free online platform offering comprehensive quizzes for competitive exam preparation across grades 6-12. We focus on conceptual clarity and effective learning.</p>
                 </div>
 
                 <div style="margin: 20px 0; padding: 15px; background: #f9f9f9; border-left: 4px solid #667eea; border-radius: 4px;">
@@ -296,19 +413,44 @@
 
                 <div style="margin: 20px 0; padding: 15px; background: #f9f9f9; border-left: 4px solid #dc3545; border-radius: 4px;">
                     <strong style="color: #333;">Q: Can I provide suggestions for new topics?</strong>
-                    <p style="margin-top: 8px; color: #666; line-height: 1.6;">A: Absolutely! We welcome suggestions. Please email us at support@reflectton.com with your ideas for topics you'd like to see covered.</p>
+                    <p style="margin-top: 8px; color: #666; line-height: 1.6;">A: Absolutely! We welcome suggestions. Please email us at bhagyashreekardile@gmail.com with your ideas for topics you'd like to see covered.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
     <footer>
         <p>&copy; 2025 reflectt-on. All rights reserved.</p>
         <p>Empowering students with quality competitive exam preparation</p>
-<p>The content on reflectt-on is provided for general informational and educational purposes only to help with competitive exam preparation. While we aim to keep materials accurate and up to date, we make no guarantees about completeness, correctness, or exam success—use the resources at your own discretion and verify critical information independently.
-
-reflectt-on is not responsible for third-party sites linked from the website, user-submitted content, or any outcomes resulting from use of the site. By using reflectt-on you agree that the site and its owners are not liable for any direct or indirect loss arising from your reliance on the content. </p>
+        <p>The content on reflectt-on is provided for general informational and educational purposes only to help with competitive exam preparation. While we aim to keep materials accurate and up to date, we make no guarantees about completeness, correctness, or exam success—use the resources at your own discretion and verify critical information independently. reflectt-on is not responsible for third-party sites linked from the website, user-submitted content, or any outcomes resulting from use of the site. By using reflectt-on you agree that the site and its owners are not liable for any direct or indirect loss arising from your reliance on the content.</p>
     </footer>
+
+    <script>
+        function toggleMenu() {
+            const nav = document.getElementById('mainNav');
+            const toggle = document.querySelector('.menu-toggle');
+            nav.classList.toggle('active');
+            toggle.classList.toggle('active');
+        }
+
+        function toggleDropdown(event) {
+            if (window.innerWidth <= 768) {
+                event.preventDefault();
+                const li = event.currentTarget;
+                li.classList.toggle('dropdown-open');
+            }
+        }
+
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('mainNav');
+            const toggle = document.querySelector('.menu-toggle');
+            const header = document.querySelector('header');
+            
+            if (!header.contains(event.target) && nav.classList.contains('active')) {
+                nav.classList.remove('active');
+                toggle.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html>
