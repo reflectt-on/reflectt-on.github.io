@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Science Quiz - Reflectt-On</title>
+
+  <style>
+    body {
+      <a href="/" class="logo-watermark" title="Home">
+    <img src="images/logo.png" alt="Logo Watermark"></a>
+	
+	font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      padding: 20px;
+      margin: 0;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 400px;
+      background-image: url('YOUR_LOGO_PATH_HERE');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.05;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header-logo img {
+      max-width: 50px;
+      height: auto;
+    }
+
+    h1 {
+      color: #2e8b57;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #555;
+      font-size: 14px;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+
+    #timerDisplay {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #d9534f;
+      margin: 15px 0;
+      display: none;
+    }
+
+    #startBtn, #endQuizBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 25px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #startBtn:hover, #endQuizBtn:hover {
+      background: #246b45;
+    }
+
+    .question {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .difficulty-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
+    .easy { background: #d4edda; color: #155724; }
+    .medium { background: #fff3cd; color: #856404; }
+    .hard { background: #f8d7da; color: #721c24; }
+    .numerical { background: #d1ecf1; color: #0c5460; }
+
+    .options button {
+      width: 100%;
+      margin: 6px 0;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .options button:disabled {
+      background: #e0e0e0;
+      cursor: not-allowed;
+    }
+
+    .result {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #score {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+      color: #2e8b57;
+    }
+
+    #restart {
+      display: none;
+      margin: 30px auto;
+      padding: 12px 20px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 200px;
+    }
+
+    #restart:hover {
+      background: #246b45;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 10px; }
+      .options button { font-size: 15px; padding: 10px; }
+      .header-logo img { max-width: 200px; }
+      body::before { width: 250px; height: 250px; }
+    }
+.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    	.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="logo-watermark" title="Home">
+        <img src="images/logo.png" alt="Logo Watermark">
+    </a>
+
+<body>
+
+  <div class="header-logo">
+    <img src="images/logo.png" alt="Exam Prep Logo">
+  </div>
+
+  <h1>Science Quiz - Chemistry Atoms, Elements & Compounds</h1>
+  <p class="subtitle">IIT JEE Foundation - Grade 6</p>
+
+  <button id="startBtn">Start Quiz</button>
+
+  <div id="timerDisplay">⏳ Time: 00:00:00</div>
+
+  <button id="endQuizBtn" style="display:none;">End Quiz</button>
+
+  <div id="quiz"></div>
+  <div id="score"></div>
+
+  <button id="restart" style="display:none;">Restart Quiz</button>
+
+
+  <script>
+    let score = 0;
+    let answered = 0;
+    let quizStartTime = 0;
+    let timerInterval;
+
+    const questionsData = [
+      {
+        "text": "What is the smallest particle of an element that keeps its properties?",
+        "options": ["Molecule", "Atom", "Compound", "Mixture"],
+        "answer": "Atom",
+        "explanation": "An atom is the basic unit of an element that retains its chemical properties.",
+        "difficulty": "easy"
+      },
+      {
+        "text": "Which of these is always made up of only one kind of atom?",
+        "options": ["Element", "Compound", "Mixture", "Solution"],
+        "answer": "Element",
+        "explanation": "An element is a pure substance that contains only one kind of atom.",
+        "difficulty": "easy"
+      },
+      {
+        "text": "Which of these is a compound?",
+        "options": ["Iron", "Oxygen gas", "Water", "Gold"],
+        "answer": "Water",
+        "explanation": "Water is made of hydrogen and oxygen chemically combined in a fixed ratio, so it is a compound.",
+        "difficulty": "easy"
+      },
+      {
+        "text": "Which of these is a molecule of an element?",
+        "options": ["H2O", "CO2", "O2", "NaCl"],
+        "answer": "O2",
+        "explanation": "O2 is made of two oxygen atoms only, so it is a molecule of the element oxygen.",
+        "difficulty": "easy"
+      },
+      {
+        "text": "What type of substance is copper metal?",
+        "options": ["Element", "Compound", "Mixture", "Solution"],
+        "answer": "Element",
+        "explanation": "Copper contains only copper atoms, so it is an element.",
+        "difficulty": "easy"
+      },
+
+      // MEDIUM DIFFICULTY QUESTIONS (5)
+      {
+        "text": "Which of these is a mixture?",
+        "options": ["Carbon dioxide", "Common salt (NaCl)", "Air", "Water"],
+        "answer": "Air",
+        "explanation": "Air is a mixture of several gases like nitrogen, oxygen, carbon dioxide and others in variable proportions.",
+        "difficulty": "medium"
+      },
+      {
+        "text": "Which statement is true for a compound?",
+        "options": [
+          "Its components can be in any ratio",
+          "Its components are combined in a fixed ratio",
+          "It can be separated by filtration only",
+          "It is always a gas"
+        ],
+        "answer": "Its components are combined in a fixed ratio",
+        "explanation": "Elements in a compound are always combined in a fixed, definite ratio by mass.",
+        "difficulty": "medium"
+      },
+      {
+        "text": "Which mixture is homogeneous?",
+        "options": [
+          "Sand and iron filings",
+          "Oil and water",
+          "Salt dissolved in water",
+          "Sand and stones"
+        ],
+        "answer": "Salt dissolved in water",
+        "explanation": "Salt solution has the same composition throughout, making it a homogeneous mixture.",
+        "difficulty": "medium"
+      },
+      {
+        "text": "In which of the following do the components lose their own properties?",
+        "options": ["Mixture", "Element", "Compound", "Solution"],
+        "answer": "Compound",
+        "explanation": "In a compound, the elements combine chemically and do not retain their original properties.",
+        "difficulty": "medium"
+      },
+      {
+        "text": "Why is water considered a compound and not a mixture?",
+        "options": [
+          "It contains only one kind of atom",
+          "Its composition (H and O) is fixed in a definite ratio",
+          "It can be separated by filtration",
+          "It is always a liquid"
+        ],
+        "answer": "Its composition (H and O) is fixed in a definite ratio",
+        "explanation": "In water, hydrogen and oxygen are chemically combined in a fixed 2:1 ratio, so it is a compound.",
+        "difficulty": "medium"
+      },
+
+      // HARD/MAXIMUM DIFFICULTY QUESTIONS (5)
+      {
+        "text": "Which change clearly shows that a new compound has formed instead of just a mixture?",
+        "options": [
+          "Two solids are mixed and can be separated by a magnet",
+          "Salt is dissolved in water and then recovered by evaporation",
+          "Iron and sulphur are heated strongly to form a substance that is not attracted by a magnet",
+          "Water is cooled to form ice"
+        ],
+        "answer": "Iron and sulphur are heated strongly to form a substance that is not attracted by a magnet",
+        "explanation": "Heating iron and sulphur forms iron sulphide, a new compound with properties different from both iron and sulphur.",
+        "difficulty": "hard"
+      },
+      {
+        "text": "Why does a compound like water have properties very different from hydrogen and oxygen?",
+        "options": [
+          "Because it is a mixture of gases",
+          "Because atoms in a compound lose their identities and form a new substance",
+          "Because it contains only one type of atom",
+          "Because its components are in any ratio"
+        ],
+        "answer": "Because atoms in a compound lose their identities and form a new substance",
+        "explanation": "In a compound, atoms combine chemically so the new substance has its own distinct properties, different from the original elements.",
+        "difficulty": "hard"
+      },
+      {
+        "text": "Which statement explains why air is called a mixture and not a compound?",
+        "options": [
+          "Its components are present in a fixed ratio",
+          "Its components can be separated only by chemical methods",
+          "Its components retain their own properties and their ratio can vary",
+          "It contains only one kind of gas"
+        ],
+        "answer": "Its components retain their own properties and their ratio can vary",
+        "explanation": "In air, gases retain their properties and their proportions can change, showing it is a mixture.",
+        "difficulty": "hard"
+      },
+      {
+        "text": "Which feature is common to both elements and compounds but NOT to mixtures?",
+        "options": [
+          "They are pure substances",
+          "They can be separated easily by physical methods",
+          "Their composition can vary",
+          "They always contain two or more substances"
+        ],
+        "answer": "They are pure substances",
+        "explanation": "Elements and compounds are pure substances with uniform composition, unlike mixtures.",
+        "difficulty": "hard"
+      },
+      {
+        "text": "A liquid contains only one type of molecule throughout and has a sharp boiling point. What is it most likely to be?",
+        "options": ["Mixture", "Solution", "Pure substance", "Heterogeneous mixture"],
+        "answer": "Pure substance",
+        "explanation": "A sharp boiling point and uniform composition indicate a pure substance (element or compound).",
+        "difficulty": "hard"
+      },
+
+      // NUMERICAL PROBLEMS (10 - selecting best 5 for grade 6)
+      {
+        "text": "A water molecule (H2O) has 2 hydrogen atoms and 1 oxygen atom. How many total atoms are in 3 water molecules?",
+        "options": ["6", "9", "12", "15"],
+        "answer": "9",
+        "explanation": "Each water molecule has 3 atoms (2H + 1O). So 3 molecules have 3 × 3 = 9 atoms.",
+        "difficulty": "numerical"
+      },
+      {
+        "text": "If oxygen gas exists as O2 molecules, how many oxygen atoms are present in 5 O2 molecules?",
+        "options": ["5", "7", "10", "15"],
+        "answer": "10",
+        "explanation": "Each O2 molecule has 2 oxygen atoms. So 5 molecules have 5 × 2 = 10 atoms.",
+        "difficulty": "numerical"
+      },
+      {
+        "text": "Carbon dioxide (CO2) has 1 carbon atom and 2 oxygen atoms. If you have 4 CO2 molecules, how many oxygen atoms are there?",
+        "options": ["4", "6", "8", "12"],
+        "answer": "8",
+        "explanation": "Each CO2 has 2 oxygen atoms. So 4 molecules have 4 × 2 = 8 oxygen atoms.",
+        "difficulty": "numerical"
+      },
+      {
+        "text": "A compound has 12 grams of carbon and 4 grams of hydrogen. What is the ratio of carbon to hydrogen by mass?",
+        "options": ["1:1", "2:1", "3:1", "4:1"],
+        "answer": "3:1",
+        "explanation": "The ratio is 12:4 which simplifies to 3:1.",
+        "difficulty": "numerical"
+      },
+      {
+        "text": "In ammonia (NH3), there is 1 nitrogen atom and 3 hydrogen atoms. How many hydrogen atoms are in 6 molecules of ammonia?",
+        "options": ["6", "12", "18", "24"],
+        "answer": "18",
+        "explanation": "Each NH3 has 3 hydrogen atoms. So 6 molecules have 6 × 3 = 18 hydrogen atoms.",
+        "difficulty": "numerical"
+      },
+
+      // ADDITIONAL BALANCED QUESTIONS (5 more to make 25 total)
+      {
+        "text": "Which of these is a molecule of a compound?",
+        "options": ["O2", "N2", "H2", "CO2"],
+        "answer": "CO2",
+        "explanation": "CO2 has carbon and oxygen atoms chemically combined, so it is a molecule of a compound.",
+        "difficulty": "easy"
+      },
+      {
+        "text": "When iron filings and sulphur powder are just mixed together, what is formed?",
+        "options": ["Element", "Compound", "Mixture", "Molecule"],
+        "answer": "Mixture",
+        "explanation": "Simply mixing iron and sulphur without heating gives a physical combination called a mixture.",
+        "difficulty": "medium"
+      },
+      {
+        "text": "A student stirs iron filings into water. What type of matter is obtained?",
+        "options": ["Element", "Compound", "Homogeneous mixture", "Heterogeneous mixture"],
+        "answer": "Heterogeneous mixture",
+        "explanation": "Iron filings remain separate and visible in water, forming a heterogeneous mixture.",
+        "difficulty": "medium"
+      },
+      {
+        "text": "Which of the following is NOT a characteristic of a mixture?",
+        "options": [
+          "Components can be in any proportion",
+          "Components retain their own properties",
+          "It has a fixed melting point",
+          "Components can often be separated by physical methods"
+        ],
+        "answer": "It has a fixed melting point",
+        "explanation": "Mixtures do not have sharp, fixed melting or boiling points.",
+        "difficulty": "hard"
+      },
+      {
+        "text": "Methane (CH4) has 1 carbon atom and 4 hydrogen atoms. How many total atoms are in 2 methane molecules?",
+        "options": ["5", "8", "10", "12"],
+        "answer": "10",
+        "explanation": "Each CH4 has 5 atoms (1C + 4H). So 2 molecules have 2 × 5 = 10 atoms.",
+        "difficulty": "numerical"
+      }
+    ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor((i + 1) * Math.random());
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    document.getElementById("startBtn").onclick = startQuiz;
+    document.getElementById("endQuizBtn").onclick = endQuiz;
+    document.getElementById("restart").onclick = restartQuiz;
+
+    function startQuiz() {
+      document.getElementById("startBtn").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "block";
+      document.getElementById("timerDisplay").style.display = "block";
+
+      renderQuiz(questionsData);
+    }
+
+    function endQuiz() {
+      clearInterval(timerInterval);
+
+      document.getElementById("quiz").innerHTML = "";
+      document.getElementById("score").innerHTML = "";
+      document.getElementById("timerDisplay").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "none";
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("startBtn").style.display = "block";
+    }
+
+    function restartQuiz() {
+      renderQuiz(questionsData);
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("score").innerHTML = "";
+    }
+
+    function renderQuiz(questions) {
+      score = 0;
+      answered = 0;
+
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = "";
+
+      quizStartTime = Date.now();
+      startGlobalTimer();
+
+      questions = shuffle([...questions]);
+
+      questions.forEach((q, index) => {
+        const container = document.createElement("div");
+        container.className = "question";
+
+        const questionText = document.createElement("p");
+        const badge = `<span class="difficulty-badge ${q.difficulty}">${q.difficulty.toUpperCase()}</span>`;
+        questionText.innerHTML = `${index + 1}. ${q.text} ${badge}`;
+        container.appendChild(questionText);
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "options";
+
+        const shuffledOptions = shuffle([...q.options]);
+
+        shuffledOptions.forEach(opt => {
+          const btn = document.createElement("button");
+          btn.textContent = opt;
+
+          btn.onclick = () => {
+            lockQuestion(container, q, opt, btn);
+          };
+
+          optionsDiv.appendChild(btn);
+        });
+
+        container.appendChild(optionsDiv);
+        quizDiv.appendChild(container);
+      });
+    }
+
+    function startGlobalTimer() {
+      clearInterval(timerInterval);
+
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - quizStartTime) / 1000);
+
+        const hrs = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+        const secs = String(elapsed % 60).padStart(2, '0');
+
+        document.getElementById("timerDisplay").textContent =
+          `⏳ Time: ${hrs}:${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function lockQuestion(container, question, selected, selectedBtn) {
+      if (container.dataset.answered) return;
+      container.dataset.answered = true;
+
+      const buttons = container.querySelectorAll("button");
+
+      selectedBtn.style.background = "#007bff";
+      selectedBtn.style.color = "white";
+
+      buttons.forEach(btn => btn.disabled = true);
+
+      const result = document.createElement("p");
+      result.className = "result";
+
+      if (selected === question.answer) {
+        result.textContent = `✅ Correct!`;
+        result.style.color = "green";
+        score++;
+      } else {
+        result.textContent = `❌ Incorrect.`;
+        result.style.color = "red";
+      }
+
+      buttons.forEach(btn => {
+        if (btn.textContent === question.answer) {
+          btn.style.background = "#28a745";
+          btn.style.color = "white";
+        }
+      });
+
+      const explanation = document.createElement("p");
+      explanation.innerHTML = `<strong>Correct Answer:</strong> ${question.answer}<br>
+                               <strong>Explanation:</strong> ${question.explanation}`;
+
+      container.appendChild(result);
+      container.appendChild(explanation);
+
+      answered++;
+
+      if (answered === questionsData.length) {
+        clearInterval(timerInterval);
+
+        const totalTime = Math.floor((Date.now() - quizStartTime) / 1000);
+        const hrs = String(Math.floor(totalTime / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((totalTime % 3600) / 60)).padStart(2, '0');
+        const secs = String(totalTime % 60).padStart(2, '0');
+
+        document.getElementById("score").textContent =
+          `Final Score: ${score} / ${questionsData.length}  
+           Total Time Taken: ${hrs}:${mins}:${secs}`;
+
+        document.getElementById("restart").style.display = "block";
+      }
+    }
+  </script>
+
+</body>
+</html>

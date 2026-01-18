@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Science Quiz - Reflectt-On</title>
+
+  <style>
+    body {
+      <a href="/" class="logo-watermark" title="Home">
+    <img src="images/logo.png" alt="Logo Watermark"></a>
+	
+	font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      padding: 20px;
+      margin: 0;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 400px;
+      background-image: url('YOUR_LOGO_PATH_HERE');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.05;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header-logo img {
+      max-width: 50px;
+      height: auto;
+    }
+
+    h1 {
+      color: #2e8b57;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #555;
+      font-size: 14px;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+
+    #timerDisplay {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #d9534f;
+      margin: 15px 0;
+      display: none;
+    }
+
+    #startBtn, #endQuizBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 25px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #startBtn:hover, #endQuizBtn:hover {
+      background: #246b45;
+    }
+
+    .question {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .difficulty-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
+    .easy { background: #d4edda; color: #155724; }
+    .medium { background: #fff3cd; color: #856404; }
+    .hard { background: #f8d7da; color: #721c24; }
+    .numerical { background: #d1ecf1; color: #0c5460; }
+
+    .options button {
+      width: 100%;
+      margin: 6px 0;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .options button:disabled {
+      background: #e0e0e0;
+      cursor: not-allowed;
+    }
+
+    .result {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #score {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+      color: #2e8b57;
+    }
+
+    #restart {
+      display: none;
+      margin: 30px auto;
+      padding: 12px 20px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 200px;
+    }
+
+    #restart:hover {
+      background: #246b45;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 10px; }
+      .options button { font-size: 15px; padding: 10px; }
+      .header-logo img { max-width: 200px; }
+      body::before { width: 250px; height: 250px; }
+    }
+.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    	.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="logo-watermark" title="Home">
+        <img src="images/logo.png" alt="Logo Watermark">
+    </a>
+
+<body>
+
+  <div class="header-logo">
+    <img src="images/logo.png" alt="Exam Prep Logo">
+  </div>
+
+  <h1>Science Quiz - Units of Measurement </h1>
+  <p class="subtitle">IIT JEE Foundation - Grade 6</p>
+
+  <button id="startBtn">Start Quiz</button>
+
+  <div id="timerDisplay">⏳ Time: 00:00:00</div>
+
+  <button id="endQuizBtn" style="display:none;">End Quiz</button>
+
+  <div id="quiz"></div>
+  <div id="score"></div>
+
+  <button id="restart" style="display:none;">Restart Quiz</button>
+
+
+  <script>
+    let score = 0;
+    let answered = 0;
+    let quizStartTime = 0;
+    let timerInterval;
+
+    const questionsData = [
+     {
+    "text": "The SI unit of length is:",
+    "options": ["Centimeter", "Meter", "Kilometer", "Millimeter"],
+    "answer": "Meter",
+    "explanation": "Meter (m) is the standard SI unit of length. Other units like centimeter and kilometer are derived from it.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "A rope is 5 m 75 cm long. Another rope is 3 m 40 cm long. What is the total length of both ropes?",
+    "options": ["8 m 115 cm", "9 m 15 cm", "8 m 15 cm", "9 m 5 cm"],
+    "answer": "9 m 15 cm",
+    "explanation": "5 m 75 cm + 3 m 40 cm = 8 m 115 cm = 8 m + 1 m 15 cm = 9 m 15 cm (since 115 cm = 100 cm + 15 cm = 1 m 15 cm).",
+    "difficulty": "medium"
+  },
+  {
+    "text": "The SI unit of mass is:",
+    "options": ["Gram", "Kilogram", "Milligram", "Ton"],
+    "answer": "Kilogram",
+    "explanation": "Kilogram (kg) is the SI unit of mass. It is the only SI base unit with a prefix in its name.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "A water tank can hold 250 liters of water. How many milliliters is this?",
+    "options": ["25000 mL", "250000 mL", "2500 mL", "2500000 mL"],
+    "answer": "250000 mL",
+    "explanation": "1 liter = 1000 mL, so 250 liters = 250 × 1000 = 250000 mL.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "The SI unit of time is:",
+    "options": ["Minute", "Hour", "Second", "Day"],
+    "answer": "Second",
+    "explanation": "Second (s) is the SI unit of time. Minutes, hours, and days are common units but not SI base units.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "A bag of rice weighs 8 kg 500 g. If 3 kg 750 g of rice is used, how much rice is left?",
+    "options": ["4 kg 750 g", "5 kg 250 g", "4 kg 250 g", "5 kg 750 g"],
+    "answer": "4 kg 750 g",
+    "explanation": "8 kg 500 g - 3 kg 750 g = 8.5 kg - 3.75 kg = 4.75 kg = 4 kg 750 g.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "The thickness of a coin can be best measured using:",
+    "options": ["Meter scale", "Measuring tape", "Vernier caliper", "Measuring cylinder"],
+    "answer": "Vernier caliper",
+    "explanation": "A vernier caliper can measure small thicknesses accurately up to 0.1 mm, making it ideal for measuring coins.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "A rectangular field is 45 m long and 30 m wide. What is its perimeter?",
+    "options": ["75 m", "150 m", "1350 m", "135 m"],
+    "answer": "150 m",
+    "explanation": "Perimeter = 2(length + width) = 2(45 + 30) = 2 × 75 = 150 m.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "1 liter is equal to:",
+    "options": ["10 cm³", "100 cm³", "1000 cm³", "10000 cm³"],
+    "answer": "1000 cm³",
+    "explanation": "1 liter = 1000 cubic centimeters (cm³) or 1000 milliliters (mL).",
+    "difficulty": "medium"
+  },
+  {
+    "text": "A cubical box has an edge of 5 cm. What is its volume?",
+    "options": ["25 cm³", "75 cm³", "125 cm³", "150 cm³"],
+    "answer": "125 cm³",
+    "explanation": "Volume of cube = edge³ = 5 × 5 × 5 = 125 cm³.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which of the following is the largest unit of length?",
+    "options": ["Millimeter", "Centimeter", "Meter", "Kilometer"],
+    "answer": "Kilometer",
+    "explanation": "Among the given options, kilometer (1000 m) is the largest unit of length.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "A car travels 2 km 350 m in the first hour and 1 km 800 m in the second hour. What is the total distance covered?",
+    "options": ["3 km 150 m", "4 km 150 m", "3 km 550 m", "4 km 550 m"],
+    "answer": "4 km 150 m",
+    "explanation": "2 km 350 m + 1 km 800 m = 3 km 1150 m = 3 km + 1 km 150 m = 4 km 150 m.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "3.5 m can be written as:",
+    "options": ["35 cm", "350 cm", "3500 cm", "35000 cm"],
+    "answer": "350 cm",
+    "explanation": "1 m = 100 cm, so 3.5 m = 3.5 × 100 = 350 cm.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "The volume of liquids is commonly measured in:",
+    "options": ["Kilograms", "Meters", "Liters", "Seconds"],
+    "answer": "Liters",
+    "explanation": "Liters (L) or milliliters (mL) are the standard units for measuring liquid volume.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "A rectangular room is 6 m long and 4 m wide. What is its area?",
+    "options": ["10 m²", "20 m²", "24 m²", "48 m²"],
+    "answer": "24 m²",
+    "explanation": "Area of rectangle = length × width = 6 m × 4 m = 24 m².",
+    "difficulty": "medium"
+  },
+  {
+    "text": "If 1 kg of sugar costs ₹45, what is the cost of 2 kg 500 g of sugar?",
+    "options": ["₹112.50", "₹110", "₹115", "₹100"],
+    "answer": "₹112.50",
+    "explanation": "2 kg 500 g = 2.5 kg. Cost = 2.5 × 45 = ₹112.50.",
+    "difficulty": "hard"
+  },
+  {
+    "text": "4 km 50 m can be expressed as:",
+    "options": ["4.5 km", "4.05 km", "4.005 km", "4.0005 km"],
+    "answer": "4.05 km",
+    "explanation": "50 m = 0.05 km (since 1000 m = 1 km). Therefore, 4 km 50 m = 4.05 km.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "A container has 5 L 250 mL of milk. If 2 L 800 mL is consumed, how much milk remains?",
+    "options": ["2 L 450 mL", "3 L 450 mL", "2 L 550 mL", "3 L 550 mL"],
+    "answer": "2 L 450 mL",
+    "explanation": "5 L 250 mL - 2 L 800 mL = 5.25 L - 2.80 L = 2.45 L = 2 L 450 mL.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "A ribbon is 12 m 50 cm long. It is cut into 5 equal pieces. What is the length of each piece?",
+    "options": ["2 m 50 cm", "2 m 30 cm", "2 m 10 cm", "3 m"],
+    "answer": "2 m 50 cm",
+    "explanation": "12 m 50 cm = 12.5 m = 1250 cm. Each piece = 1250 ÷ 5 = 250 cm = 2 m 50 cm.",
+    "difficulty": "hard"
+  },
+  {
+    "text": "The correct increasing order of units of length is:",
+    "options": ["mm < cm < m < km", "cm < mm < m < km", "mm < m < cm < km", "km < m < cm < mm"],
+    "answer": "mm < cm < m < km",
+    "explanation": "Millimeter is the smallest, followed by centimeter, meter, and kilometer is the largest among these units.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "A bottle contains 1.5 L of juice. If you pour 450 mL into a glass, how much juice remains in the bottle?",
+    "options": ["1050 mL", "1.05 L", "Both 1050 mL and 1.05 L", "950 mL"],
+    "answer": "Both 1050 mL and 1.05 L",
+    "explanation": "1.5 L = 1500 mL. Remaining juice = 1500 - 450 = 1050 mL = 1.05 L. Both answers represent the same amount.",
+    "difficulty": "hard"
+  },
+  {
+    "text": "A square garden has a side of 8 m. What is its area?",
+    "options": ["16 m²", "32 m²", "64 m²", "24 m²"],
+    "answer": "64 m²",
+    "explanation": "Area of square = side × side = 8 m × 8 m = 64 m².",
+    "difficulty": "medium"
+  },
+  {
+    "text": "How many grams are there in 3.75 kg?",
+    "options": ["375 g", "3750 g", "37.5 g", "37500 g"],
+    "answer": "3750 g",
+    "explanation": "1 kg = 1000 g, so 3.75 kg = 3.75 × 1000 = 3750 g.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "A book is 2 cm thick. If you stack 15 such books, what will be the height of the stack?",
+    "options": ["30 cm", "17 cm", "13 cm", "25 cm"],
+    "answer": "30 cm",
+    "explanation": "Height of stack = thickness of one book × number of books = 2 cm × 15 = 30 cm.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "A swimming pool is 25 m long, 10 m wide, and 2 m deep. What is its volume?",
+    "options": ["250 m³", "500 m³", "50 m³", "100 m³"],
+    "answer": "500 m³",
+    "explanation": "Volume = length × width × depth = 25 m × 10 m × 2 m = 500 m³.",
+    "difficulty": "hard"
+  }
+    ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor((i + 1) * Math.random());
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    document.getElementById("startBtn").onclick = startQuiz;
+    document.getElementById("endQuizBtn").onclick = endQuiz;
+    document.getElementById("restart").onclick = restartQuiz;
+
+    function startQuiz() {
+      document.getElementById("startBtn").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "block";
+      document.getElementById("timerDisplay").style.display = "block";
+
+      renderQuiz(questionsData);
+    }
+
+    function endQuiz() {
+      clearInterval(timerInterval);
+
+      document.getElementById("quiz").innerHTML = "";
+      document.getElementById("score").innerHTML = "";
+      document.getElementById("timerDisplay").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "none";
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("startBtn").style.display = "block";
+    }
+
+    function restartQuiz() {
+      renderQuiz(questionsData);
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("score").innerHTML = "";
+    }
+
+    function renderQuiz(questions) {
+      score = 0;
+      answered = 0;
+
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = "";
+
+      quizStartTime = Date.now();
+      startGlobalTimer();
+
+      questions = shuffle([...questions]);
+
+      questions.forEach((q, index) => {
+        const container = document.createElement("div");
+        container.className = "question";
+
+        const questionText = document.createElement("p");
+        const badge = `<span class="difficulty-badge ${q.difficulty}">${q.difficulty.toUpperCase()}</span>`;
+        questionText.innerHTML = `${index + 1}. ${q.text} ${badge}`;
+        container.appendChild(questionText);
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "options";
+
+        const shuffledOptions = shuffle([...q.options]);
+
+        shuffledOptions.forEach(opt => {
+          const btn = document.createElement("button");
+          btn.textContent = opt;
+
+          btn.onclick = () => {
+            lockQuestion(container, q, opt, btn);
+          };
+
+          optionsDiv.appendChild(btn);
+        });
+
+        container.appendChild(optionsDiv);
+        quizDiv.appendChild(container);
+      });
+    }
+
+    function startGlobalTimer() {
+      clearInterval(timerInterval);
+
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - quizStartTime) / 1000);
+
+        const hrs = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+        const secs = String(elapsed % 60).padStart(2, '0');
+
+        document.getElementById("timerDisplay").textContent =
+          `⏳ Time: ${hrs}:${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function lockQuestion(container, question, selected, selectedBtn) {
+      if (container.dataset.answered) return;
+      container.dataset.answered = true;
+
+      const buttons = container.querySelectorAll("button");
+
+      selectedBtn.style.background = "#007bff";
+      selectedBtn.style.color = "white";
+
+      buttons.forEach(btn => btn.disabled = true);
+
+      const result = document.createElement("p");
+      result.className = "result";
+
+      if (selected === question.answer) {
+        result.textContent = `✅ Correct!`;
+        result.style.color = "green";
+        score++;
+      } else {
+        result.textContent = `❌ Incorrect.`;
+        result.style.color = "red";
+      }
+
+      buttons.forEach(btn => {
+        if (btn.textContent === question.answer) {
+          btn.style.background = "#28a745";
+          btn.style.color = "white";
+        }
+      });
+
+      const explanation = document.createElement("p");
+      explanation.innerHTML = `<strong>Correct Answer:</strong> ${question.answer}<br>
+                               <strong>Explanation:</strong> ${question.explanation}`;
+
+      container.appendChild(result);
+      container.appendChild(explanation);
+
+      answered++;
+
+      if (answered === questionsData.length) {
+        clearInterval(timerInterval);
+
+        const totalTime = Math.floor((Date.now() - quizStartTime) / 1000);
+        const hrs = String(Math.floor(totalTime / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((totalTime % 3600) / 60)).padStart(2, '0');
+        const secs = String(totalTime % 60).padStart(2, '0');
+
+        document.getElementById("score").textContent =
+          `Final Score: ${score} / ${questionsData.length}  
+           Total Time Taken: ${hrs}:${mins}:${secs}`;
+
+        document.getElementById("restart").style.display = "block";
+      }
+    }
+  </script>
+
+</body>
+</html>

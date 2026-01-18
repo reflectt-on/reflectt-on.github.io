@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Science Quiz - Reflectt-On</title>
+
+  <style>
+    body {
+      <a href="/" class="logo-watermark" title="Home">
+    <img src="images/logo.png" alt="Logo Watermark"></a>
+	
+	font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      padding: 20px;
+      margin: 0;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 400px;
+      background-image: url('YOUR_LOGO_PATH_HERE');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.05;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header-logo img {
+      max-width: 50px;
+      height: auto;
+    }
+
+    h1 {
+      color: #2e8b57;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #555;
+      font-size: 14px;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+
+    #timerDisplay {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #d9534f;
+      margin: 15px 0;
+      display: none;
+    }
+
+    #startBtn, #endQuizBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 25px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #startBtn:hover, #endQuizBtn:hover {
+      background: #246b45;
+    }
+
+    .question {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .difficulty-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
+    .easy { background: #d4edda; color: #155724; }
+    .medium { background: #fff3cd; color: #856404; }
+    .hard { background: #f8d7da; color: #721c24; }
+    .numerical { background: #d1ecf1; color: #0c5460; }
+
+    .options button {
+      width: 100%;
+      margin: 6px 0;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .options button:disabled {
+      background: #e0e0e0;
+      cursor: not-allowed;
+    }
+
+    .result {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #score {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+      color: #2e8b57;
+    }
+
+    #restart {
+      display: none;
+      margin: 30px auto;
+      padding: 12px 20px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 200px;
+    }
+
+    #restart:hover {
+      background: #246b45;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 10px; }
+      .options button { font-size: 15px; padding: 10px; }
+      .header-logo img { max-width: 200px; }
+      body::before { width: 250px; height: 250px; }
+    }
+.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    	.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="logo-watermark" title="Home">
+        <img src="images/logo.png" alt="Logo Watermark">
+    </a>
+
+<body>
+
+  <div class="header-logo">
+    <img src="images/logo.png" alt="Exam Prep Logo">
+  </div>
+
+  <h1>Science Quiz - Mathematics </h1>
+  <p class="subtitle">IIT JEE Foundation - Grade 6</p>
+
+  <button id="startBtn">Start Quiz</button>
+
+  <div id="timerDisplay">⏳ Time: 00:00:00</div>
+
+  <button id="endQuizBtn" style="display:none;">End Quiz</button>
+
+  <div id="quiz"></div>
+  <div id="score"></div>
+
+  <button id="restart" style="display:none;">Restart Quiz</button>
+
+
+  <script>
+    let score = 0;
+    let answered = 0;
+    let quizStartTime = 0;
+    let timerInterval;
+
+    const questionsData = [
+           {
+    "text": "Which of the following is the smallest natural number?",
+    "options": ["0", "1", "2", "None of these"],
+    "answer": "1",
+    "explanation": "Natural numbers are the set of counting numbers starting from 1. Therefore, 1 is the smallest natural number.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is the basic geometric element that determines a precise location but has no length, breadth, or height?",
+    "options": ["Line", "Ray", "Point", "Plane"],
+    "answer": "Point",
+    "explanation": "A point determines a precise location and is imagined as an invisibly thin dot with no dimensions.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which number is known as the 'additive identity' for whole numbers?",
+    "options": ["1", "0", "-1", "10"],
+    "answer": "0",
+    "explanation": "Zero is called the additive identity because adding zero to any whole number results in the same number (a + 0 = a).",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is the successor of the integer -61?",
+    "options": ["-62", "-60", "61", "60"],
+    "answer": "-60",
+    "explanation": "The successor of a number is one more than the number. On a number line, -60 is to the right of -61.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "In the formula for the area of a rectangle, A = l × w, which of the following are variables?",
+    "options": ["Only A", "Only l and w", "A, l, and w", "None of them"],
+    "answer": "A, l, and w",
+    "explanation": "Since the length, width, and resulting area can change depending on the size of the rectangle, all three are considered variables.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is the simplest form of the ratio 12 : 24?",
+    "options": ["1 : 2", "2 : 1", "6 : 12", "3 : 4"],
+    "answer": "1 : 2",
+    "explanation": "To simplify a ratio, divide both terms by their highest common factor. Here, 12 is the HCF of 12 and 24, so 12/12 : 24/12 = 1 : 2.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which of the following fractions is equivalent to 2/6?",
+    "options": ["1/2", "1/3", "3/9", "Both 1/3 and 3/9"],
+    "answer": "Both 1/3 and 3/9",
+    "explanation": "2/6 simplified is 1/3. 3/9 also simplifies to 1/3 by dividing the numerator and denominator by 3.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "If the side of a square is 9 cm, what is its perimeter?",
+    "options": ["18 cm", "81 cm", "36 cm", "27 cm"],
+    "answer": "36 cm",
+    "explanation": "The perimeter of a square is calculated as 4 × side. So, 4 × 9 cm = 36 cm.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Find the range of the following set of marks: 12, 15, 11, 13, 10.",
+    "options": ["5", "10", "15", "2"],
+    "answer": "5",
+    "explanation": "Range is the difference between the highest and lowest values. 15 - 10 = 5.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Calculate the sum of the fractions: 4/7 + 6/7.",
+    "options": ["10/14", "10/7", "2/7", "1"],
+    "answer": "10/7",
+    "explanation": "When denominators are the same, we simply add the numerators: 4 + 6 = 10, so the result is 10/7.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which decimal is greater: 485.760 or 485.670?",
+    "options": ["485.760", "485.670", "They are equal", "Cannot be determined"],
+    "answer": "485.760",
+    "explanation": "Comparing the tenths place, 7 is greater than 6, making 485.760 the larger decimal.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is the sum of the interior angles of any triangle?",
+    "options": ["90°", "360°", "180°", "270°"],
+    "answer": "180°",
+    "explanation": "It is a fundamental geometric fact that the sum of the three angles in any triangle always equals 180°.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "If 3 kg of grapes cost ₹ 24, what is the cost of 7 kg of the same grapes?",
+    "options": ["₹ 8", "₹ 56", "₹ 36", "₹ 48"],
+    "answer": "₹ 56",
+    "explanation": "First find the cost of 1 kg: 24 / 3 = ₹ 8. Then multiply by 7 kg: 8 × 7 = ₹ 56.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "If a position 18 m above sea level is denoted as +18 m, how would you denote a position 8 m below sea level?",
+    "options": ["+8 m", "8 m", "-8 m", "0 m"],
+    "answer": "-8 m",
+    "explanation": "Positions below a reference point (like sea level) are traditionally represented using negative numbers.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "An angle that measures more than 0° but less than 90° is called:",
+    "options": ["Obtuse angle", "Right angle", "Acute angle", "Straight angle"],
+    "answer": "Acute angle",
+    "explanation": "Acute means 'sharp'. Any angle smaller than a right angle (90°) is classified as acute.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Solve for 'm' in the equation: 3m - 7 = 11.",
+    "options": ["4", "6", "18", "3"],
+    "answer": "6",
+    "explanation": "Add 7 to both sides: 3m = 18. Divide by 3: m = 6.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "In the number 8,962,321, what is the difference in place value between the digits 8 and 6?",
+    "options": ["7,940,000", "7,994,000", "2", "8,000,000"],
+    "answer": "7,940,000",
+    "explanation": "The place value of 8 is 8,000,000. The place value of 6 is 60,000. 8,000,000 - 60,000 = 7,940,000.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "If a line has four marked points P, Q, R, and S in order, how many different line segments can be named?",
+    "options": ["3", "4", "6", "8"],
+    "answer": "6",
+    "explanation": "The segments are PQ, PR, PS, QR, QS, and RS.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "In a class of 35 students, 20 are girls and 15 are boys. What is the ratio of girls to boys?",
+    "options": ["3 : 4", "4 : 3", "7 : 3", "20 : 35"],
+    "answer": "4 : 3",
+    "explanation": "The ratio is 20 : 15. Dividing both by 5 gives the simplest form, 4 : 3.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Round off the decimal 87.4592 to the nearest whole number.",
+    "options": ["88", "87.5", "87", "87.4"],
+    "answer": "87",
+    "explanation": "Since the digit in the tenths place (4) is less than 5, we round down to 87.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which algebraic expression represents 'x more than fifteen'?",
+    "options": ["15 - x", "x - 15", "x + 15", "15x"],
+    "answer": "x + 15",
+    "explanation": "'More than' indicates addition to a base value. So, 15 + x or x + 15 is correct.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "There are 24 hours in a day. What fraction of a day does 11 hours represent?",
+    "options": ["1/2", "11/24", "11/12", "24/11"],
+    "answer": "11/24",
+    "explanation": "A fraction is part over whole. Here, 11 is the part and 24 is the whole day.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which property is shown by: 2 × (3 + 4) = (2 × 3) + (2 × 4)?",
+    "options": ["Associative", "Commutative", "Distributive", "Closure"],
+    "answer": "Distributive",
+    "explanation": "This shows the Distributive Property of Multiplication over Addition, where the outer number is distributed to those inside the brackets.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which of the following shapes is a quadrilateral?",
+    "options": ["Triangle", "Pentagon", "Rectangle", "Hexagon"],
+    "answer": "Rectangle",
+    "explanation": "A quadrilateral is any closed figure with exactly four sides. A rectangle has four sides.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is the successor of the greatest 6-digit number?",
+    "options": ["999,999", "1,000,000", "100,000", "999,998"],
+    "answer": "1,000,000",
+    "explanation": "The greatest 6-digit number is 999,999. Adding 1 to it gives 1,000,000 (the smallest 7-digit number).",
+    "difficulty": "easy"
+  }
+    ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor((i + 1) * Math.random());
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    document.getElementById("startBtn").onclick = startQuiz;
+    document.getElementById("endQuizBtn").onclick = endQuiz;
+    document.getElementById("restart").onclick = restartQuiz;
+
+    function startQuiz() {
+      document.getElementById("startBtn").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "block";
+      document.getElementById("timerDisplay").style.display = "block";
+
+      renderQuiz(questionsData);
+    }
+
+    function endQuiz() {
+      clearInterval(timerInterval);
+
+      document.getElementById("quiz").innerHTML = "";
+      document.getElementById("score").innerHTML = "";
+      document.getElementById("timerDisplay").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "none";
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("startBtn").style.display = "block";
+    }
+
+    function restartQuiz() {
+      renderQuiz(questionsData);
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("score").innerHTML = "";
+    }
+
+    function renderQuiz(questions) {
+      score = 0;
+      answered = 0;
+
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = "";
+
+      quizStartTime = Date.now();
+      startGlobalTimer();
+
+      questions = shuffle([...questions]);
+
+      questions.forEach((q, index) => {
+        const container = document.createElement("div");
+        container.className = "question";
+
+        const questionText = document.createElement("p");
+        const badge = `<span class="difficulty-badge ${q.difficulty}">${q.difficulty.toUpperCase()}</span>`;
+        questionText.innerHTML = `${index + 1}. ${q.text} ${badge}`;
+        container.appendChild(questionText);
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "options";
+
+        const shuffledOptions = shuffle([...q.options]);
+
+        shuffledOptions.forEach(opt => {
+          const btn = document.createElement("button");
+          btn.textContent = opt;
+
+          btn.onclick = () => {
+            lockQuestion(container, q, opt, btn);
+          };
+
+          optionsDiv.appendChild(btn);
+        });
+
+        container.appendChild(optionsDiv);
+        quizDiv.appendChild(container);
+      });
+    }
+
+    function startGlobalTimer() {
+      clearInterval(timerInterval);
+
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - quizStartTime) / 1000);
+
+        const hrs = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+        const secs = String(elapsed % 60).padStart(2, '0');
+
+        document.getElementById("timerDisplay").textContent =
+          `⏳ Time: ${hrs}:${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function lockQuestion(container, question, selected, selectedBtn) {
+      if (container.dataset.answered) return;
+      container.dataset.answered = true;
+
+      const buttons = container.querySelectorAll("button");
+
+      selectedBtn.style.background = "#007bff";
+      selectedBtn.style.color = "white";
+
+      buttons.forEach(btn => btn.disabled = true);
+
+      const result = document.createElement("p");
+      result.className = "result";
+
+      if (selected === question.answer) {
+        result.textContent = `✅ Correct!`;
+        result.style.color = "green";
+        score++;
+      } else {
+        result.textContent = `❌ Incorrect.`;
+        result.style.color = "red";
+      }
+
+      buttons.forEach(btn => {
+        if (btn.textContent === question.answer) {
+          btn.style.background = "#28a745";
+          btn.style.color = "white";
+        }
+      });
+
+      const explanation = document.createElement("p");
+      explanation.innerHTML = `<strong>Correct Answer:</strong> ${question.answer}<br>
+                               <strong>Explanation:</strong> ${question.explanation}`;
+
+      container.appendChild(result);
+      container.appendChild(explanation);
+
+      answered++;
+
+      if (answered === questionsData.length) {
+        clearInterval(timerInterval);
+
+        const totalTime = Math.floor((Date.now() - quizStartTime) / 1000);
+        const hrs = String(Math.floor(totalTime / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((totalTime % 3600) / 60)).padStart(2, '0');
+        const secs = String(totalTime % 60).padStart(2, '0');
+
+        document.getElementById("score").textContent =
+          `Final Score: ${score} / ${questionsData.length}  
+           Total Time Taken: ${hrs}:${mins}:${secs}`;
+
+        document.getElementById("restart").style.display = "block";
+      }
+    }
+  </script>
+
+</body>
+</html>

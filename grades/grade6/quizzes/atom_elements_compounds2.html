@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Science Quiz - Reflectt-On</title>
+
+  <style>
+    body {
+      <a href="/" class="logo-watermark" title="Home">
+    <img src="images/logo.png" alt="Logo Watermark"></a>
+	
+	font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      padding: 20px;
+      margin: 0;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 400px;
+      background-image: url('YOUR_LOGO_PATH_HERE');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.05;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header-logo img {
+      max-width: 50px;
+      height: auto;
+    }
+
+    h1 {
+      color: #2e8b57;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #555;
+      font-size: 14px;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+
+    #timerDisplay {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #d9534f;
+      margin: 15px 0;
+      display: none;
+    }
+
+    #startBtn, #endQuizBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 25px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #startBtn:hover, #endQuizBtn:hover {
+      background: #246b45;
+    }
+
+    .question {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .difficulty-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
+    .easy { background: #d4edda; color: #155724; }
+    .medium { background: #fff3cd; color: #856404; }
+    .hard { background: #f8d7da; color: #721c24; }
+    .numerical { background: #d1ecf1; color: #0c5460; }
+
+    .options button {
+      width: 100%;
+      margin: 6px 0;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .options button:disabled {
+      background: #e0e0e0;
+      cursor: not-allowed;
+    }
+
+    .result {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #score {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+      color: #2e8b57;
+    }
+
+    #restart {
+      display: none;
+      margin: 30px auto;
+      padding: 12px 20px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 200px;
+    }
+
+    #restart:hover {
+      background: #246b45;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 10px; }
+      .options button { font-size: 15px; padding: 10px; }
+      .header-logo img { max-width: 200px; }
+      body::before { width: 250px; height: 250px; }
+    }
+.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    	.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="logo-watermark" title="Home">
+        <img src="images/logo.png" alt="Logo Watermark">
+    </a>
+
+<body>
+
+  <div class="header-logo">
+    <img src="images/logo.png" alt="Exam Prep Logo">
+  </div>
+
+  <h1>Science Quiz - Chemistry Atoms, Elements & Compounds</h1>
+  <p class="subtitle">IIT JEE Foundation - Grade 6</p>
+
+  <button id="startBtn">Start Quiz</button>
+
+  <div id="timerDisplay">⏳ Time: 00:00:00</div>
+
+  <button id="endQuizBtn" style="display:none;">End Quiz</button>
+
+  <div id="quiz"></div>
+  <div id="score"></div>
+
+  <button id="restart" style="display:none;">Restart Quiz</button>
+
+
+  <script>
+    let score = 0;
+    let answered = 0;
+    let quizStartTime = 0;
+    let timerInterval;
+
+    const questionsData = [
+       {
+    "text": "If an atom has 6 protons, what element is it?",
+    "options": ["Oxygen", "Carbon", "Nitrogen", "Boron"],
+    "answer": "Carbon",
+    "explanation": "The number of protons determines the element's identity. An atom with 6 protons is carbon (C), which has an atomic number of 6.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "What happens to the properties of sodium and chlorine when they form table salt (NaCl)?",
+    "options": ["They remain the same", "They completely change", "Only sodium's properties change", "Only chlorine's properties change"],
+    "answer": "They completely change",
+    "explanation": "Sodium is a reactive metal and chlorine is a toxic gas, but when combined as NaCl, they form a safe, edible compound with completely different properties.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which particle determines what element an atom is?",
+    "options": ["Electron", "Proton", "Neutron", "Nucleus"],
+    "answer": "Proton",
+    "explanation": "The number of protons in an atom's nucleus determines which element it is. All atoms of the same element have the same number of protons.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "If a molecule has the formula H2SO4, how many hydrogen atoms does it contain?",
+    "options": ["1 atom", "2 atoms", "3 atoms", "4 atoms"],
+    "answer": "2 atoms",
+    "explanation": "The subscript 2 after H means there are 2 hydrogen atoms in the molecule H2SO4 (sulfuric acid).",
+    "difficulty": "medium"
+  },
+  {
+    "text": "What is the main difference between a mixture and a compound?",
+    "options": ["Mixtures are always liquids", "Compounds can be separated physically", "Mixtures can be separated physically", "Compounds are always gases"],
+    "answer": "Mixtures can be separated physically",
+    "explanation": "Mixtures can be separated by physical methods like filtering or evaporation, while compounds require chemical reactions to separate their elements.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which group of elements on the periodic table rarely forms compounds?",
+    "options": ["Metals", "Noble gases", "Halogens", "Alkali metals"],
+    "answer": "Noble gases",
+    "explanation": "Noble gases (like helium, neon, argon) rarely form compounds because they already have full outer electron shells and are very stable.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "When salt dissolves in water, is this a physical or chemical change?",
+    "options": ["Physical change", "Chemical change", "Both", "Neither"],
+    "answer": "Physical change",
+    "explanation": "Dissolving salt in water is a physical change because the salt molecules remain the same; they just spread out in the water and can be recovered by evaporation.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "If an element has 8 protons and 10 neutrons, what is its mass number?",
+    "options": ["8", "10", "18", "2"],
+    "answer": "18",
+    "explanation": "Mass number = protons + neutrons = 8 + 10 = 18. This is an isotope of oxygen (O-18).",
+    "difficulty": "hard"
+  },
+  {
+    "text": "What type of bond forms when atoms share electrons?",
+    "options": ["Ionic bond", "Covalent bond", "Metallic bond", "Magnetic bond"],
+    "answer": "Covalent bond",
+    "explanation": "Covalent bonds form when atoms share electrons. For example, in a water molecule, oxygen shares electrons with hydrogen atoms.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "An atom has 11 protons and 11 electrons. What is its electrical charge?",
+    "options": ["+11", "-11", "0", "+1"],
+    "answer": "0",
+    "explanation": "When an atom has equal numbers of protons (+) and electrons (-), the charges balance out, making it electrically neutral (charge of 0).",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which is true about metals on the periodic table?",
+    "options": ["They are found on the right side", "They are poor conductors", "They are found on the left side", "They are all gases"],
+    "answer": "They are found on the left side",
+    "explanation": "Metals are located on the left side and center of the periodic table. Nonmetals are on the right side.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "The formula for carbon dioxide is CO2. How many oxygen atoms are in one molecule?",
+    "options": ["1 atom", "2 atoms", "3 atoms", "4 atoms"],
+    "answer": "2 atoms",
+    "explanation": "The subscript 2 after O in CO2 means there are 2 oxygen atoms bonded to 1 carbon atom.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "When iron rusts, what type of change occurs?",
+    "options": ["Physical change", "Chemical change", "No change", "Temperature change"],
+    "answer": "Chemical change",
+    "explanation": "Rusting is a chemical change because iron combines with oxygen to form a new substance (iron oxide) with different properties.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "If methane has the formula CH4, how many total atoms are in one molecule?",
+    "options": ["2 atoms", "4 atoms", "5 atoms", "6 atoms"],
+    "answer": "5 atoms",
+    "explanation": "CH4 contains 1 carbon atom and 4 hydrogen atoms, totaling 5 atoms per molecule.",
+    "difficulty": "hard"
+  },
+  {
+    "text": "Which element is found in all organic compounds?",
+    "options": ["Oxygen", "Nitrogen", "Carbon", "Hydrogen"],
+    "answer": "Carbon",
+    "explanation": "Carbon is the essential element in all organic compounds. Organic chemistry is the study of carbon-containing compounds.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "What happens to atoms during a chemical reaction?",
+    "options": ["They are destroyed", "They are created", "They are rearranged", "They disappear"],
+    "answer": "They are rearranged",
+    "explanation": "During chemical reactions, atoms are rearranged to form new substances, but no atoms are created or destroyed. The same atoms are just bonded differently.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "How many electrons can the first electron shell hold?",
+    "options": ["2 electrons", "8 electrons", "18 electrons", "32 electrons"],
+    "answer": "2 electrons",
+    "explanation": "The first (innermost) electron shell of an atom can hold a maximum of 2 electrons. The second shell can hold 8.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which process separates a mixture of sand and water?",
+    "options": ["Melting", "Burning", "Filtration", "Freezing"],
+    "answer": "Filtration",
+    "explanation": "Filtration is a physical process that separates solids from liquids by passing the mixture through a filter that traps the solid particles.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Elements in the same row (period) of the periodic table have the same number of:",
+    "options": ["Protons", "Neutrons", "Electron shells", "Electrons"],
+    "answer": "Electron shells",
+    "explanation": "Elements in the same period (horizontal row) have the same number of electron shells. Elements in the same group (column) have similar properties.",
+    "difficulty": "hard"
+  },
+  {
+    "text": "What do the metals copper, silver, and gold have in common?",
+    "options": ["They are all magnetic", "They are good conductors", "They react with water", "They are all radioactive"],
+    "answer": "They are good conductors",
+    "explanation": "Copper, silver, and gold are all excellent conductors of electricity and heat, which is why they're used in electrical wiring and electronics.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which gas makes up most of Earth's atmosphere?",
+    "options": ["Oxygen (O2)", "Carbon dioxide (CO2)", "Nitrogen (N2)", "Hydrogen (H2)"],
+    "answer": "Nitrogen (N2)",
+    "explanation": "Nitrogen gas (N2) makes up about 78% of Earth's atmosphere. Oxygen makes up about 21%, and other gases make up the remaining 1%.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "If magnesium has 12 protons and 12 neutrons, what is its mass number?",
+    "options": ["12", "24", "0", "6"],
+    "answer": "24",
+    "explanation": "Mass number = protons + neutrons = 12 + 12 = 24. This is the most common isotope of magnesium (Mg-24).",
+    "difficulty": "hard"
+  },
+  {
+    "text": "Why do atoms form bonds with other atoms?",
+    "options": ["To become heavier", "To become stable", "To gain protons", "To lose neutrons"],
+    "answer": "To become stable",
+    "explanation": "Atoms form bonds to become more stable by filling their outer electron shells, similar to how noble gases naturally have full outer shells.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which state of matter has atoms that are most tightly packed together?",
+    "options": ["Solid", "Liquid", "Gas", "Plasma"],
+    "answer": "Solid",
+    "explanation": "In solids, atoms or molecules are packed tightly together in fixed positions. In liquids they're close but can move, and in gases they're far apart.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Baking soda (NaHCO3) contains how many different elements?",
+    "options": ["2 elements", "3 elements", "4 elements", "5 elements"],
+    "answer": "4 elements",
+    "explanation": "NaHCO3 contains 4 different elements: sodium (Na), hydrogen (H), carbon (C), and oxygen (O).",
+    "difficulty": "hard"
+  }
+    ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor((i + 1) * Math.random());
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    document.getElementById("startBtn").onclick = startQuiz;
+    document.getElementById("endQuizBtn").onclick = endQuiz;
+    document.getElementById("restart").onclick = restartQuiz;
+
+    function startQuiz() {
+      document.getElementById("startBtn").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "block";
+      document.getElementById("timerDisplay").style.display = "block";
+
+      renderQuiz(questionsData);
+    }
+
+    function endQuiz() {
+      clearInterval(timerInterval);
+
+      document.getElementById("quiz").innerHTML = "";
+      document.getElementById("score").innerHTML = "";
+      document.getElementById("timerDisplay").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "none";
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("startBtn").style.display = "block";
+    }
+
+    function restartQuiz() {
+      renderQuiz(questionsData);
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("score").innerHTML = "";
+    }
+
+    function renderQuiz(questions) {
+      score = 0;
+      answered = 0;
+
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = "";
+
+      quizStartTime = Date.now();
+      startGlobalTimer();
+
+      questions = shuffle([...questions]);
+
+      questions.forEach((q, index) => {
+        const container = document.createElement("div");
+        container.className = "question";
+
+        const questionText = document.createElement("p");
+        const badge = `<span class="difficulty-badge ${q.difficulty}">${q.difficulty.toUpperCase()}</span>`;
+        questionText.innerHTML = `${index + 1}. ${q.text} ${badge}`;
+        container.appendChild(questionText);
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "options";
+
+        const shuffledOptions = shuffle([...q.options]);
+
+        shuffledOptions.forEach(opt => {
+          const btn = document.createElement("button");
+          btn.textContent = opt;
+
+          btn.onclick = () => {
+            lockQuestion(container, q, opt, btn);
+          };
+
+          optionsDiv.appendChild(btn);
+        });
+
+        container.appendChild(optionsDiv);
+        quizDiv.appendChild(container);
+      });
+    }
+
+    function startGlobalTimer() {
+      clearInterval(timerInterval);
+
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - quizStartTime) / 1000);
+
+        const hrs = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+        const secs = String(elapsed % 60).padStart(2, '0');
+
+        document.getElementById("timerDisplay").textContent =
+          `⏳ Time: ${hrs}:${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function lockQuestion(container, question, selected, selectedBtn) {
+      if (container.dataset.answered) return;
+      container.dataset.answered = true;
+
+      const buttons = container.querySelectorAll("button");
+
+      selectedBtn.style.background = "#007bff";
+      selectedBtn.style.color = "white";
+
+      buttons.forEach(btn => btn.disabled = true);
+
+      const result = document.createElement("p");
+      result.className = "result";
+
+      if (selected === question.answer) {
+        result.textContent = `✅ Correct!`;
+        result.style.color = "green";
+        score++;
+      } else {
+        result.textContent = `❌ Incorrect.`;
+        result.style.color = "red";
+      }
+
+      buttons.forEach(btn => {
+        if (btn.textContent === question.answer) {
+          btn.style.background = "#28a745";
+          btn.style.color = "white";
+        }
+      });
+
+      const explanation = document.createElement("p");
+      explanation.innerHTML = `<strong>Correct Answer:</strong> ${question.answer}<br>
+                               <strong>Explanation:</strong> ${question.explanation}`;
+
+      container.appendChild(result);
+      container.appendChild(explanation);
+
+      answered++;
+
+      if (answered === questionsData.length) {
+        clearInterval(timerInterval);
+
+        const totalTime = Math.floor((Date.now() - quizStartTime) / 1000);
+        const hrs = String(Math.floor(totalTime / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((totalTime % 3600) / 60)).padStart(2, '0');
+        const secs = String(totalTime % 60).padStart(2, '0');
+
+        document.getElementById("score").textContent =
+          `Final Score: ${score} / ${questionsData.length}  
+           Total Time Taken: ${hrs}:${mins}:${secs}`;
+
+        document.getElementById("restart").style.display = "block";
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Science Quiz - Reflectt-On</title>
+
+  <style>
+    body {
+      <a href="/" class="logo-watermark" title="Home">
+    <img src="images/logo.png" alt="Logo Watermark"></a>
+	
+	font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      padding: 20px;
+      margin: 0;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 400px;
+      background-image: url('YOUR_LOGO_PATH_HERE');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.05;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header-logo img {
+      max-width: 50px;
+      height: auto;
+    }
+
+    h1 {
+      color: #2e8b57;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #555;
+      font-size: 14px;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+
+    #timerDisplay {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #d9534f;
+      margin: 15px 0;
+      display: none;
+    }
+
+    #startBtn, #endQuizBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 25px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #startBtn:hover, #endQuizBtn:hover {
+      background: #246b45;
+    }
+
+    .question {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .difficulty-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
+    .easy { background: #d4edda; color: #155724; }
+    .medium { background: #fff3cd; color: #856404; }
+    .hard { background: #f8d7da; color: #721c24; }
+    .numerical { background: #d1ecf1; color: #0c5460; }
+
+    .options button {
+      width: 100%;
+      margin: 6px 0;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .options button:disabled {
+      background: #e0e0e0;
+      cursor: not-allowed;
+    }
+
+    .result {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #score {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+      color: #2e8b57;
+    }
+
+    #restart {
+      display: none;
+      margin: 30px auto;
+      padding: 12px 20px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 200px;
+    }
+
+    #restart:hover {
+      background: #246b45;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 10px; }
+      .options button { font-size: 15px; padding: 10px; }
+      .header-logo img { max-width: 200px; }
+      body::before { width: 250px; height: 250px; }
+    }
+.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    	.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="logo-watermark" title="Home">
+        <img src="images/logo.png" alt="Logo Watermark">
+    </a>
+
+<body>
+
+  <div class="header-logo">
+    <img src="images/logo.png" alt="Exam Prep Logo">
+  </div>
+
+  <h1>Science Quiz - Physics- Light </h1>
+  <p class="subtitle">IIT JEE Foundation - Grade 6</p>
+
+  <button id="startBtn">Start Quiz</button>
+
+  <div id="timerDisplay">⏳ Time: 00:00:00</div>
+
+  <button id="endQuizBtn" style="display:none;">End Quiz</button>
+
+  <div id="quiz"></div>
+  <div id="score"></div>
+
+  <button id="restart" style="display:none;">Restart Quiz</button>
+
+
+  <script>
+    let score = 0;
+    let answered = 0;
+    let quizStartTime = 0;
+    let timerInterval;
+
+    const questionsData = [
+     {
+    "text": "Light travels in which type of path?",
+    "options": ["Curved lines", "Straight lines", "Zigzag lines", "Circular paths"],
+    "answer": "Straight lines",
+    "explanation": "Light travels in straight lines, which is called rectilinear propagation of light. This is why we see sharp shadows.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which of the following is a luminous object?",
+    "options": ["Moon", "Mirror", "Sun", "Book"],
+    "answer": "Sun",
+    "explanation": "Luminous objects emit their own light. The Sun produces its own light through nuclear fusion, while the Moon only reflects sunlight.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "A shadow is formed when light is:",
+    "options": ["Reflected by an object", "Blocked by an opaque object", "Refracted by an object", "Absorbed completely"],
+    "answer": "Blocked by an opaque object",
+    "explanation": "Shadows form when an opaque object blocks the path of light, preventing it from reaching a surface.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which material allows light to pass through it completely?",
+    "options": ["Opaque", "Translucent", "Transparent", "Reflective"],
+    "answer": "Transparent",
+    "explanation": "Transparent materials like clear glass and water allow light to pass through completely, making objects visible through them.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "The image formed by a plane mirror is:",
+    "options": ["Real and inverted", "Virtual and erect", "Real and erect", "Virtual and inverted"],
+    "answer": "Virtual and erect",
+    "explanation": "A plane mirror forms a virtual image that is upright (erect) and appears to be behind the mirror at the same distance as the object is in front.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "What happens when light falls on a smooth polished surface?",
+    "options": ["Absorption", "Regular reflection", "Diffuse reflection", "Refraction"],
+    "answer": "Regular reflection",
+    "explanation": "Smooth polished surfaces like mirrors produce regular reflection where parallel rays of light reflect in a single direction.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which of these is a non-luminous object?",
+    "options": ["Candle flame", "Electric bulb", "Torch", "Wall"],
+    "answer": "Wall",
+    "explanation": "Non-luminous objects do not emit their own light. A wall only becomes visible when light from other sources falls on it and reflects.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "The splitting of white light into seven colors is called:",
+    "options": ["Reflection", "Dispersion", "Absorption", "Diffraction"],
+    "answer": "Dispersion",
+    "explanation": "Dispersion is the phenomenon where white light separates into its constituent colors (VIBGYOR) when passing through a prism.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "A pinhole camera forms an image that is:",
+    "options": ["Erect and enlarged", "Inverted and smaller", "Erect and smaller", "Inverted and enlarged"],
+    "answer": "Inverted and smaller",
+    "explanation": "A pinhole camera works on the principle that light travels in straight lines, forming an inverted and diminished image on the screen.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which surface will produce diffuse reflection?",
+    "options": ["Plane mirror", "Polished metal", "Rough wall", "Still water"],
+    "answer": "Rough wall",
+    "explanation": "Rough surfaces scatter light in different directions, causing diffuse reflection, which allows us to see most objects around us.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "In a plane mirror, the distance of the object from the mirror is:",
+    "options": ["Greater than the image distance", "Less than the image distance", "Equal to the image distance", "Twice the image distance"],
+    "answer": "Equal to the image distance",
+    "explanation": "In a plane mirror, the image is formed at the same distance behind the mirror as the object is in front of it.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Butter paper is an example of a:",
+    "options": ["Transparent material", "Translucent material", "Opaque material", "Luminous material"],
+    "answer": "Translucent material",
+    "explanation": "Translucent materials like butter paper allow some light to pass through but scatter it, making objects appear blurry through them.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "The phenomenon of light bouncing back from a surface is called:",
+    "options": ["Refraction", "Reflection", "Dispersion", "Absorption"],
+    "answer": "Reflection",
+    "explanation": "Reflection occurs when light rays bounce back from a surface instead of being absorbed or passing through.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "How many colors are there in the spectrum of white light?",
+    "options": ["Five", "Six", "Seven", "Eight"],
+    "answer": "Seven",
+    "explanation": "White light consists of seven colors: Violet, Indigo, Blue, Green, Yellow, Orange, and Red (VIBGYOR).",
+    "difficulty": "easy"
+  },
+  {
+    "text": "The size of a shadow depends on:",
+    "options": ["Color of the object", "Distance between object and light source", "Weight of the object", "Temperature of the object"],
+    "answer": "Distance between object and light source",
+    "explanation": "The size of a shadow varies with the distance between the object and the light source, and between the object and the screen.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which of the following can be used to obtain a spectrum?",
+    "options": ["Plane mirror", "Glass prism", "Concave mirror", "Opaque screen"],
+    "answer": "Glass prism",
+    "explanation": "A glass prism can disperse white light into its constituent colors, forming a spectrum due to different angles of refraction for different colors.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "The image in a plane mirror is:",
+    "options": ["Laterally inverted", "Vertically inverted", "Both laterally and vertically inverted", "Not inverted at all"],
+    "answer": "Laterally inverted",
+    "explanation": "Lateral inversion means the left side of an object appears as the right side in the mirror image and vice versa.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "A cardboard piece is an example of:",
+    "options": ["Transparent object", "Translucent object", "Opaque object", "Luminous object"],
+    "answer": "Opaque object",
+    "explanation": "Opaque objects like cardboard do not allow any light to pass through them, forming complete shadows.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is the angle of reflection if the angle of incidence is 30°?",
+    "options": ["30°", "60°", "90°", "15°"],
+    "answer": "30°",
+    "explanation": "According to the law of reflection, the angle of incidence is always equal to the angle of reflection.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "A rainbow is formed due to:",
+    "options": ["Reflection only", "Refraction only", "Dispersion and reflection", "Absorption of light"],
+    "answer": "Dispersion and reflection",
+    "explanation": "Rainbows form when sunlight is dispersed into colors by water droplets, combined with internal reflection within the droplets.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "A solar eclipse occurs when:",
+    "options": ["Earth comes between Sun and Moon", "Moon comes between Sun and Earth", "Sun comes between Earth and Moon", "All three are in a line horizontally"],
+    "answer": "Moon comes between Sun and Earth",
+    "explanation": "A solar eclipse happens when the Moon blocks sunlight by coming between the Sun and Earth, casting a shadow on Earth.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "If an object is placed 5 cm in front of a plane mirror, at what distance from the mirror will the image be formed?",
+    "options": ["2.5 cm", "5 cm", "10 cm", "15 cm"],
+    "answer": "5 cm",
+    "explanation": "In a plane mirror, the image is formed at the same distance behind the mirror as the object is in front. So if the object is 5 cm away, the image is also 5 cm behind the mirror.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "A light ray strikes a mirror at an angle of 45° to the normal. What is the angle between the incident ray and the reflected ray?",
+    "options": ["45°", "90°", "135°", "180°"],
+    "answer": "90°",
+    "explanation": "The angle of incidence equals the angle of reflection (both 45°). The angle between incident and reflected rays = 45° + 45° = 90°.",
+    "difficulty": "hard"
+  },
+  {
+    "text": "A person stands 2 meters away from a plane mirror. What is the total distance between the person and their image?",
+    "options": ["2 meters", "4 meters", "6 meters", "8 meters"],
+    "answer": "4 meters",
+    "explanation": "The person is 2 m in front of the mirror, and the image is 2 m behind the mirror. Total distance = 2 m + 2 m = 4 meters.",
+    "difficulty": "hard"
+  },
+  {
+    "text": "If a light ray makes an angle of 25° with a plane mirror surface, what is the angle of incidence?",
+    "options": ["25°", "65°", "50°", "90°"],
+    "answer": "65°",
+    "explanation": "The angle of incidence is measured from the normal (perpendicular to the surface), not from the surface itself. Angle of incidence = 90° - 25° = 65°.",
+    "difficulty": "hard"
+  }
+    ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor((i + 1) * Math.random());
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    document.getElementById("startBtn").onclick = startQuiz;
+    document.getElementById("endQuizBtn").onclick = endQuiz;
+    document.getElementById("restart").onclick = restartQuiz;
+
+    function startQuiz() {
+      document.getElementById("startBtn").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "block";
+      document.getElementById("timerDisplay").style.display = "block";
+
+      renderQuiz(questionsData);
+    }
+
+    function endQuiz() {
+      clearInterval(timerInterval);
+
+      document.getElementById("quiz").innerHTML = "";
+      document.getElementById("score").innerHTML = "";
+      document.getElementById("timerDisplay").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "none";
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("startBtn").style.display = "block";
+    }
+
+    function restartQuiz() {
+      renderQuiz(questionsData);
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("score").innerHTML = "";
+    }
+
+    function renderQuiz(questions) {
+      score = 0;
+      answered = 0;
+
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = "";
+
+      quizStartTime = Date.now();
+      startGlobalTimer();
+
+      questions = shuffle([...questions]);
+
+      questions.forEach((q, index) => {
+        const container = document.createElement("div");
+        container.className = "question";
+
+        const questionText = document.createElement("p");
+        const badge = `<span class="difficulty-badge ${q.difficulty}">${q.difficulty.toUpperCase()}</span>`;
+        questionText.innerHTML = `${index + 1}. ${q.text} ${badge}`;
+        container.appendChild(questionText);
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "options";
+
+        const shuffledOptions = shuffle([...q.options]);
+
+        shuffledOptions.forEach(opt => {
+          const btn = document.createElement("button");
+          btn.textContent = opt;
+
+          btn.onclick = () => {
+            lockQuestion(container, q, opt, btn);
+          };
+
+          optionsDiv.appendChild(btn);
+        });
+
+        container.appendChild(optionsDiv);
+        quizDiv.appendChild(container);
+      });
+    }
+
+    function startGlobalTimer() {
+      clearInterval(timerInterval);
+
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - quizStartTime) / 1000);
+
+        const hrs = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+        const secs = String(elapsed % 60).padStart(2, '0');
+
+        document.getElementById("timerDisplay").textContent =
+          `⏳ Time: ${hrs}:${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function lockQuestion(container, question, selected, selectedBtn) {
+      if (container.dataset.answered) return;
+      container.dataset.answered = true;
+
+      const buttons = container.querySelectorAll("button");
+
+      selectedBtn.style.background = "#007bff";
+      selectedBtn.style.color = "white";
+
+      buttons.forEach(btn => btn.disabled = true);
+
+      const result = document.createElement("p");
+      result.className = "result";
+
+      if (selected === question.answer) {
+        result.textContent = `✅ Correct!`;
+        result.style.color = "green";
+        score++;
+      } else {
+        result.textContent = `❌ Incorrect.`;
+        result.style.color = "red";
+      }
+
+      buttons.forEach(btn => {
+        if (btn.textContent === question.answer) {
+          btn.style.background = "#28a745";
+          btn.style.color = "white";
+        }
+      });
+
+      const explanation = document.createElement("p");
+      explanation.innerHTML = `<strong>Correct Answer:</strong> ${question.answer}<br>
+                               <strong>Explanation:</strong> ${question.explanation}`;
+
+      container.appendChild(result);
+      container.appendChild(explanation);
+
+      answered++;
+
+      if (answered === questionsData.length) {
+        clearInterval(timerInterval);
+
+        const totalTime = Math.floor((Date.now() - quizStartTime) / 1000);
+        const hrs = String(Math.floor(totalTime / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((totalTime % 3600) / 60)).padStart(2, '0');
+        const secs = String(totalTime % 60).padStart(2, '0');
+
+        document.getElementById("score").textContent =
+          `Final Score: ${score} / ${questionsData.length}  
+           Total Time Taken: ${hrs}:${mins}:${secs}`;
+
+        document.getElementById("restart").style.display = "block";
+      }
+    }
+  </script>
+
+</body>
+</html>

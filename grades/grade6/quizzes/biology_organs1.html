@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Science Quiz - Reflectt-On</title>
+
+  <style>
+    body {
+      <a href="/" class="logo-watermark" title="Home">
+    <img src="images/logo.png" alt="Logo Watermark"></a>
+	
+	font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      padding: 20px;
+      margin: 0;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 400px;
+      background-image: url('YOUR_LOGO_PATH_HERE');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.05;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header-logo img {
+      max-width: 50px;
+      height: auto;
+    }
+
+    h1 {
+      color: #2e8b57;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #555;
+      font-size: 14px;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+
+    #timerDisplay {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #d9534f;
+      margin: 15px 0;
+      display: none;
+    }
+
+    #startBtn, #endQuizBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 25px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #startBtn:hover, #endQuizBtn:hover {
+      background: #246b45;
+    }
+
+    .question {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .difficulty-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
+    .easy { background: #d4edda; color: #155724; }
+    .medium { background: #fff3cd; color: #856404; }
+    .hard { background: #f8d7da; color: #721c24; }
+    .numerical { background: #d1ecf1; color: #0c5460; }
+
+    .options button {
+      width: 100%;
+      margin: 6px 0;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .options button:disabled {
+      background: #e0e0e0;
+      cursor: not-allowed;
+    }
+
+    .result {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #score {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+      color: #2e8b57;
+    }
+
+    #restart {
+      display: none;
+      margin: 30px auto;
+      padding: 12px 20px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 200px;
+    }
+
+    #restart:hover {
+      background: #246b45;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 10px; }
+      .options button { font-size: 15px; padding: 10px; }
+      .header-logo img { max-width: 200px; }
+      body::before { width: 250px; height: 250px; }
+    }
+.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    	.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="logo-watermark" title="Home">
+        <img src="images/logo.png" alt="Logo Watermark">
+    </a>
+
+<body>
+
+  <div class="header-logo">
+    <img src="images/logo.png" alt="Exam Prep Logo">
+  </div>
+
+  <h1>Science Quiz - Biology- Organs </h1>
+  <p class="subtitle">IIT JEE Foundation - Grade 6</p>
+
+  <button id="startBtn">Start Quiz</button>
+
+  <div id="timerDisplay">⏳ Time: 00:00:00</div>
+
+  <button id="endQuizBtn" style="display:none;">End Quiz</button>
+
+  <div id="quiz"></div>
+  <div id="score"></div>
+
+  <button id="restart" style="display:none;">Restart Quiz</button>
+
+
+  <script>
+    let score = 0;
+    let answered = 0;
+    let quizStartTime = 0;
+    let timerInterval;
+
+    const questionsData = [
+           {
+    "text": "Which organ in the human body pumps blood to all parts of the body?",
+    "options": ["Lungs", "Heart", "Liver", "Kidneys"],
+    "answer": "Heart",
+    "explanation": "The heart is a muscular organ that pumps blood throughout the body, delivering oxygen and nutrients to all cells.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is the main function of the lungs?",
+    "options": ["To digest food", "To filter blood", "To exchange oxygen and carbon dioxide", "To produce hormones"],
+    "answer": "To exchange oxygen and carbon dioxide",
+    "explanation": "The lungs are responsible for gas exchange - taking in oxygen from the air we breathe and removing carbon dioxide from our blood.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which organ is responsible for filtering waste from the blood to produce urine?",
+    "options": ["Liver", "Stomach", "Kidneys", "Pancreas"],
+    "answer": "Kidneys",
+    "explanation": "The kidneys filter blood to remove waste products and excess water, which are then excreted as urine.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Where does digestion of food begin in the human body?",
+    "options": ["Stomach", "Mouth", "Small intestine", "Large intestine"],
+    "answer": "Mouth",
+    "explanation": "Digestion begins in the mouth where teeth break down food mechanically and saliva starts breaking down starches chemically.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which organ produces bile to help digest fats?",
+    "options": ["Pancreas", "Stomach", "Liver", "Gallbladder"],
+    "answer": "Liver",
+    "explanation": "The liver produces bile, which helps break down fats during digestion. Bile is stored in the gallbladder and released into the small intestine.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "What is the largest organ in the human body?",
+    "options": ["Liver", "Brain", "Skin", "Heart"],
+    "answer": "Skin",
+    "explanation": "The skin is the largest organ of the human body. It protects internal organs, regulates temperature, and provides sensation.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which part of the brain controls balance and coordination?",
+    "options": ["Cerebrum", "Cerebellum", "Medulla", "Hypothalamus"],
+    "answer": "Cerebellum",
+    "explanation": "The cerebellum, located at the back of the brain, is responsible for coordinating movement, balance, and posture.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "What is the function of red blood cells?",
+    "options": ["Fight infection", "Carry oxygen", "Clot blood", "Digest nutrients"],
+    "answer": "Carry oxygen",
+    "explanation": "Red blood cells contain hemoglobin, which binds to oxygen in the lungs and carries it to all parts of the body.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which organ stores bile produced by the liver?",
+    "options": ["Pancreas", "Gallbladder", "Spleen", "Appendix"],
+    "answer": "Gallbladder",
+    "explanation": "The gallbladder is a small organ that stores bile from the liver and releases it into the small intestine when needed for digestion.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "What are the tiny air sacs in the lungs called where gas exchange occurs?",
+    "options": ["Bronchi", "Alveoli", "Trachea", "Bronchioles"],
+    "answer": "Alveoli",
+    "explanation": "Alveoli are tiny air sacs in the lungs where oxygen passes into the blood and carbon dioxide is removed.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which blood vessels carry blood away from the heart?",
+    "options": ["Veins", "Arteries", "Capillaries", "Lymph vessels"],
+    "answer": "Arteries",
+    "explanation": "Arteries are blood vessels that carry oxygen-rich blood away from the heart to all parts of the body.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "What is the main function of white blood cells?",
+    "options": ["Carry oxygen", "Fight infections", "Clot blood", "Produce hormones"],
+    "answer": "Fight infections",
+    "explanation": "White blood cells are part of the immune system and help protect the body against infections and diseases.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which organ produces insulin to regulate blood sugar?",
+    "options": ["Liver", "Pancreas", "Thyroid", "Adrenal gland"],
+    "answer": "Pancreas",
+    "explanation": "The pancreas produces insulin, a hormone that helps control blood sugar levels by allowing cells to absorb glucose.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "What is the tube that connects the mouth to the stomach called?",
+    "options": ["Trachea", "Esophagus", "Pharynx", "Larynx"],
+    "answer": "Esophagus",
+    "explanation": "The esophagus is a muscular tube that pushes food from the mouth to the stomach through wave-like contractions called peristalsis.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which organ system includes bones and joints?",
+    "options": ["Muscular system", "Nervous system", "Skeletal system", "Circulatory system"],
+    "answer": "Skeletal system",
+    "explanation": "The skeletal system consists of bones, joints, and cartilage. It provides structure, protects organs, and allows movement.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is the strongest muscle in the human body based on its size?",
+    "options": ["Biceps", "Jaw muscle (Masseter)", "Calf muscle", "Thigh muscle"],
+    "answer": "Jaw muscle (Masseter)",
+    "explanation": "The masseter, or jaw muscle, is the strongest muscle in the body relative to its size. It is used for chewing and can exert tremendous force.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which part of the eye controls the amount of light entering it?",
+    "options": ["Retina", "Lens", "Iris", "Cornea"],
+    "answer": "Iris",
+    "explanation": "The iris is the colored part of the eye that controls the size of the pupil, regulating how much light enters the eye.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "What is the hardest substance in the human body?",
+    "options": ["Bone", "Tooth enamel", "Skull", "Fingernail"],
+    "answer": "Tooth enamel",
+    "explanation": "Tooth enamel is the hardest substance in the human body. It protects the teeth from wear, decay, and damage.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which organ is protected by the ribcage?",
+    "options": ["Stomach", "Kidneys", "Heart and lungs", "Liver only"],
+    "answer": "Heart and lungs",
+    "explanation": "The ribcage protects vital organs including the heart and lungs from injury. The liver is also partially protected by the lower ribs.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What type of joint is found in the shoulder and hip?",
+    "options": ["Hinge joint", "Ball and socket joint", "Pivot joint", "Fixed joint"],
+    "answer": "Ball and socket joint",
+    "explanation": "Ball and socket joints in the shoulder and hip allow movement in multiple directions, providing the greatest range of motion.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which sense organ is responsible for maintaining balance?",
+    "options": ["Eyes", "Ears", "Nose", "Tongue"],
+    "answer": "Ears",
+    "explanation": "The inner ear contains structures called semicircular canals that help maintain balance and sense body position.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "What is the longest bone in the human body?",
+    "options": ["Humerus (upper arm)", "Tibia (shin)", "Femur (thigh)", "Fibula (lower leg)"],
+    "answer": "Femur (thigh)",
+    "explanation": "The femur, or thigh bone, is the longest, strongest, and heaviest bone in the human body. It extends from the hip to the knee.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which part of the digestive system absorbs most of the water from undigested food?",
+    "options": ["Stomach", "Small intestine", "Large intestine", "Esophagus"],
+    "answer": "Large intestine",
+    "explanation": "The large intestine (colon) absorbs water and minerals from undigested food and forms solid waste (feces) for elimination.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "What is the windpipe that carries air to the lungs called?",
+    "options": ["Esophagus", "Bronchus", "Trachea", "Pharynx"],
+    "answer": "Trachea",
+    "explanation": "The trachea (windpipe) is a tube that carries air from the nose and mouth to the bronchi, which lead to the lungs.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which part of the blood helps in clotting to stop bleeding?",
+    "options": ["Red blood cells", "White blood cells", "Platelets", "Plasma"],
+    "answer": "Platelets",
+    "explanation": "Platelets are small cell fragments in blood that clump together at the site of an injury to form a clot and stop bleeding.",
+    "difficulty": "medium"
+  }
+    ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor((i + 1) * Math.random());
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    document.getElementById("startBtn").onclick = startQuiz;
+    document.getElementById("endQuizBtn").onclick = endQuiz;
+    document.getElementById("restart").onclick = restartQuiz;
+
+    function startQuiz() {
+      document.getElementById("startBtn").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "block";
+      document.getElementById("timerDisplay").style.display = "block";
+
+      renderQuiz(questionsData);
+    }
+
+    function endQuiz() {
+      clearInterval(timerInterval);
+
+      document.getElementById("quiz").innerHTML = "";
+      document.getElementById("score").innerHTML = "";
+      document.getElementById("timerDisplay").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "none";
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("startBtn").style.display = "block";
+    }
+
+    function restartQuiz() {
+      renderQuiz(questionsData);
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("score").innerHTML = "";
+    }
+
+    function renderQuiz(questions) {
+      score = 0;
+      answered = 0;
+
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = "";
+
+      quizStartTime = Date.now();
+      startGlobalTimer();
+
+      questions = shuffle([...questions]);
+
+      questions.forEach((q, index) => {
+        const container = document.createElement("div");
+        container.className = "question";
+
+        const questionText = document.createElement("p");
+        const badge = `<span class="difficulty-badge ${q.difficulty}">${q.difficulty.toUpperCase()}</span>`;
+        questionText.innerHTML = `${index + 1}. ${q.text} ${badge}`;
+        container.appendChild(questionText);
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "options";
+
+        const shuffledOptions = shuffle([...q.options]);
+
+        shuffledOptions.forEach(opt => {
+          const btn = document.createElement("button");
+          btn.textContent = opt;
+
+          btn.onclick = () => {
+            lockQuestion(container, q, opt, btn);
+          };
+
+          optionsDiv.appendChild(btn);
+        });
+
+        container.appendChild(optionsDiv);
+        quizDiv.appendChild(container);
+      });
+    }
+
+    function startGlobalTimer() {
+      clearInterval(timerInterval);
+
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - quizStartTime) / 1000);
+
+        const hrs = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+        const secs = String(elapsed % 60).padStart(2, '0');
+
+        document.getElementById("timerDisplay").textContent =
+          `⏳ Time: ${hrs}:${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function lockQuestion(container, question, selected, selectedBtn) {
+      if (container.dataset.answered) return;
+      container.dataset.answered = true;
+
+      const buttons = container.querySelectorAll("button");
+
+      selectedBtn.style.background = "#007bff";
+      selectedBtn.style.color = "white";
+
+      buttons.forEach(btn => btn.disabled = true);
+
+      const result = document.createElement("p");
+      result.className = "result";
+
+      if (selected === question.answer) {
+        result.textContent = `✅ Correct!`;
+        result.style.color = "green";
+        score++;
+      } else {
+        result.textContent = `❌ Incorrect.`;
+        result.style.color = "red";
+      }
+
+      buttons.forEach(btn => {
+        if (btn.textContent === question.answer) {
+          btn.style.background = "#28a745";
+          btn.style.color = "white";
+        }
+      });
+
+      const explanation = document.createElement("p");
+      explanation.innerHTML = `<strong>Correct Answer:</strong> ${question.answer}<br>
+                               <strong>Explanation:</strong> ${question.explanation}`;
+
+      container.appendChild(result);
+      container.appendChild(explanation);
+
+      answered++;
+
+      if (answered === questionsData.length) {
+        clearInterval(timerInterval);
+
+        const totalTime = Math.floor((Date.now() - quizStartTime) / 1000);
+        const hrs = String(Math.floor(totalTime / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((totalTime % 3600) / 60)).padStart(2, '0');
+        const secs = String(totalTime % 60).padStart(2, '0');
+
+        document.getElementById("score").textContent =
+          `Final Score: ${score} / ${questionsData.length}  
+           Total Time Taken: ${hrs}:${mins}:${secs}`;
+
+        document.getElementById("restart").style.display = "block";
+      }
+    }
+  </script>
+
+</body>
+</html>

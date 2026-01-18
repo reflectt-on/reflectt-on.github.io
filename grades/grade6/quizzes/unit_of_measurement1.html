@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Science Quiz - Reflectt-On</title>
+
+  <style>
+    body {
+      <a href="/" class="logo-watermark" title="Home">
+    <img src="images/logo.png" alt="Logo Watermark"></a>
+	
+	font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      padding: 20px;
+      margin: 0;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 400px;
+      background-image: url('YOUR_LOGO_PATH_HERE');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.05;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header-logo img {
+      max-width: 50px;
+      height: auto;
+    }
+
+    h1 {
+      color: #2e8b57;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #555;
+      font-size: 14px;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+
+    #timerDisplay {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #d9534f;
+      margin: 15px 0;
+      display: none;
+    }
+
+    #startBtn, #endQuizBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 25px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #startBtn:hover, #endQuizBtn:hover {
+      background: #246b45;
+    }
+
+    .question {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .difficulty-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
+    .easy { background: #d4edda; color: #155724; }
+    .medium { background: #fff3cd; color: #856404; }
+    .hard { background: #f8d7da; color: #721c24; }
+    .numerical { background: #d1ecf1; color: #0c5460; }
+
+    .options button {
+      width: 100%;
+      margin: 6px 0;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .options button:disabled {
+      background: #e0e0e0;
+      cursor: not-allowed;
+    }
+
+    .result {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #score {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+      color: #2e8b57;
+    }
+
+    #restart {
+      display: none;
+      margin: 30px auto;
+      padding: 12px 20px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 200px;
+    }
+
+    #restart:hover {
+      background: #246b45;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 10px; }
+      .options button { font-size: 15px; padding: 10px; }
+      .header-logo img { max-width: 200px; }
+      body::before { width: 250px; height: 250px; }
+    }
+.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    	.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="logo-watermark" title="Home">
+        <img src="images/logo.png" alt="Logo Watermark">
+    </a>
+
+<body>
+
+  <div class="header-logo">
+    <img src="images/logo.png" alt="Exam Prep Logo">
+  </div>
+
+  <h1>Science Quiz - Units of Measurement </h1>
+  <p class="subtitle">IIT JEE Foundation - Grade 6</p>
+
+  <button id="startBtn">Start Quiz</button>
+
+  <div id="timerDisplay">⏳ Time: 00:00:00</div>
+
+  <button id="endQuizBtn" style="display:none;">End Quiz</button>
+
+  <div id="quiz"></div>
+  <div id="score"></div>
+
+  <button id="restart" style="display:none;">Restart Quiz</button>
+
+
+  <script>
+    let score = 0;
+    let answered = 0;
+    let quizStartTime = 0;
+    let timerInterval;
+
+    const questionsData = [
+      {
+    "text": "What is the SI unit of length?",
+    "options": ["Meter", "Centimeter", "Kilometer", "Millimeter"],
+    "answer": "Meter",
+    "explanation": "The meter (m) is the standard SI (International System of Units) unit for measuring length. Other units like centimeter and kilometer are derived from the meter.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which instrument is used to measure mass?",
+    "options": ["Thermometer", "Beam balance", "Stopwatch", "Measuring cylinder"],
+    "answer": "Beam balance",
+    "explanation": "A beam balance is used to measure the mass of an object by comparing it with known standard masses.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "How many centimeters are there in 1 meter?",
+    "options": ["10", "100", "1000", "1"],
+    "answer": "100",
+    "explanation": "1 meter equals 100 centimeters. The prefix 'centi' means one hundredth, so 1 cm = 1/100 m.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is the SI unit of time?",
+    "options": ["Hour", "Minute", "Second", "Day"],
+    "answer": "Second",
+    "explanation": "The second (s) is the SI unit of time. Hours, minutes, and days are larger units derived from seconds.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which of the following is a unit of mass?",
+    "options": ["Meter", "Second", "Kilogram", "Liter"],
+    "answer": "Kilogram",
+    "explanation": "The kilogram (kg) is the SI unit of mass. Meter measures length, second measures time, and liter measures volume.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which tool is best to measure the length of a notebook?",
+    "options": ["Measuring tape", "Ruler", "Meter rod", "Thermometer"],
+    "answer": "Ruler",
+    "explanation": "A ruler is the most appropriate tool for measuring the length of a notebook as it provides accurate measurements for small objects.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is the SI unit of temperature?",
+    "options": ["Celsius", "Fahrenheit", "Kelvin", "Degree"],
+    "answer": "Kelvin",
+    "explanation": "Kelvin (K) is the SI unit of temperature. Celsius and Fahrenheit are other temperature scales, but Kelvin is the standard for scientific work.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which unit is used to measure liquid volume?",
+    "options": ["Kilogram", "Liter", "Meter", "Second"],
+    "answer": "Liter",
+    "explanation": "The liter (L) is commonly used to measure liquid volume. The SI unit is cubic meter, but liter is more practical for everyday measurements.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "How many millimeters are there in 1 centimeter?",
+    "options": ["100", "10", "1", "1000"],
+    "answer": "10",
+    "explanation": "1 centimeter equals 10 millimeters. The prefix 'milli' means one thousandth, so 10 mm = 1 cm.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which quantity is measured using a stopwatch?",
+    "options": ["Length", "Mass", "Time", "Temperature"],
+    "answer": "Time",
+    "explanation": "A stopwatch is specifically designed to measure time intervals accurately, especially for short durations.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which of the following is NOT a standard unit?",
+    "options": ["Cubit", "Meter", "Kilogram", "Second"],
+    "answer": "Cubit",
+    "explanation": "Cubit is an ancient non-standard unit based on the length of a forearm, which varies from person to person. Meter, kilogram, and second are standard SI units.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "What does SI stand for?",
+    "options": ["System of Instruments", "Scientific Index", "International System of Units", "Standard Indian Units"],
+    "answer": "International System of Units",
+    "explanation": "SI stands for 'Système International' (French) or International System of Units, which is the modern form of the metric system used worldwide.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which unit is suitable to measure the distance between cities?",
+    "options": ["Centimeter", "Meter", "Kilometer", "Millimeter"],
+    "answer": "Kilometer",
+    "explanation": "Kilometer (km) is most suitable for measuring long distances like those between cities, as it represents 1000 meters.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is used to measure temperature?",
+    "options": ["Barometer", "Thermometer", "Hygrometer", "Stopwatch"],
+    "answer": "Thermometer",
+    "explanation": "A thermometer is an instrument specifically designed to measure temperature. A barometer measures air pressure, and a hygrometer measures humidity.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which of the following is the correct symbol for kilogram?",
+    "options": ["Kg", "KG", "kg", "kG"],
+    "answer": "kg",
+    "explanation": "The correct SI symbol for kilogram is 'kg' with both letters in lowercase. Unit symbols follow specific capitalization rules.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "How many grams are there in 1 kilogram?",
+    "options": ["100", "1000", "10", "500"],
+    "answer": "1000",
+    "explanation": "1 kilogram equals 1000 grams. The prefix 'kilo' means one thousand.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which instrument is used to measure liquid volume accurately?",
+    "options": ["Beaker", "Measuring cylinder", "Test tube", "Flask"],
+    "answer": "Measuring cylinder",
+    "explanation": "A measuring cylinder (graduated cylinder) has precise markings and is designed to measure liquid volumes accurately in a laboratory.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which unit is smaller?",
+    "options": ["Meter", "Centimeter", "Kilometer", "Decameter"],
+    "answer": "Centimeter",
+    "explanation": "Among these options, centimeter is the smallest unit. 1 meter = 100 centimeters, and kilometer and decameter are both larger than a meter.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which quantity remains the same everywhere?",
+    "options": ["Weight", "Mass", "Force", "Speed"],
+    "answer": "Mass",
+    "explanation": "Mass remains constant everywhere in the universe. Weight changes with gravity, but mass is the amount of matter in an object and doesn't change with location.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "What is the correct unit for measuring thickness of a sheet of paper?",
+    "options": ["Meter", "Kilometer", "Millimeter", "Centimeter"],
+    "answer": "Millimeter",
+    "explanation": "Millimeter is most appropriate for measuring very thin objects like paper thickness, as it provides precision for small measurements.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "A pencil is 15 cm long. What is its length in meters?",
+    "options": ["0.15 m", "1.5 m", "15 m", "0.015 m"],
+    "answer": "0.15 m",
+    "explanation": "To convert centimeters to meters, divide by 100. So 15 cm ÷ 100 = 0.15 m.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "If a class lasts 45 minutes, how many seconds is that?",
+    "options": ["2700", "450", "3000", "3600"],
+    "answer": "2700",
+    "explanation": "1 minute = 60 seconds, so 45 minutes = 45 × 60 = 2700 seconds.",
+    "difficulty": "hard"
+  },
+  {
+    "text": "Why is meter used as a standard unit of length?",
+    "options": ["Easy to remember", "Same everywhere", "Very large", "Very small"],
+    "answer": "Same everywhere",
+    "explanation": "The meter is a standard unit because it is defined precisely and remains the same everywhere in the world, ensuring consistent measurements.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which conversion is correct?",
+    "options": ["1 m = 10 cm", "1 km = 100 m", "1 m = 100 cm", "1 cm = 100 mm"],
+    "answer": "1 m = 100 cm",
+    "explanation": "1 meter equals 100 centimeters. The other conversions are incorrect: 1 km = 1000 m, and 1 cm = 10 mm.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Why are SI units preferred in science?",
+    "options": ["They are old", "They are simple", "They are accepted worldwide", "They are optional"],
+    "answer": "They are accepted worldwide",
+    "explanation": "SI units are preferred because they are internationally standardized and accepted worldwide, allowing scientists everywhere to communicate measurements clearly.",
+    "difficulty": "medium"
+  }
+    ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor((i + 1) * Math.random());
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    document.getElementById("startBtn").onclick = startQuiz;
+    document.getElementById("endQuizBtn").onclick = endQuiz;
+    document.getElementById("restart").onclick = restartQuiz;
+
+    function startQuiz() {
+      document.getElementById("startBtn").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "block";
+      document.getElementById("timerDisplay").style.display = "block";
+
+      renderQuiz(questionsData);
+    }
+
+    function endQuiz() {
+      clearInterval(timerInterval);
+
+      document.getElementById("quiz").innerHTML = "";
+      document.getElementById("score").innerHTML = "";
+      document.getElementById("timerDisplay").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "none";
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("startBtn").style.display = "block";
+    }
+
+    function restartQuiz() {
+      renderQuiz(questionsData);
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("score").innerHTML = "";
+    }
+
+    function renderQuiz(questions) {
+      score = 0;
+      answered = 0;
+
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = "";
+
+      quizStartTime = Date.now();
+      startGlobalTimer();
+
+      questions = shuffle([...questions]);
+
+      questions.forEach((q, index) => {
+        const container = document.createElement("div");
+        container.className = "question";
+
+        const questionText = document.createElement("p");
+        const badge = `<span class="difficulty-badge ${q.difficulty}">${q.difficulty.toUpperCase()}</span>`;
+        questionText.innerHTML = `${index + 1}. ${q.text} ${badge}`;
+        container.appendChild(questionText);
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "options";
+
+        const shuffledOptions = shuffle([...q.options]);
+
+        shuffledOptions.forEach(opt => {
+          const btn = document.createElement("button");
+          btn.textContent = opt;
+
+          btn.onclick = () => {
+            lockQuestion(container, q, opt, btn);
+          };
+
+          optionsDiv.appendChild(btn);
+        });
+
+        container.appendChild(optionsDiv);
+        quizDiv.appendChild(container);
+      });
+    }
+
+    function startGlobalTimer() {
+      clearInterval(timerInterval);
+
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - quizStartTime) / 1000);
+
+        const hrs = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+        const secs = String(elapsed % 60).padStart(2, '0');
+
+        document.getElementById("timerDisplay").textContent =
+          `⏳ Time: ${hrs}:${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function lockQuestion(container, question, selected, selectedBtn) {
+      if (container.dataset.answered) return;
+      container.dataset.answered = true;
+
+      const buttons = container.querySelectorAll("button");
+
+      selectedBtn.style.background = "#007bff";
+      selectedBtn.style.color = "white";
+
+      buttons.forEach(btn => btn.disabled = true);
+
+      const result = document.createElement("p");
+      result.className = "result";
+
+      if (selected === question.answer) {
+        result.textContent = `✅ Correct!`;
+        result.style.color = "green";
+        score++;
+      } else {
+        result.textContent = `❌ Incorrect.`;
+        result.style.color = "red";
+      }
+
+      buttons.forEach(btn => {
+        if (btn.textContent === question.answer) {
+          btn.style.background = "#28a745";
+          btn.style.color = "white";
+        }
+      });
+
+      const explanation = document.createElement("p");
+      explanation.innerHTML = `<strong>Correct Answer:</strong> ${question.answer}<br>
+                               <strong>Explanation:</strong> ${question.explanation}`;
+
+      container.appendChild(result);
+      container.appendChild(explanation);
+
+      answered++;
+
+      if (answered === questionsData.length) {
+        clearInterval(timerInterval);
+
+        const totalTime = Math.floor((Date.now() - quizStartTime) / 1000);
+        const hrs = String(Math.floor(totalTime / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((totalTime % 3600) / 60)).padStart(2, '0');
+        const secs = String(totalTime % 60).padStart(2, '0');
+
+        document.getElementById("score").textContent =
+          `Final Score: ${score} / ${questionsData.length}  
+           Total Time Taken: ${hrs}:${mins}:${secs}`;
+
+        document.getElementById("restart").style.display = "block";
+      }
+    }
+  </script>
+
+</body>
+</html>

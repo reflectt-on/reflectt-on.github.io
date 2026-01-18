@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Science Quiz - Reflectt-On</title>
+
+  <style>
+    body {
+      <a href="/" class="logo-watermark" title="Home">
+    <img src="images/logo.png" alt="Logo Watermark"></a>
+	
+	font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      padding: 20px;
+      margin: 0;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 400px;
+      background-image: url('YOUR_LOGO_PATH_HERE');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.05;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header-logo img {
+      max-width: 50px;
+      height: auto;
+    }
+
+    h1 {
+      color: #2e8b57;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #555;
+      font-size: 14px;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+
+    #timerDisplay {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #d9534f;
+      margin: 15px 0;
+      display: none;
+    }
+
+    #startBtn, #endQuizBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 25px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #startBtn:hover, #endQuizBtn:hover {
+      background: #246b45;
+    }
+
+    .question {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .difficulty-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
+    .easy { background: #d4edda; color: #155724; }
+    .medium { background: #fff3cd; color: #856404; }
+    .hard { background: #f8d7da; color: #721c24; }
+    .numerical { background: #d1ecf1; color: #0c5460; }
+
+    .options button {
+      width: 100%;
+      margin: 6px 0;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .options button:disabled {
+      background: #e0e0e0;
+      cursor: not-allowed;
+    }
+
+    .result {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #score {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+      color: #2e8b57;
+    }
+
+    #restart {
+      display: none;
+      margin: 30px auto;
+      padding: 12px 20px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 200px;
+    }
+
+    #restart:hover {
+      background: #246b45;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 10px; }
+      .options button { font-size: 15px; padding: 10px; }
+      .header-logo img { max-width: 200px; }
+      body::before { width: 250px; height: 250px; }
+    }
+.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    	.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="logo-watermark" title="Home">
+        <img src="images/logo.png" alt="Logo Watermark">
+    </a>
+
+<body>
+
+  <div class="header-logo">
+    <img src="images/logo.png" alt="Exam Prep Logo">
+  </div>
+
+  <h1>Science Quiz - Physics- General </h1>
+  <p class="subtitle">IIT JEE Foundation - Grade 6</p>
+
+  <button id="startBtn">Start Quiz</button>
+
+  <div id="timerDisplay">⏳ Time: 00:00:00</div>
+
+  <button id="endQuizBtn" style="display:none;">End Quiz</button>
+
+  <div id="quiz"></div>
+  <div id="score"></div>
+
+  <button id="restart" style="display:none;">Restart Quiz</button>
+
+
+  <script>
+    let score = 0;
+    let answered = 0;
+    let quizStartTime = 0;
+    let timerInterval;
+
+    const questionsData = [
+         {
+    "text": "Which of the four fundamental interactions is considered the weakest in the entire universe?",
+    "options": ["Electromagnetic", "Strong nuclear", "Weak nuclear", "Gravity"],
+    "answer": "Gravity",
+    "explanation": "When looking at the entire universe, gravity is considered the weakest interaction, followed by electromagnetism, weak atomic, and strong atomic in increasing strength.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "What is the smallest particle of an element that retains its properties?",
+    "options": ["Molecule", "Atom", "Compound", "Mixture"],
+    "answer": "Atom",
+    "explanation": "The smallest particle of an element is an atom, and all atoms in an element are of the same kind.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "The motion of a simple pendulum is an example of which type of motion?",
+    "options": ["Linear motion", "Circular motion", "Random motion", "Oscillatory motion"],
+    "answer": "Oscillatory motion",
+    "explanation": "The to and fro periodic motion of a body around a fixed point, such as a simple pendulum or a swing, is called oscillatory motion.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which of Newton's Laws of Motion states that for every action there is an equal and opposite reaction?",
+    "options": ["First Law", "Second Law", "Third Law", "Law of Universal Gravitation"],
+    "answer": "Third Law",
+    "explanation": "Newton's Third Law of Motion states that for every action there is an equal and opposite reaction, and forces always occur in pairs.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which instrument is specifically used for measuring electrical current?",
+    "options": ["Voltmeter", "Ammeter", "Electroscope", "Thermometer"],
+    "answer": "Ammeter",
+    "explanation": "An ammeter is the instrument used for measuring electrical current in a circuit.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What do we call materials that allow electric current to pass through them?",
+    "options": ["Insulators", "Conductors", "Resistors", "Semi-conductors"],
+    "answer": "Conductors",
+    "explanation": "Materials through which electric current can flow are called conductors; most metals are good examples.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Magnetite is a well-known example of what?",
+    "options": ["An artificial magnet", "A non-magnetic material", "A natural magnet", "An electromagnetic material"],
+    "answer": "A natural magnet",
+    "explanation": "Magnetite is a natural magnet, first discovered in rocks that attracted iron.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "How do like poles and unlike poles of magnets interact?",
+    "options": ["Like poles attract, unlike poles repel", "Like poles repel, unlike poles attract", "All poles attract each other", "All poles repel each other"],
+    "answer": "Like poles repel, unlike poles attract",
+    "explanation": "Similar or like poles (North-North or South-South) repel each other, while opposite or unlike poles (North-South) attract each other.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is the SI unit of force?",
+    "options": ["Kilogram-force (kgf)", "Gram", "Newton (N)", "Metre"],
+    "answer": "Newton (N)",
+    "explanation": "The SI unit of force is the newton, denoted by the symbol N, named after Sir Isaac Newton.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which force acts between surfaces in contact and opposes their relative motion?",
+    "options": ["Magnetic force", "Frictional force", "Gravitational force", "Electrostatic force"],
+    "answer": "Frictional force",
+    "explanation": "Frictional force acts between the surfaces of objects in contact and opposes the movement of one surface against the other.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which principle states that the pressure in a fluid decreases as its velocity increases?",
+    "options": ["Pascal's Principle", "Archimedes' Principle", "Bernoulli's Principle", "Newton's Second Law"],
+    "answer": "Bernoulli's Principle",
+    "explanation": "Bernoulli's Principle states that the pressure in a fluid decreases with increased velocity of the fluid.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "What happens to a body immersed in a fluid according to Archimedes' Principle?",
+    "options": ["It sinks completely", "It is buoyed up by a force equal to the weight of the fluid it displaces", "Its mass increases", "The pressure on it decreases"],
+    "answer": "It is buoyed up by a force equal to the weight of the fluid it displaces",
+    "explanation": "Archimedes' Principle states that a body immersed in a fluid will be buoyed up by a force equal to the weight of the fluid that it displaces.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "How is 'matter' scientifically defined?",
+    "options": ["Anything that has a specific colour", "Anything that is visible to the eye", "Anything that occupies space and has mass", "Only solid objects found in nature"],
+    "answer": "Anything that occupies space and has mass",
+    "explanation": "Matter is defined as anything that occupies space and has mass. This includes solids, liquids, and gases.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is the International System (SI) unit for temperature?",
+    "options": ["Celsius (°C)", "Fahrenheit (°F)", "Kelvin (K)", "Joule (J)"],
+    "answer": "Kelvin (K)",
+    "explanation": "While Celsius and Fahrenheit are commonly used, the SI unit for temperature is kelvin, denoted by K.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "How many metres are there in one kilometre?",
+    "options": ["100 metres", "1,000 metres", "10,000 metres", "10 metres"],
+    "answer": "1,000 metres",
+    "explanation": "A kilometre (km) is a larger unit used for measuring length and is equal to 1,000 metres.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Materials through which you cannot see at all are called:",
+    "options": ["Transparent", "Translucent", "Opaque", "Lustrous"],
+    "answer": "Opaque",
+    "explanation": "Materials like wood, cardboard, and metals, through which you are not able to see at all, are called opaque.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is the term for a combination of two or more electric cells?",
+    "options": ["Terminal", "Switch", "Battery", "Filament"],
+    "answer": "Battery",
+    "explanation": "When two or more cells are joined together, the combination is called a battery.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Motion along a straight line is specifically known as:",
+    "options": ["Circular motion", "Random motion", "Linear motion", "Periodic motion"],
+    "answer": "Linear motion",
+    "explanation": "Linear motion (or translatory motion) is defined as motion along a straight line.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which of the following is a common method used to reduce friction in machinery?",
+    "options": ["Using rough surfaces", "Increasing the weight of objects", "Using lubricants like grease or oil", "Using sandpaper"],
+    "answer": "Using lubricants like grease or oil",
+    "explanation": "Friction can be reduced by using lubricants, such as grease or oil, which help machine parts slide smoothly over each other.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Where is the attraction of a bar magnet strongest?",
+    "options": ["In the exact middle", "Equally all over the surface", "Near the two ends (poles)", "Only on the top surface"],
+    "answer": "Near the two ends (poles)",
+    "explanation": "Experiments with iron filings show that maximum attraction occurs near the ends of the bar magnet, which are called its poles.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "A car travels at a constant speed of 60 km/h. How far will it travel in 3 hours?",
+    "options": ["120 km", "150 km", "180 km", "200 km"],
+    "answer": "180 km",
+    "explanation": "Distance = Speed × Time = 60 km/h × 3 h = 180 km.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "If a force of 20 N is applied to an object and it moves 5 meters in the direction of the force, how much work is done?",
+    "options": ["4 J", "25 J", "100 J", "15 J"],
+    "answer": "100 J",
+    "explanation": "Work = Force × Distance = 20 N × 5 m = 100 joules (J). Work is measured in joules.",
+    "difficulty": "hard"
+  },
+  {
+    "text": "A pendulum completes 20 oscillations in 40 seconds. What is its time period (time for one complete oscillation)?",
+    "options": ["0.5 seconds", "2 seconds", "4 seconds", "20 seconds"],
+    "answer": "2 seconds",
+    "explanation": "Time period = Total time ÷ Number of oscillations = 40 s ÷ 20 = 2 seconds per oscillation.",
+    "difficulty": "hard"
+  },
+  {
+    "text": "An object has a mass of 500 grams. What is its weight on Earth if the acceleration due to gravity is 10 m/s²?",
+    "options": ["5 N", "50 N", "500 N", "5000 N"],
+    "answer": "5 N",
+    "explanation": "First convert mass to kg: 500 g = 0.5 kg. Weight = Mass × Gravity = 0.5 kg × 10 m/s² = 5 N (newtons).",
+    "difficulty": "hard"
+  },
+  {
+    "text": "A rectangular block has dimensions 10 cm × 5 cm × 2 cm. What is its volume in cubic centimeters?",
+    "options": ["17 cm³", "50 cm³", "100 cm³", "200 cm³"],
+    "answer": "100 cm³",
+    "explanation": "Volume = Length × Width × Height = 10 cm × 5 cm × 2 cm = 100 cm³.",
+    "difficulty": "medium"
+  }
+    ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor((i + 1) * Math.random());
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    document.getElementById("startBtn").onclick = startQuiz;
+    document.getElementById("endQuizBtn").onclick = endQuiz;
+    document.getElementById("restart").onclick = restartQuiz;
+
+    function startQuiz() {
+      document.getElementById("startBtn").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "block";
+      document.getElementById("timerDisplay").style.display = "block";
+
+      renderQuiz(questionsData);
+    }
+
+    function endQuiz() {
+      clearInterval(timerInterval);
+
+      document.getElementById("quiz").innerHTML = "";
+      document.getElementById("score").innerHTML = "";
+      document.getElementById("timerDisplay").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "none";
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("startBtn").style.display = "block";
+    }
+
+    function restartQuiz() {
+      renderQuiz(questionsData);
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("score").innerHTML = "";
+    }
+
+    function renderQuiz(questions) {
+      score = 0;
+      answered = 0;
+
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = "";
+
+      quizStartTime = Date.now();
+      startGlobalTimer();
+
+      questions = shuffle([...questions]);
+
+      questions.forEach((q, index) => {
+        const container = document.createElement("div");
+        container.className = "question";
+
+        const questionText = document.createElement("p");
+        const badge = `<span class="difficulty-badge ${q.difficulty}">${q.difficulty.toUpperCase()}</span>`;
+        questionText.innerHTML = `${index + 1}. ${q.text} ${badge}`;
+        container.appendChild(questionText);
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "options";
+
+        const shuffledOptions = shuffle([...q.options]);
+
+        shuffledOptions.forEach(opt => {
+          const btn = document.createElement("button");
+          btn.textContent = opt;
+
+          btn.onclick = () => {
+            lockQuestion(container, q, opt, btn);
+          };
+
+          optionsDiv.appendChild(btn);
+        });
+
+        container.appendChild(optionsDiv);
+        quizDiv.appendChild(container);
+      });
+    }
+
+    function startGlobalTimer() {
+      clearInterval(timerInterval);
+
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - quizStartTime) / 1000);
+
+        const hrs = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+        const secs = String(elapsed % 60).padStart(2, '0');
+
+        document.getElementById("timerDisplay").textContent =
+          `⏳ Time: ${hrs}:${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function lockQuestion(container, question, selected, selectedBtn) {
+      if (container.dataset.answered) return;
+      container.dataset.answered = true;
+
+      const buttons = container.querySelectorAll("button");
+
+      selectedBtn.style.background = "#007bff";
+      selectedBtn.style.color = "white";
+
+      buttons.forEach(btn => btn.disabled = true);
+
+      const result = document.createElement("p");
+      result.className = "result";
+
+      if (selected === question.answer) {
+        result.textContent = `✅ Correct!`;
+        result.style.color = "green";
+        score++;
+      } else {
+        result.textContent = `❌ Incorrect.`;
+        result.style.color = "red";
+      }
+
+      buttons.forEach(btn => {
+        if (btn.textContent === question.answer) {
+          btn.style.background = "#28a745";
+          btn.style.color = "white";
+        }
+      });
+
+      const explanation = document.createElement("p");
+      explanation.innerHTML = `<strong>Correct Answer:</strong> ${question.answer}<br>
+                               <strong>Explanation:</strong> ${question.explanation}`;
+
+      container.appendChild(result);
+      container.appendChild(explanation);
+
+      answered++;
+
+      if (answered === questionsData.length) {
+        clearInterval(timerInterval);
+
+        const totalTime = Math.floor((Date.now() - quizStartTime) / 1000);
+        const hrs = String(Math.floor(totalTime / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((totalTime % 3600) / 60)).padStart(2, '0');
+        const secs = String(totalTime % 60).padStart(2, '0');
+
+        document.getElementById("score").textContent =
+          `Final Score: ${score} / ${questionsData.length}  
+           Total Time Taken: ${hrs}:${mins}:${secs}`;
+
+        document.getElementById("restart").style.display = "block";
+      }
+    }
+  </script>
+
+</body>
+</html>
