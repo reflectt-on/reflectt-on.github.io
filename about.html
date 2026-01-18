@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | reflectt-on </title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+        }
+
+        .logo {
+   		 font-size: 24px;
+    		font-weight: bold;
+    		color: #667eea;
+    		text-decoration: none;
+    		display: flex;
+    		align-items: center;
+   		gap: 12px;
+		}
+
+	.logo img {
+    		height: 50px;  /* Increased from 40px */
+    		width: auto;
+    		object-fit: contain;
+		}
+
+	.logo span {
+ 		color: #667eea;
+		}
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        nav li {
+            position: relative;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        nav a:hover {
+            color: #667eea;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: #667eea;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .dropdown-arrow {
+            font-size: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        nav li:hover .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            z-index: 1000;
+        }
+
+        nav li:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .dropdown-menu a:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-menu a:hover {
+            background: #f5f7fa;
+            color: #667eea;
+            padding-left: 30px;
+        }
+
+        .dropdown-menu a::after {
+            display: none;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 40px;
+        }
+
+        .welcome-section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .welcome-title {
+            color: #667eea;
+            font-size: 32px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .welcome-text {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        footer {
+            background: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            color: #666;
+            border-top: 2px solid #667eea;
+        }
+
+	 footer p {
+   	 margin: 8px 0;
+   	 font-size: 10px;  /* Adjust this value */
+	}
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px 20px;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .main-container,
+            .welcome-section {
+                padding: 20px;
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">
+    <img src="images/logo.png" alt="reflectt-on logo">
+    <span>reflectt-on</span></a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li>
+                        <a href="grades.html">
+                            Grades
+                            <span class="dropdown-arrow">▼</span>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="grades.html">All Grades</a>
+                            <a href="grades.html#grade-6">Grade 6</a>
+                            <a href="grades.html#grade-7">Grade 7</a>
+                            <a href="grades.html#grade-8">Grade 8</a>
+                            <a href="grades.html#grade-9">Grade 9</a>
+                            <a href="grades.html#grade-10">Grade 10</a>
+                            <a href="grades.html#grade-11">Grade 11</a>
+                            <a href="grades.html#grade-12">Grade 12</a>
+                        </div>
+                    </li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="faqs.html">FAQs</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <div class="welcome-section">
+            <h2 class="welcome-title">About reflectt-on </h2>
+            <p class="welcome-text">
+                At reflectt-on, we are passionate about helping students excel in competitive exams. Our platform delivers comprehensive, well-structured quizzes designed for students from Grade 6 to Grade 12, covering all major subjects and exam patterns.
+            </p>
+            
+            <h3 style="margin-top: 30px; color: #333;">Our Mission</h3>
+            <p style="color: #666; font-size: 16px; line-height: 1.8; margin-top: 10px;">
+                We believe every student deserves access to quality exam preparation resources. Our mission is to make learning effective, engaging, and accessible to all.
+            </p>
+
+            <h3 style="margin-top: 30px; color: #333;">Why Choose Us?</h3>
+            <ul style="line-height: 1.8; padding-left: 20px; margin-top: 15px; color: #666;">
+                <li>✅ Free access to comprehensive quizzes</li>
+                <li>✅ Quizzes for all grades (6-12)</li>
+                <li>✅ Concept-focused preparation</li>
+                <li>✅ Regular updates and new content</li>
+                <li>✅ User-friendly interface</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 reflectt-on quizzes. All rights reserved.</p>
+        <p>Empowering students with quality competitive exam preparation</p>
+<p>The content on reflectt-on is provided for general informational and educational purposes only to help with competitive exam preparation. While we aim to keep materials accurate and up to date, we make no guarantees about completeness, correctness, or exam success—use the resources at your own discretion and verify critical information independently.
+
+reflectt-on is not responsible for third-party sites linked from the website, user-submitted content, or any outcomes resulting from use of the site. By using reflectt-on you agree that the site and its owners are not liable for any direct or indirect loss arising from your reliance on the content. </p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQs | reflectt-on quizzes</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+        }
+
+	.logo {
+   		 font-size: 24px;
+    		font-weight: bold;
+    		color: #667eea;
+    		text-decoration: none;
+    		display: flex;
+    		align-items: center;
+   		gap: 12px;
+		}
+
+	.logo img {
+    		height: 50px;  /* Increased from 40px */
+    		width: auto;
+    		object-fit: contain;
+		}
+
+	.logo span {
+ 		color: #667eea;
+		}
+
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        nav li {
+            position: relative;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        nav a:hover {
+            color: #667eea;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: #667eea;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .dropdown-arrow {
+            font-size: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        nav li:hover .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            z-index: 1000;
+        }
+
+        nav li:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .dropdown-menu a:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-menu a:hover {
+            background: #f5f7fa;
+            color: #667eea;
+            padding-left: 30px;
+        }
+
+        .dropdown-menu a::after {
+            display: none;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 40px;
+        }
+
+        .welcome-section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .welcome-title {
+            color: #667eea;
+            font-size: 32px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        footer {
+            background: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            color: #666;
+            border-top: 2px solid #667eea;
+        }
+
+	 footer p {
+   	 margin: 8px 0;
+   	 font-size: 10px;  /* Adjust this value */
+	}
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px 20px;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .main-container,
+            .welcome-section {
+                padding: 20px;
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">
+    <img src="images/logo.png" alt="reflectt-on logo">
+    <span>reflectt-on</span></a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li>
+                        <a href="grades.html">
+                            Grades
+                            <span class="dropdown-arrow">▼</span>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="grades.html">All Grades</a>
+                            <a href="grades.html#grade-6">Grade 6</a>
+                            <a href="grades.html#grade-7">Grade 7</a>
+                            <a href="grades.html#grade-8">Grade 8</a>
+                            <a href="grades.html#grade-9">Grade 9</a>
+                            <a href="grades.html#grade-10">Grade 10</a>
+                            <a href="grades.html#grade-11">Grade 11</a>
+                            <a href="grades.html#grade-12">Grade 12</a>
+                        </div>
+                    </li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="faqs.html">FAQs</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <div class="welcome-section">
+            <h2 class="welcome-title">Frequently Asked Questions</h2>
+            
+            <div style="margin-top: 30px;">
+                <h3 style="color: #333;">❓ General Questions</h3>
+                
+                <div style="margin: 20px 0; padding: 15px; background: #f9f9f9; border-left: 4px solid #667eea; border-radius: 4px;">
+                    <strong style="color: #333;">Q: What is reflectt-on quizzes?</strong>
+                    <p style="margin-top: 8px; color: #666; line-height: 1.6;">A: reflectt-on quizzes is a free online platform offering comprehensive quizzes for competitive exam preparation across grades 6-12. We focus on conceptual clarity and effective learning.</p>
+                </div>
+
+                <div style="margin: 20px 0; padding: 15px; background: #f9f9f9; border-left: 4px solid #667eea; border-radius: 4px;">
+                    <strong style="color: #333;">Q: What grades do you cover?</strong>
+                    <p style="margin-top: 8px; color: #666; line-height: 1.6;">A: Our platform provides quizzes for students from Grade 6 through Grade 12, covering major subjects and exam patterns at each level.</p>
+                </div>
+
+                <h3 style="color: #333; margin-top: 30px;">📚 Accessing Quizzes</h3>
+
+                <div style="margin: 20px 0; padding: 15px; background: #f9f9f9; border-left: 4px solid #28a745; border-radius: 4px;">
+                    <strong style="color: #333;">Q: How can I access the quizzes?</strong>
+                    <p style="margin-top: 8px; color: #666; line-height: 1.6;">A: Simply navigate to the "Grades" section in the menu, select your grade level, and start taking quizzes. No registration required!</p>
+                </div>
+
+                <div style="margin: 20px 0; padding: 15px; background: #f9f9f9; border-left: 4px solid #28a745; border-radius: 4px;">
+                    <strong style="color: #333;">Q: Are the quizzes free?</strong>
+                    <p style="margin-top: 8px; color: #666; line-height: 1.6;">A: Yes! All quizzes on our platform are completely free as of now. We're committed to making quality exam preparation accessible to every student.</p>
+                </div>
+
+                <h3 style="color: #333; margin-top: 30px;">💡 Using the Platform</h3>
+
+                <div style="margin: 20px 0; padding: 15px; background: #f9f9f9; border-left: 4px solid #ffc107; border-radius: 4px;">
+                    <strong style="color: #333;">Q: Do I need to create an account?</strong>
+                    <p style="margin-top: 8px; color: #666; line-height: 1.6;">A: No account creation is required to access and attempt our quizzes. You can start learning immediately.</p>
+                </div>
+
+                <div style="margin: 20px 0; padding: 15px; background: #f9f9f9; border-left: 4px solid #ffc107; border-radius: 4px;">
+                    <strong style="color: #333;">Q: How often are new quizzes added?</strong>
+                    <p style="margin-top: 8px; color: #666; line-height: 1.6;">A: We continuously update our platform with new quizzes and content to ensure you have the most relevant preparation materials.</p>
+                </div>
+
+                <h3 style="color: #333; margin-top: 30px;">🤝 Support & Feedback</h3>
+
+                <div style="margin: 20px 0; padding: 15px; background: #f9f9f9; border-left: 4px solid #dc3545; border-radius: 4px;">
+                    <strong style="color: #333;">Q: What should I do if I find an error in a quiz?</strong>
+                    <p style="margin-top: 8px; color: #666; line-height: 1.6;">A: Please contact us at bhagyashreekardile@gmail.com with details about the error. We appreciate your feedback and will investigate promptly.</p>
+                </div>
+
+                <div style="margin: 20px 0; padding: 15px; background: #f9f9f9; border-left: 4px solid #dc3545; border-radius: 4px;">
+                    <strong style="color: #333;">Q: Can I provide suggestions for new topics?</strong>
+                    <p style="margin-top: 8px; color: #666; line-height: 1.6;">A: Absolutely! We welcome suggestions. Please email us at support@reflectton.com with your ideas for topics you'd like to see covered.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 reflectt-on. All rights reserved.</p>
+        <p>Empowering students with quality competitive exam preparation</p>
+<p>The content on reflectt-on is provided for general informational and educational purposes only to help with competitive exam preparation. While we aim to keep materials accurate and up to date, we make no guarantees about completeness, correctness, or exam success—use the resources at your own discretion and verify critical information independently.
+
+reflectt-on is not responsible for third-party sites linked from the website, user-submitted content, or any outcomes resulting from use of the site. By using reflectt-on you agree that the site and its owners are not liable for any direct or indirect loss arising from your reliance on the content. </p>
+    </footer>
+</body>
+</html>

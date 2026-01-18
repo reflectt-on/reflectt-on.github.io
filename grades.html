@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Grades & Courses | reflectt-on </title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+        }
+
+        .logo {
+   		 font-size: 24px;
+    		font-weight: bold;
+    		color: #667eea;
+    		text-decoration: none;
+    		display: flex;
+    		align-items: center;
+   		gap: 12px;
+		}
+
+	.logo img {
+    		height: 50px;  /* Increased from 40px */
+    		width: auto;
+    		object-fit: contain;
+		}
+
+	.logo span {
+ 		color: #667eea;
+		}
+
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        nav li {
+            position: relative;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        nav a:hover {
+            color: #667eea;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: #667eea;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .dropdown-arrow {
+            font-size: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        nav li:hover .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            z-index: 1000;
+        }
+
+        nav li:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .dropdown-menu a:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-menu a:hover {
+            background: #f5f7fa;
+            color: #667eea;
+            padding-left: 30px;
+        }
+
+        .dropdown-menu a::after {
+            display: none;
+        }
+
+        .breadcrumb {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            padding: 15px;
+            background: white;
+            border-bottom: 1px solid #eee;
+        }
+
+        .breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .banner-section {
+            background: white;
+            padding: 40px;
+            text-align: center;
+            margin: 30px 40px 40px;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .banner-section img {
+            width: 100%;
+            max-height: 280px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .banner-content h1 {
+            color: #667eea;
+            font-size: 40px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .banner-content p {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 0;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .intro-section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .intro-title {
+            color: #667eea;
+            font-size: 32px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .intro-text {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 0;
+        }
+
+        .grade-section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            scroll-margin-top: 100px;
+        }
+
+        .grade-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .grade-title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .grade-section-icon {
+            font-size: 36px;
+        }
+
+        .grade-section-title {
+            color: #667eea;
+            font-size: 28px;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .grade-section-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .grade-section-badge.available {
+            background: #27ae60;
+        }
+
+        .grade-section-badge.coming-soon {
+            background: #ff6b6b;
+        }
+
+        .grade-description {
+            color: #666;
+            font-size: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .category-within-grade {
+            margin-bottom: 35px;
+        }
+
+        .category-subtitle {
+            color: #667eea;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .category-subtitle-icon {
+            font-size: 24px;
+        }
+
+        .quiz-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.2);
+        }
+
+        .quiz-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .quiz-card a {
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            display: block;
+            padding: 12px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            transition: background 0.3s ease;
+        }
+
+        .quiz-card a:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .quiz-level {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 10px;
+        }
+
+        .coming-soon-section {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .coming-soon-overlay {
+            background: rgba(255, 107, 107, 0.1);
+            border: 2px dashed #ff6b6b;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .coming-soon-overlay p {
+            color: #ff6b6b;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 40px;
+        }
+
+        .info-box p {
+            color: #333;
+            margin: 0;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        footer {
+            background: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            color: #666;
+            border-top: 2px solid #667eea;
+        }
+
+
+	 footer p {
+   	 margin: 8px 0;
+   	 font-size: 10px;  /* Adjust this value */
+	}
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px 20px;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                background: #f5f7fa;
+                border-radius: 0;
+                margin-top: 10px;
+                margin-left: -10px;
+                margin-right: -10px;
+            }
+
+            nav li:hover .dropdown-menu {
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+            }
+
+            .banner-section,
+            .main-container,
+            .intro-section,
+            .grade-section {
+                padding: 20px;
+                margin: 20px;
+            }
+
+            .banner-content h1 {
+                font-size: 28px;
+            }
+
+            .intro-title {
+                font-size: 24px;
+            }
+
+            .grade-section-title {
+                font-size: 22px;
+            }
+
+            .grade-section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .grade-title-wrapper {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .quiz-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .quiz-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .grade-section-title {
+                font-size: 20px;
+            }
+
+            .category-subtitle {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">
+    <img src="images/logo.png" alt="reflectt-on logo">
+    <span>reflectt-on</span></a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li>
+                        <a href="grades.html">
+                            Grades
+                            <span class="dropdown-arrow">▼</span>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="grades.html">All Grades</a>
+                            <a href="grades.html#grade-6">Grade 6</a>
+                            <a href="grades.html#grade-7">Grade 7</a>
+                            <a href="grades.html#grade-8">Grade 8</a>
+                            <a href="grades.html#grade-9">Grade 9</a>
+                            <a href="grades.html#grade-10">Grade 10</a>
+                            <a href="grades.html#grade-11">Grade 11</a>
+                            <a href="grades.html#grade-12">Grade 12</a>
+                        </div>
+                    </li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="faqs.html">FAQs</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="breadcrumb">
+        <a href="index.html">Home</a> / <span>Grades</span>
+    </div>
+
+    <div class="banner-section">
+        <img src="images/banner.png" alt="reflectt-on quizzes Grades">
+        <div class="banner-content">
+            <h1>📚 Select Your Grade & Subjects</h1>
+            <p>Choose your grade level to access comprehensive quizzes and study materials</p>
+        </div>
+    </div>
+
+    <div class="main-container">
+
+        <div class="intro-section">
+            <h2 class="intro-title">Structured Learning for Every Grade</h2>
+            <p class="intro-text">
+                reflectt-on offers grade-specific content/quizzes tailored to your academic level. Each grade features carefully curated quizzes across multiple subjects, designed to strengthen your understanding and boost exam performance.
+            </p>
+        </div>
+
+        <!-- ===== GRADE 6 TEMPLATE ===== -->
+        <!-- COPY THIS ENTIRE SECTION TO ADD A NEW GRADE -->
+        <div class="grade-section" id="grade-6">
+            <div class="grade-section-header">
+                <div class="grade-title-wrapper">
+                    <span class="grade-section-icon">📚</span>
+                    <h2 class="grade-section-title">Grade 6</h2> <!-- UPDATE: Change grade number -->
+                </div>
+                <span class="grade-section-badge available">✓ Available</span> <!-- UPDATE: Change to "coming-soon" if not ready -->
+            </div>
+            <p class="grade-description">
+                Foundation concepts including Mathematic, Chemistry, Biology and Physics fundamentals. Build strong conceptual understanding with multiple quizzes per topic.
+                <!-- UPDATE: Write appropriate description for the grade -->
+            </p>
+
+            <!-- ===== CATEGORY TEMPLATE ===== -->
+            <!-- COPY THIS SECTION TO ADD A NEW SUBJECT/CATEGORY -->
+            <div class="category-within-grade">
+                <h3 class="category-subtitle">
+                    <span class="category-subtitle-icon">📏</span> <!-- UPDATE: Change emoji -->
+                    Unit of Measurement <!-- UPDATE: Change category name -->
+                </h3>
+                <div class="quiz-grid">
+                    <!-- ===== QUIZ CARD TEMPLATE ===== -->
+                    <!-- COPY THIS div.quiz-card TO ADD A NEW QUIZ -->
+                    <div class="quiz-card">
+                        <a href="grades/grade6/quizzes/unit_of_measurement1.html">Unit of Measurement – Quiz 1</a>
+                        <!-- UPDATE: 
+                             1. href path to your quiz file
+                             2. Link text (quiz title)
+                        -->
+                        <div class="quiz-level">Beginner Level</div>
+                        <!-- UPDATE: Change difficulty level (Beginner/Intermediate/Advanced) -->
+                    </div>
+
+                    <div class="quiz-card">
+                        <a href="grades/grade6/quizzes/unit_of_measurement2.html">Unit of Measurement – Quiz 2</a>
+                        <div class="quiz-level">Intermediate Level</div>
+                    </div>
+		   
+		    <div class="quiz-card">
+                    <a href="grades/grade6/quizzes/unit_of_measurement3.html">Unit of Measurement – Quiz 3</a>
+                    <div class="quiz-level">Advanced Level</div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <!-- Chemistry -->
+            <div class="category-within-grade">
+                <h3 class="category-subtitle">
+                    <span class="category-subtitle-icon">⚛️</span>
+                    Chemistry
+                </h3>
+                <div class="quiz-grid">
+                    <div class="quiz-card">
+                        <a href="grades/grade6/quizzes/atom_elements_compounds1.html">Atoms, Elements & Compounds – Quiz 1</a>
+                        <div class="quiz-level">Beginner Level</div>
+                    </div>
+                    <div class="quiz-card">
+                        <a href="grades/grade6/quizzes/atom_elements_compounds2.html">Atoms, Elements & Compounds – Quiz 2</a>
+                        <div class="quiz-level">Intermediate Level</div>
+                    </div>
+                    <div class="quiz-card">
+                        <a href="grades/grade6/quizzes/atom_elements_compounds3.html">Atoms, Elements & Compounds – Quiz 3</a>
+                        <div class="quiz-level">Advanced Level</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Physics -->
+            <div class="category-within-grade">
+                <h3 class="category-subtitle">
+                    <span class="category-subtitle-icon">💡</span>
+                    Physics
+                </h3>
+                <div class="quiz-grid">
+                    <div class="quiz-card">
+                        <a href="grades/grade6/quizzes/physics_light1.html">Physics – Light – Quiz 1</a>
+                        <div class="quiz-level">Beginner Level</div>
+                    </div>
+                    <div class="quiz-card">
+                        <a href="grades/grade6/quizzes/physics_light2.html">Physics – Light – Quiz 2</a>
+                        <div class="quiz-level">Intermediate Level</div>
+                    </div>
+                    <div class="quiz-card">
+                        <a href="grades/grade6/quizzes/physics_quiz1.html">Physics – General </a>
+                        <div class="quiz-level">Beginner Level</div>
+                    </div>
+                </div>
+            </div>
+	
+	<!-- Biology-->	
+	  <div class="category-within-grade">
+		<h3 class="category-subtitle">
+			<span class="category-subtitle-icon">🔬</span>
+			Biology
+		</h3>
+		<div class="quiz-grid">
+		   <div class="quiz-card">
+		     <a href="grades/grade6/quizzes/biology_organs1.html">Biology – Organs 1</a>
+			<div class="quiz-level">Beginner Level</div>
+			</div>
+		   <div class="quiz-card">
+		     <a href="grades/grade6/quizzes/biology_organs2.html">Biology – Organs 2</a>
+			<div class="quiz-level">Intermediate Level</div>
+			</div>
+	  </div>
+     </div>
+
+	<!-- Mathematics-->	
+	  <div class="category-within-grade">
+		<h3 class="category-subtitle">
+			<span class="category-subtitle-icon">📐</span>
+			Mathematics
+		</h3>
+		<div class="quiz-grid">
+		   <div class="quiz-card">
+		     <a href="grades/grade6/quizzes/math_quiz1.html">Mathematics – Quiz 1</a>
+			<div class="quiz-level">Beginner Level</div>
+			</div>
+		   <div class="quiz-card">
+		     <a href="grades/grade6/quizzes/math_quiz2.html">Mathematics – Quiz 2</a>
+			<div class="quiz-level">Beginner Level</div>
+			</div>
+	  </div>
+     </div>
+	
+ <!------------------------------------------------------------------------------------------------------------------------->
+        <div class="grade-section" id="grade-7">
+    		<div class="grade-section-header">
+        	<div class="grade-title-wrapper">
+            	<span class="grade-section-icon">📚</span>
+            	<h2 class="grade-section-title">Grade 7</h2>
+        	</div>
+        	<span class="grade-section-badge available">✓ Available</span>
+    		</div>
+    	<p class="grade-description">
+        Advanced concepts building upon Grade 6 foundation. More complex topics across multiple subjects.</p>
+    <!-- Add your categories here -->
+    <div class="category-within-grade">
+        <h3 class="category-subtitle">
+            <span class="category-subtitle-icon">📐</span> Mathematics
+        </h3>
+        <div class="quiz-grid">
+            <div class="quiz-card">
+                <a href="grades/grade7/quizzes/math_quiz1.html">Mathematics – Quiz 1</a>
+                <div class="quiz-level">Beginner Level</div>
+            </div>
+        </div>
+    </div>
+
+  <div class="category-within-grade">
+        <h3 class="category-subtitle">
+            <span class="category-subtitle-icon">🔬</span> Biology
+        </h3>
+        <div class="quiz-grid">
+            <div class="quiz-card">
+                <a href="grades/grade7/quizzes/biology_organs1.html">Biology – Quiz 1</a>
+                <div class="quiz-level">Beginner Level</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+ <!------------------------------------------------------------------------------------------------------------------------->
+
+ <!-- ===== COMING SOON GRADES ===== -->
+
+        <div class="grade-section" id="grade-8">
+            <div class="grade-section-header">
+                <div class="grade-title-wrapper">
+                    <span class="grade-section-icon">📚</span>
+                    <h2 class="grade-section-title">Grade 8</h2>
+                </div>
+                <span class="grade-section-badge coming-soon">📜 Coming Soon</span>
+            </div>
+            <p class="grade-description">
+                Intermediate level content covering diverse scientific and mathematical concepts.
+            </p>
+            <div class="coming-soon-overlay">
+                <p>✨ Grade 8 content is being prepared. Check back soon!</p>
+            </div>
+        </div>
+
+        <div class="grade-section" id="grade-9">
+            <div class="grade-section-header">
+                <div class="grade-title-wrapper">
+                    <span class="grade-section-icon">📚</span>
+                    <h2 class="grade-section-title">Grade 9</h2>
+                </div>
+                <span class="grade-section-badge coming-soon">📜 Coming Soon</span>
+            </div>
+            <p class="grade-description">
+                Higher-level content preparing students for competitive exams and STEM fields.
+            </p>
+            <div class="coming-soon-overlay">
+                <p>✨ Grade 9 content is being prepared. Check back soon!</p>
+            </div>
+        </div>
+
+        <div class="grade-section" id="grade-10">
+            <div class="grade-section-header">
+                <div class="grade-title-wrapper">
+                    <span class="grade-section-icon">📚</span>
+                    <h2 class="grade-section-title">Grade 10</h2>
+                </div>
+                <span class="grade-section-badge coming-soon">📜 Coming Soon</span>
+            </div>
+            <p class="grade-description">
+                Board exam preparation with comprehensive coverage of all subjects.
+            </p>
+            <div class="coming-soon-overlay">
+                <p>✨ Grade 10 content is being prepared. Check back soon!</p>
+            </div>
+        </div>
+
+        <div class="grade-section" id="grade-11">
+            <div class="grade-section-header">
+                <div class="grade-title-wrapper">
+                    <span class="grade-section-icon">📚</span>
+                    <h2 class="grade-section-title">Grade 11</h2>
+                </div>
+                <span class="grade-section-badge coming-soon">📜 Coming Soon</span>
+            </div>
+            <p class="grade-description">
+                Advanced level content for entrance exams and higher studies preparation.
+            </p>
+            <div class="coming-soon-overlay">
+                <p>✨ Grade 11 content is being prepared. Check back soon!</p>
+            </div>
+        </div>
+
+        <div class="grade-section" id="grade-12">
+            <div class="grade-section-header">
+                <div class="grade-title-wrapper">
+                    <span class="grade-section-icon">📚</span>
+                    <h2 class="grade-section-title">Grade 12</h2>
+                </div>
+                <span class="grade-section-badge coming-soon">📜 Coming Soon</span>
+            </div>
+            <p class="grade-description">
+                Pre-university level preparation with comprehensive exam coverage.
+            </p>
+            <div class="coming-soon-overlay">
+                <p>✨ Grade 12 content is being prepared. Check back soon!</p>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <p>💡 New grades are being added regularly. Stay tuned for more content! You can follow us on www.linkedin.com/in/bhagyashree-kardile-2773b63a3 for updates.</p>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2024 reflectt-on quizzes. All rights reserved.</p>
+        <p>Empowering students with quality competitive exam preparation</p>
+<p>The content on reflectt-on is provided for general informational and educational purposes only to help with competitive exam preparation. While we aim to keep materials accurate and up to date, we make no guarantees about completeness, correctness, or exam success—use the resources at your own discretion and verify critical information independently.
+
+reflectt-on is not responsible for third-party sites linked from the website, user-submitted content, or any outcomes resulting from use of the site. By using reflectt-on you agree that the site and its owners are not liable for any direct or indirect loss arising from your reliance on the content. </p>
+
+    </footer>
+
+</body>
+</html>
