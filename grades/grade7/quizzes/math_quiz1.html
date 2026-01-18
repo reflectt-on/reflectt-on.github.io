@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Science Quiz - Reflectt-On</title>
+
+  <style>
+    body {
+      <a href="/" class="logo-watermark" title="Home">
+    <img src="images/logo.png" alt="Logo Watermark"></a>
+	
+	font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      padding: 20px;
+      margin: 0;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 400px;
+      background-image: url('YOUR_LOGO_PATH_HERE');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.05;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header-logo img {
+      max-width: 50px;
+      height: auto;
+    }
+
+    h1 {
+      color: #2e8b57;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #555;
+      font-size: 14px;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+
+    #timerDisplay {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #d9534f;
+      margin: 15px 0;
+      display: none;
+    }
+
+    #startBtn, #endQuizBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 25px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #startBtn:hover, #endQuizBtn:hover {
+      background: #246b45;
+    }
+
+    .question {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .difficulty-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
+    .easy { background: #d4edda; color: #155724; }
+    .medium { background: #fff3cd; color: #856404; }
+    .hard { background: #f8d7da; color: #721c24; }
+    .numerical { background: #d1ecf1; color: #0c5460; }
+
+    .options button {
+      width: 100%;
+      margin: 6px 0;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .options button:disabled {
+      background: #e0e0e0;
+      cursor: not-allowed;
+    }
+
+    .result {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #score {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+      color: #2e8b57;
+    }
+
+    #restart {
+      display: none;
+      margin: 30px auto;
+      padding: 12px 20px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 200px;
+    }
+
+    #restart:hover {
+      background: #246b45;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 10px; }
+      .options button { font-size: 15px; padding: 10px; }
+      .header-logo img { max-width: 200px; }
+      body::before { width: 250px; height: 250px; }
+    }
+.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    	.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="logo-watermark" title="Home">
+        <img src="images/logo.png" alt="Logo Watermark">
+    </a>
+
+<body>
+
+  <div class="header-logo">
+    <img src="images/logo.png" alt="Exam Prep Logo">
+  </div>
+
+  <h1>Science Quiz - Mathematics </h1>
+  <p class="subtitle">IIT JEE Foundation - Grade 7</p>
+
+  <button id="startBtn">Start Quiz</button>
+
+  <div id="timerDisplay">⏳ Time: 00:00:00</div>
+
+  <button id="endQuizBtn" style="display:none;">End Quiz</button>
+
+  <div id="quiz"></div>
+  <div id="score"></div>
+
+  <button id="restart" style="display:none;">Restart Quiz</button>
+
+
+  <script>
+    let score = 0;
+    let answered = 0;
+    let quizStartTime = 0;
+    let timerInterval;
+
+    const questionsData = [
+           {
+    "text": "What is the sum of the first 10 natural numbers (1 + 2 + 3 + ... + 10)?",
+    "options": ["45", "50", "55", "60"],
+    "answer": "55",
+    "explanation": "Sum of first n natural numbers = n(n+1)/2. So, sum = 10(10+1)/2 = 10×11/2 = 110/2 = 55.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "If a rectangle has length 12 cm and breadth 8 cm, what is its perimeter?",
+    "options": ["20 cm", "40 cm", "96 cm", "48 cm"],
+    "answer": "40 cm",
+    "explanation": "Perimeter of rectangle = 2(length + breadth) = 2(12 + 8) = 2 × 20 = 40 cm.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is the value of 15² (15 squared)?",
+    "options": ["225", "200", "250", "215"],
+    "answer": "225",
+    "explanation": "15² = 15 × 15 = 225. You can also use (10+5)² = 10² + 2×10×5 + 5² = 100 + 100 + 25 = 225.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which of the following is a prime number?",
+    "options": ["15", "21", "23", "27"],
+    "answer": "23",
+    "explanation": "A prime number has only two factors: 1 and itself. 23 is divisible only by 1 and 23. The others: 15=3×5, 21=3×7, 27=3×9.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "If 5x = 35, what is the value of x?",
+    "options": ["5", "6", "7", "8"],
+    "answer": "7",
+    "explanation": "To find x, divide both sides by 5: x = 35 ÷ 5 = 7.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is the LCM (Least Common Multiple) of 4 and 6?",
+    "options": ["12", "24", "8", "18"],
+    "answer": "12",
+    "explanation": "Multiples of 4: 4, 8, 12, 16... Multiples of 6: 6, 12, 18... The smallest common multiple is 12.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "A square has a side of 9 cm. What is its area?",
+    "options": ["36 cm²", "81 cm²", "18 cm²", "72 cm²"],
+    "answer": "81 cm²",
+    "explanation": "Area of square = side × side = 9 × 9 = 81 cm².",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is 25% of 200?",
+    "options": ["25", "50", "75", "100"],
+    "answer": "50",
+    "explanation": "25% of 200 = (25/100) × 200 = 25 × 2 = 50. Or think: 25% = 1/4, so 1/4 of 200 = 50.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "If a number is divisible by both 2 and 3, it must also be divisible by:",
+    "options": ["5", "6", "9", "12"],
+    "answer": "6",
+    "explanation": "If a number is divisible by both 2 and 3, it is divisible by their LCM, which is 6.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is the HCF (Highest Common Factor) of 12 and 18?",
+    "options": ["2", "3", "6", "9"],
+    "answer": "6",
+    "explanation": "Factors of 12: 1, 2, 3, 4, 6, 12. Factors of 18: 1, 2, 3, 6, 9, 18. The highest common factor is 6.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "If the sum of two angles in a triangle is 100°, what is the third angle?",
+    "options": ["60°", "70°", "80°", "90°"],
+    "answer": "80°",
+    "explanation": "Sum of all angles in a triangle = 180°. Third angle = 180° - 100° = 80°.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is the product of 12 × 15?",
+    "options": ["160", "170", "180", "190"],
+    "answer": "180",
+    "explanation": "12 × 15 = 12 × (10 + 5) = 120 + 60 = 180. Or 12 × 15 = (10 + 2) × 15 = 150 + 30 = 180.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "How many sides does a hexagon have?",
+    "options": ["5", "6", "7", "8"],
+    "answer": "6",
+    "explanation": "A hexagon is a polygon with 6 sides and 6 angles. 'Hex' means six.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "If a train travels 60 km in 1 hour, how far will it travel in 4 hours at the same speed?",
+    "options": ["180 km", "200 km", "240 km", "260 km"],
+    "answer": "240 km",
+    "explanation": "Distance = Speed × Time = 60 km/h × 4 hours = 240 km.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is the value of 2³ + 3²?",
+    "options": ["13", "15", "17", "19"],
+    "answer": "17",
+    "explanation": "2³ = 2 × 2 × 2 = 8, and 3² = 3 × 3 = 9. So, 8 + 9 = 17.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "A book costs ₹150. If there is a 20% discount, what is the sale price?",
+    "options": ["₹100", "₹110", "₹120", "₹130"],
+    "answer": "₹120",
+    "explanation": "20% of ₹150 = (20/100) × 150 = ₹30. Sale price = ₹150 - ₹30 = ₹120.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which of the following fractions is equivalent to 3/4?",
+    "options": ["6/9", "9/12", "12/15", "15/18"],
+    "answer": "9/12",
+    "explanation": "3/4 = (3×3)/(4×3) = 9/12. Both represent the same value when simplified.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "If a = 5 and b = 3, what is the value of 2a + 3b?",
+    "options": ["16", "19", "21", "23"],
+    "answer": "19",
+    "explanation": "2a + 3b = 2(5) + 3(3) = 10 + 9 = 19.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "How many prime numbers are there between 1 and 10?",
+    "options": ["3", "4", "5", "6"],
+    "answer": "4",
+    "explanation": "Prime numbers between 1 and 10 are: 2, 3, 5, and 7. That's 4 prime numbers.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is the average of 10, 20, 30, and 40?",
+    "options": ["20", "25", "30", "35"],
+    "answer": "25",
+    "explanation": "Average = Sum of all numbers / Total count = (10+20+30+40)/4 = 100/4 = 25.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "If the diameter of a circle is 14 cm, what is its radius?",
+    "options": ["5 cm", "6 cm", "7 cm", "8 cm"],
+    "answer": "7 cm",
+    "explanation": "Radius = Diameter ÷ 2 = 14 ÷ 2 = 7 cm. The radius is always half of the diameter.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is the next number in the sequence: 2, 4, 8, 16, __?",
+    "options": ["20", "24", "28", "32"],
+    "answer": "32",
+    "explanation": "Each number is multiplied by 2 to get the next number: 2×2=4, 4×2=8, 8×2=16, 16×2=32.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "If 3/5 of a number is 30, what is the number?",
+    "options": ["40", "45", "50", "55"],
+    "answer": "50",
+    "explanation": "Let the number be x. Then 3x/5 = 30, so 3x = 150, therefore x = 150 ÷ 3 = 50.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is the cube of 4 (4³)?",
+    "options": ["12", "16", "48", "64"],
+    "answer": "64",
+    "explanation": "4³ = 4 × 4 × 4 = 16 × 4 = 64.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "A basket contains 5 red balls and 7 blue balls. What is the ratio of red balls to total balls?",
+    "options": ["5:7", "5:12", "7:12", "12:5"],
+    "answer": "5:12",
+    "explanation": "Total balls = 5 + 7 = 12. Ratio of red balls to total balls = 5:12.",
+    "difficulty": "easy"
+  }
+    ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor((i + 1) * Math.random());
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    document.getElementById("startBtn").onclick = startQuiz;
+    document.getElementById("endQuizBtn").onclick = endQuiz;
+    document.getElementById("restart").onclick = restartQuiz;
+
+    function startQuiz() {
+      document.getElementById("startBtn").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "block";
+      document.getElementById("timerDisplay").style.display = "block";
+
+      renderQuiz(questionsData);
+    }
+
+    function endQuiz() {
+      clearInterval(timerInterval);
+
+      document.getElementById("quiz").innerHTML = "";
+      document.getElementById("score").innerHTML = "";
+      document.getElementById("timerDisplay").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "none";
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("startBtn").style.display = "block";
+    }
+
+    function restartQuiz() {
+      renderQuiz(questionsData);
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("score").innerHTML = "";
+    }
+
+    function renderQuiz(questions) {
+      score = 0;
+      answered = 0;
+
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = "";
+
+      quizStartTime = Date.now();
+      startGlobalTimer();
+
+      questions = shuffle([...questions]);
+
+      questions.forEach((q, index) => {
+        const container = document.createElement("div");
+        container.className = "question";
+
+        const questionText = document.createElement("p");
+        const badge = `<span class="difficulty-badge ${q.difficulty}">${q.difficulty.toUpperCase()}</span>`;
+        questionText.innerHTML = `${index + 1}. ${q.text} ${badge}`;
+        container.appendChild(questionText);
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "options";
+
+        const shuffledOptions = shuffle([...q.options]);
+
+        shuffledOptions.forEach(opt => {
+          const btn = document.createElement("button");
+          btn.textContent = opt;
+
+          btn.onclick = () => {
+            lockQuestion(container, q, opt, btn);
+          };
+
+          optionsDiv.appendChild(btn);
+        });
+
+        container.appendChild(optionsDiv);
+        quizDiv.appendChild(container);
+      });
+    }
+
+    function startGlobalTimer() {
+      clearInterval(timerInterval);
+
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - quizStartTime) / 1000);
+
+        const hrs = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+        const secs = String(elapsed % 60).padStart(2, '0');
+
+        document.getElementById("timerDisplay").textContent =
+          `⏳ Time: ${hrs}:${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function lockQuestion(container, question, selected, selectedBtn) {
+      if (container.dataset.answered) return;
+      container.dataset.answered = true;
+
+      const buttons = container.querySelectorAll("button");
+
+      selectedBtn.style.background = "#007bff";
+      selectedBtn.style.color = "white";
+
+      buttons.forEach(btn => btn.disabled = true);
+
+      const result = document.createElement("p");
+      result.className = "result";
+
+      if (selected === question.answer) {
+        result.textContent = `✅ Correct!`;
+        result.style.color = "green";
+        score++;
+      } else {
+        result.textContent = `❌ Incorrect.`;
+        result.style.color = "red";
+      }
+
+      buttons.forEach(btn => {
+        if (btn.textContent === question.answer) {
+          btn.style.background = "#28a745";
+          btn.style.color = "white";
+        }
+      });
+
+      const explanation = document.createElement("p");
+      explanation.innerHTML = `<strong>Correct Answer:</strong> ${question.answer}<br>
+                               <strong>Explanation:</strong> ${question.explanation}`;
+
+      container.appendChild(result);
+      container.appendChild(explanation);
+
+      answered++;
+
+      if (answered === questionsData.length) {
+        clearInterval(timerInterval);
+
+        const totalTime = Math.floor((Date.now() - quizStartTime) / 1000);
+        const hrs = String(Math.floor(totalTime / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((totalTime % 3600) / 60)).padStart(2, '0');
+        const secs = String(totalTime % 60).padStart(2, '0');
+
+        document.getElementById("score").textContent =
+          `Final Score: ${score} / ${questionsData.length}  
+           Total Time Taken: ${hrs}:${mins}:${secs}`;
+
+        document.getElementById("restart").style.display = "block";
+      }
+    }
+  </script>
+
+</body>
+</html>
