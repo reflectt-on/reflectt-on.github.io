@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Science Quiz - Reflectt-On</title>
+
+  <style>
+    body {
+      <a href="/" class="logo-watermark" title="Home">
+    <img src="images/logo.png" alt="Logo Watermark"></a>
+	
+	font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      padding: 20px;
+      margin: 0;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 400px;
+      background-image: url('YOUR_LOGO_PATH_HERE');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.05;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header-logo img {
+      max-width: 50px;
+      height: auto;
+    }
+
+    h1 {
+      color: #2e8b57;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #555;
+      font-size: 14px;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+
+    #timerDisplay {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #d9534f;
+      margin: 15px 0;
+      display: none;
+    }
+
+    #startBtn, #endQuizBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 25px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #startBtn:hover, #endQuizBtn:hover {
+      background: #246b45;
+    }
+
+    .question {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .difficulty-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
+    .easy { background: #d4edda; color: #155724; }
+    .medium { background: #fff3cd; color: #856404; }
+    .hard { background: #f8d7da; color: #721c24; }
+    .numerical { background: #d1ecf1; color: #0c5460; }
+
+    .options button {
+      width: 100%;
+      margin: 6px 0;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .options button:disabled {
+      background: #e0e0e0;
+      cursor: not-allowed;
+    }
+
+    .result {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #score {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+      color: #2e8b57;
+    }
+
+    #restart {
+      display: none;
+      margin: 30px auto;
+      padding: 12px 20px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 200px;
+    }
+
+    #restart:hover {
+      background: #246b45;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 10px; }
+      .options button { font-size: 15px; padding: 10px; }
+      .header-logo img { max-width: 200px; }
+      body::before { width: 250px; height: 250px; }
+    }
+.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    	.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="logo-watermark" title="Home">
+        <img src="images/logo.png" alt="Logo Watermark">
+    </a>
+
+<body>
+
+  <div class="header-logo">
+    <img src="images/logo.png" alt="Exam Prep Logo">
+  </div>
+
+  <h1>Science Quiz - Mathematics Ratio and Proportion </h1>
+  <p class="subtitle">IIT JEE Foundation - Grade 6</p>
+
+  <button id="startBtn">Start Quiz</button>
+
+  <div id="timerDisplay">⏳ Time: 00:00:00</div>
+
+  <button id="endQuizBtn" style="display:none;">End Quiz</button>
+
+  <div id="quiz"></div>
+  <div id="score"></div>
+
+  <button id="restart" style="display:none;">Restart Quiz</button>
+
+
+  <script>
+    let score = 0;
+    let answered = 0;
+    let quizStartTime = 0;
+    let timerInterval;
+
+    const questionsData = [
+           {
+    "text": "In the ratio 3 : 4, what is the mathematical term for the first number (3)?",
+    "options": ["Consequent", "Anticedent", "Proportion", "Unit"],
+    "answer": "Anticedent",
+    "explanation": "In a ratio, the first term is called the antecedent and the second term is called the consequent.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is the simplest form of the ratio 12 : 24?",
+    "options": ["2 : 1", "1 : 2", "3 : 4", "6 : 12"],
+    "answer": "1 : 2",
+    "explanation": "To simplify a ratio, divide both terms by their highest common factor. 12 ÷ 12 = 1 and 24 ÷ 12 = 2, giving 1 : 2.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "A class has 20 girls and 15 boys. What is the ratio of the number of girls to the number of boys?",
+    "options": ["3 : 4", "4 : 3", "4 : 7", "7 : 4"],
+    "answer": "4 : 3",
+    "explanation": "The ratio is 20 : 15. Dividing both terms by 5, we get 4 : 3.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "To find a ratio between two quantities, which of the following conditions must be met?",
+    "options": ["They must be of different kinds", "They must be in the same units", "The first term must be larger than the second", "They must both be decimals"],
+    "answer": "They must be in the same units",
+    "explanation": "To compare two quantities as a ratio, they must be of the same kind and expressed in the same units.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is the ratio of Rs 2 to 50 paise?",
+    "options": ["2 : 50", "1 : 25", "4 : 1", "1 : 4"],
+    "answer": "4 : 1",
+    "explanation": "Convert Rs 2 to 200 paise. The ratio is 200 : 50, which simplifies to 4 : 1.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "If 2, 3, 4, and 6 are in proportion, which of the following statements is true regarding their products?",
+    "options": ["2 + 6 = 3 + 4", "2 × 3 = 4 × 6", "2 × 6 = 3 × 4", "6 - 2 = 4 - 3"],
+    "answer": "2 × 6 = 3 × 4",
+    "explanation": "In a proportion, the product of the extreme terms (2 and 6) is equal to the product of the mean terms (3 and 4).",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Find the value of x in the proportion 11 : 13 :: x : 26.",
+    "options": ["20", "22", "24", "26"],
+    "answer": "22",
+    "explanation": "Product of means = Product of extremes. 13 × x = 11 × 26. x = (11 × 26) / 13 = 22.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which ratio is greater: 3 : 5 or 4 : 7?",
+    "options": ["3 : 5", "4 : 7", "They are equal", "Cannot be determined"],
+    "answer": "3 : 5",
+    "explanation": "3/5 = 21/35 and 4/7 = 20/35. Since 21 > 20, 3 : 5 is greater than 4 : 7.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "The ratio of two numbers is 3 : 7. If the sum of the numbers is 700, find the numbers.",
+    "options": ["200, 500", "300, 400", "210, 490", "110, 590"],
+    "answer": "210, 490",
+    "explanation": "Sum of parts = 3 + 7 = 10. Each part = 700 / 10 = 70. The numbers are 3 × 70 = 210 and 7 × 70 = 490.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "If the cost of 2 apples is Rs 12, what will be the cost of 6 apples using the unitary method?",
+    "options": ["Rs 24", "Rs 30", "Rs 36", "Rs 48"],
+    "answer": "Rs 36",
+    "explanation": "Cost of 1 apple = 12 / 2 = Rs 6. Cost of 6 apples = 6 × 6 = Rs 36.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Divide 20 pens between Sheela and Sangeeta in the ratio 3 : 2. How many pens does Sheela get?",
+    "options": ["8", "10", "12", "15"],
+    "answer": "12",
+    "explanation": "Total parts = 3 + 2 = 5. Sheela's share = (3/5) × 20 = 12.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Determine if 15, 45, 40, 120 are in proportion.",
+    "options": ["Yes", "No", "Only if added", "Only if subtracted"],
+    "answer": "Yes",
+    "explanation": "15/45 = 1/3 and 40/120 = 1/3. Since the ratios are equal, they are in proportion.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "The height of Apala is 150 cm and the height of Pari is 120 cm. Find the ratio of Apala's height to Pari's height.",
+    "options": ["4 : 5", "5 : 4", "5 : 2", "3 : 2"],
+    "answer": "5 : 4",
+    "explanation": "The ratio is 150 : 120. Dividing both by 30 gives 5 : 4.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Find the simplest form of the ratio of three quantities 6 : 10 : 14.",
+    "options": ["6 : 10 : 14", "3 : 5 : 7", "1 : 2 : 3", "12 : 20 : 28"],
+    "answer": "3 : 5 : 7",
+    "explanation": "Divide all terms by their common factor 2. 6/2 : 10/2 : 14/2 = 3 : 5 : 7.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Hamid and Akhtar travel 9 km and 12 km in an hour respectively. Find the ratio of Hamid's speed to Akhtar's speed.",
+    "options": ["4 : 3", "3 : 4", "9 : 1", "1 : 12"],
+    "answer": "3 : 4",
+    "explanation": "Speed = Distance / Time. Hamid's speed is 9 km/hr and Akhtar's is 12 km/hr. Ratio = 9 : 12 = 3 : 4.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "In a proportion a : b :: c : d, what are terms 'a' and 'd' called?",
+    "options": ["Means", "Middle terms", "Extremes", "Consequents"],
+    "answer": "Extremes",
+    "explanation": "In a proportion, the first and fourth terms (a and d) are called the extremes or end terms.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Two numbers are in the ratio 3 : 4. If each is increased by 9, the ratio becomes 6 : 7. Find the original numbers.",
+    "options": ["12, 16", "18, 24", "9, 12", "15, 20"],
+    "answer": "9, 12",
+    "explanation": "Let numbers be 3x and 4x. (3x+9)/(4x+9) = 6/7. 7(3x+9) = 6(4x+9). 21x + 63 = 24x + 54. 3x = 9, so x = 3. Numbers are 9 and 12.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "The monthly salary of Hari is Rs 80,000 and Manish is Rs 40,000. How many times Hari's salary is Manish's salary?",
+    "options": ["1/2 times", "2 times", "3 times", "4 times"],
+    "answer": "2 times",
+    "explanation": "The ratio of Hari's salary to Manish's is 80,000 : 40,000, which is 2 : 1. Thus Hari's salary is 2 times Manish's.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is the ratio of 40 cm to 1 m?",
+    "options": ["40 : 1", "4 : 1", "2 : 5", "5 : 2"],
+    "answer": "2 : 5",
+    "explanation": "Convert 1 m to 100 cm. Ratio is 40 : 100, which simplifies to 4 : 10 or 2 : 5.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "If a car requires 5 litres of petrol to cover 80 km, how many litres are needed for 32 km?",
+    "options": ["1 litre", "2 litres", "3 litres", "4 litres"],
+    "answer": "2 litres",
+    "explanation": "The car covers 80/5 = 16 km per litre. To cover 32 km, it needs 32 / 16 = 2 litres.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Annual incomes of A and B are in the ratio 4 : 5. If A's income increases by 25% and B's by 20%, what is the new ratio?",
+    "options": ["4 : 5", "5 : 6", "6 : 5", "5 : 4"],
+    "answer": "5 : 6",
+    "explanation": "A's new income = 4 + 25% of 4 = 5. B's new income = 5 + 20% of 5 = 6. The new ratio is 5 : 6.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "A father is 42 years old and his son is 14 years old. What was the ratio of their ages when the son was 12 years old?",
+    "options": ["3 : 1", "15 : 1", "10 : 3", "20 : 6"],
+    "answer": "15 : 1",
+    "explanation": "When the son was 12 (2 years ago), the father was 40. The ratio 40 : 2 (14-12=2) simplified by mistake? Actual: son was 12 is 2 years ago, father was 40. Ratio 40:12 = 10:3. Source [1] says if son was 12, son age is 2? No, son age 12 means 2 years ago. Father was 30 when son was 2? 42-12=30. Ratio 30:2 = 15:1.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Are the ratios 2 : 3 and 10 : 15 equivalent?",
+    "options": ["Yes", "No", "Only if multiplied by 2", "Only if divided by 5"],
+    "answer": "Yes",
+    "explanation": "Multiplying both terms of 2 : 3 by 5 gives 10 : 15, so they are equivalent.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "The weight of 72 books is 9 kg. What is the weight of 40 such books?",
+    "options": ["4 kg", "5 kg", "6 kg", "7.5 kg"],
+    "answer": "5 kg",
+    "explanation": "Weight of 1 book = 9 / 72 = 1/8 kg. Weight of 40 books = 40 × (1/8) = 5 kg.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "If p : q : r = 1 : 2 : 3 and the difference between q and r is 5, find the sum of p, q, and r.",
+    "options": ["15", "25", "30", "45"],
+    "answer": "30",
+    "explanation": "Let parts be x, 2x, 3x. Difference 3x - 2x = x = 5. Sum = x + 2x + 3x = 6x = 6 × 5 = 30.",
+    "difficulty": "medium"
+  }
+    ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor((i + 1) * Math.random());
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    document.getElementById("startBtn").onclick = startQuiz;
+    document.getElementById("endQuizBtn").onclick = endQuiz;
+    document.getElementById("restart").onclick = restartQuiz;
+
+    function startQuiz() {
+      document.getElementById("startBtn").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "block";
+      document.getElementById("timerDisplay").style.display = "block";
+
+      renderQuiz(questionsData);
+    }
+
+    function endQuiz() {
+      clearInterval(timerInterval);
+
+      document.getElementById("quiz").innerHTML = "";
+      document.getElementById("score").innerHTML = "";
+      document.getElementById("timerDisplay").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "none";
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("startBtn").style.display = "block";
+    }
+
+    function restartQuiz() {
+      renderQuiz(questionsData);
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("score").innerHTML = "";
+    }
+
+    function renderQuiz(questions) {
+      score = 0;
+      answered = 0;
+
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = "";
+
+      quizStartTime = Date.now();
+      startGlobalTimer();
+
+      questions = shuffle([...questions]);
+
+      questions.forEach((q, index) => {
+        const container = document.createElement("div");
+        container.className = "question";
+
+        const questionText = document.createElement("p");
+        const badge = `<span class="difficulty-badge ${q.difficulty}">${q.difficulty.toUpperCase()}</span>`;
+        questionText.innerHTML = `${index + 1}. ${q.text} ${badge}`;
+        container.appendChild(questionText);
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "options";
+
+        const shuffledOptions = shuffle([...q.options]);
+
+        shuffledOptions.forEach(opt => {
+          const btn = document.createElement("button");
+          btn.textContent = opt;
+
+          btn.onclick = () => {
+            lockQuestion(container, q, opt, btn);
+          };
+
+          optionsDiv.appendChild(btn);
+        });
+
+        container.appendChild(optionsDiv);
+        quizDiv.appendChild(container);
+      });
+    }
+
+    function startGlobalTimer() {
+      clearInterval(timerInterval);
+
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - quizStartTime) / 1000);
+
+        const hrs = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+        const secs = String(elapsed % 60).padStart(2, '0');
+
+        document.getElementById("timerDisplay").textContent =
+          `⏳ Time: ${hrs}:${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function lockQuestion(container, question, selected, selectedBtn) {
+      if (container.dataset.answered) return;
+      container.dataset.answered = true;
+
+      const buttons = container.querySelectorAll("button");
+
+      selectedBtn.style.background = "#007bff";
+      selectedBtn.style.color = "white";
+
+      buttons.forEach(btn => btn.disabled = true);
+
+      const result = document.createElement("p");
+      result.className = "result";
+
+      if (selected === question.answer) {
+        result.textContent = `✅ Correct!`;
+        result.style.color = "green";
+        score++;
+      } else {
+        result.textContent = `❌ Incorrect.`;
+        result.style.color = "red";
+      }
+
+      buttons.forEach(btn => {
+        if (btn.textContent === question.answer) {
+          btn.style.background = "#28a745";
+          btn.style.color = "white";
+        }
+      });
+
+      const explanation = document.createElement("p");
+      explanation.innerHTML = `<strong>Correct Answer:</strong> ${question.answer}<br>
+                               <strong>Explanation:</strong> ${question.explanation}`;
+
+      container.appendChild(result);
+      container.appendChild(explanation);
+
+      answered++;
+
+      if (answered === questionsData.length) {
+        clearInterval(timerInterval);
+
+        const totalTime = Math.floor((Date.now() - quizStartTime) / 1000);
+        const hrs = String(Math.floor(totalTime / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((totalTime % 3600) / 60)).padStart(2, '0');
+        const secs = String(totalTime % 60).padStart(2, '0');
+
+        document.getElementById("score").textContent =
+          `Final Score: ${score} / ${questionsData.length}  
+           Total Time Taken: ${hrs}:${mins}:${secs}`;
+
+        document.getElementById("restart").style.display = "block";
+      }
+    }
+  </script>
+
+</body>
+</html>
