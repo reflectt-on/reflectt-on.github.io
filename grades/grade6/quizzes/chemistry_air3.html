@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Science Quiz - Reflectt-On</title>
+
+  <style>
+    body {
+      <a href="/" class="logo-watermark" title="Home">
+    <img src="images/logo.png" alt="Logo Watermark"></a>
+	
+	font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      padding: 20px;
+      margin: 0;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 400px;
+      background-image: url('YOUR_LOGO_PATH_HERE');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.05;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header-logo img {
+      max-width: 50px;
+      height: auto;
+    }
+
+    h1 {
+      color: #2e8b57;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #555;
+      font-size: 14px;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+
+    #timerDisplay {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #d9534f;
+      margin: 15px 0;
+      display: none;
+    }
+
+    #startBtn, #endQuizBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 25px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #startBtn:hover, #endQuizBtn:hover {
+      background: #246b45;
+    }
+
+    .question {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .difficulty-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
+    .easy { background: #d4edda; color: #155724; }
+    .medium { background: #fff3cd; color: #856404; }
+    .hard { background: #f8d7da; color: #721c24; }
+    .numerical { background: #d1ecf1; color: #0c5460; }
+
+    .options button {
+      width: 100%;
+      margin: 6px 0;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .options button:disabled {
+      background: #e0e0e0;
+      cursor: not-allowed;
+    }
+
+    .result {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #score {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+      color: #2e8b57;
+    }
+
+    #restart {
+      display: none;
+      margin: 30px auto;
+      padding: 12px 20px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 200px;
+    }
+
+    #restart:hover {
+      background: #246b45;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 10px; }
+      .options button { font-size: 15px; padding: 10px; }
+      .header-logo img { max-width: 200px; }
+      body::before { width: 250px; height: 250px; }
+    }
+.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    	.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="logo-watermark" title="Home">
+        <img src="images/logo.png" alt="Logo Watermark">
+    </a>
+
+<body>
+
+  <div class="header-logo">
+    <img src="images/logo.png" alt="Exam Prep Logo">
+  </div>
+
+  <h1>Science Quiz - Chemistry Air- Atmosphere </h1>
+  <p class="subtitle">IIT JEE Foundation - Grade 6</p>
+
+  <button id="startBtn">Start Quiz</button>
+
+  <div id="timerDisplay">⏳ Time: 00:00:00</div>
+
+  <button id="endQuizBtn" style="display:none;">End Quiz</button>
+
+  <div id="quiz"></div>
+  <div id="score"></div>
+
+  <button id="restart" style="display:none;">Restart Quiz</button>
+
+
+  <script>
+    let score = 0;
+    let answered = 0;
+    let quizStartTime = 0;
+    let timerInterval;
+
+    const questionsData = [
+         {
+    "text": "If we consider the 1% of the atmosphere that is NOT comprised of Nitrogen or Oxygen, which gas is the most abundant within that specific fraction?",
+    "options": ["Carbon dioxide", "Argon", "Water vapour", "Helium"],
+    "answer": "Argon",
+    "explanation": "While Nitrogen and Oxygen make up 99% of the air, the remaining 1% is mostly composed of Argon (0.9%), with Carbon dioxide and other trace gases making up the rest [1, 2].",
+    "difficulty": "hard"
+  },
+  {
+    "text": "What occurs to the boiling point of water at the top of a high mountain compared to sea level, and why?",
+    "options": ["It increases because atmospheric pressure is higher", "It decreases because atmospheric pressure is lower", "It stays the same because temperature is lower", "It decreases because oxygen is less abundant"],
+    "answer": "It decreases because atmospheric pressure is lower",
+    "explanation": "According to the sources, atmospheric pressure decreases as you go higher in elevation; this lower pressure causes the boiling point of water to reduce [3-5].",
+    "difficulty": "hard"
+  },
+  {
+    "text": "Based on the solubility of gases in water, how does the percentage of oxygen in dissolved air compare to its percentage in the atmosphere?",
+    "explanation": "The sources state that because oxygen is more soluble in water than nitrogen, the air dissolved in water contains a higher percentage of oxygen (30–35%) than ordinary atmospheric air (21%) [6].",
+    "options": ["It is lower (approx 15%)", "It is exactly the same (21%)", "It is higher (approx 30-35%)", "Dissolved air contains no oxygen"],
+    "answer": "It is higher (approx 30-35%)",
+    "difficulty": "hard"
+  },
+  {
+    "text": "According to the kinetic theory mentioned in the sources, why does air expand when it is heated?",
+    "options": ["The atoms grow larger in size", "The molecules move faster and strike each other with greater force", "The molecules become lighter and rise", "The intermolecular spaces between particles disappear"],
+    "answer": "The molecules move faster and strike each other with greater force",
+    "explanation": "When air is heated, molecules gain energy, move faster, and hit each other with more force, which pushes them further apart and causes expansion [3, 7].",
+    "difficulty": "hard"
+  },
+  {
+    "text": "Which of the following describes the percentage of Oxygen present in the Earth’s crust by weight, as opposed to its volume in the atmosphere?",
+    "options": ["21%", "78%", "49.85%", "0.03%"],
+    "answer": "49.85%",
+    "explanation": "While oxygen makes up 21% of the atmosphere by volume, it is the most abundant element in the Earth's crust by weight, making up 49.85% [8, 9].",
+    "difficulty": "hard"
+  },
+  {
+    "text": "During a thunderstorm, what specific chemical transformation occurs involving atmospheric nitrogen?",
+    "options": ["Nitrogen is converted into oxygen by lightning", "Nitrogen is converted into compounds that fall to Earth with rain", "Nitrogen gas is used up to create the ozone layer", "Nitrogen is solidified into dust particles"],
+    "answer": "Nitrogen is converted into compounds that fall to Earth with rain",
+    "explanation": "During thunderstorms, nitrogen in the air is converted into compounds that mix with rain and fall to the ground, where plants absorb them to make proteins [10].",
+    "difficulty": "hard"
+  },
+  {
+    "text": "If a sample of air contains 4% water vapour, what can be inferred about the remaining composition of that specific sample?",
+    "options": ["Oxygen must increase to 25%", "The combined percentage of other gases must decrease to 96%", "Carbon dioxide will disappear", "Nitrogen becomes the only other component"],
+    "answer": "The combined percentage of other gases must decrease to 96%",
+    "explanation": "Air is a mixture; if water vapour constitutes approximately 4% of the volume in lower layers, the other components must adjust to make up the total 100% [1].",
+    "difficulty": "hard"
+  },
+  {
+    "text": "Which layer of the atmosphere contains the highest concentration of air, with 99% of total air found within just 30 km of the surface?",
+    "options": ["Troposphere and lower Stratosphere", "Exosphere", "Mesosphere", "Thermosphere"],
+    "answer": "Troposphere and lower Stratosphere",
+    "explanation": "The sources note that compared to Earth's size, the atmosphere is thin; 99% of all air is found up to a height of 30 kilometres above the surface [1].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "In the context of combustion, what is the critical role played by Nitrogen in the atmosphere?",
+    "options": ["It acts as a fuel for the fire", "It acts as a neutral diluent to control the rate of burning", "It combines with oxygen to create water vapour", "It is the only gas that allows matchsticks to light"],
+    "answer": "It acts as a neutral diluent to control the rate of burning",
+    "explanation": "Nitrogen is chemically neutral; its presence prevents substances from burning uncontrollably by diluting the oxygen [10].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Why do mountaineers experience more fatigue at high altitudes according to the physics of the atmosphere?",
+    "options": ["Because gravity is stronger at high peaks", "Because atmospheric pressure is lower and oxygen is less abundant", "Because the wind speed is too high for respiration", "Because carbon dioxide levels rise at high altitudes"],
+    "answer": "Because atmospheric pressure is lower and oxygen is less abundant",
+    "explanation": "At high elevations, atmospheric pressure decreases and the air gets rarer, meaning oxygen is less abundant, leading to fatigue and breathing difficulties [3, 11].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which gas is used in electric bulbs specifically because it is an 'inert gas' and does not react with the filament?",
+    "options": ["Nitrogen", "Oxygen", "Argon", "Carbon dioxide"],
+    "answer": "Argon",
+    "explanation": "Argon is a noble (inert) gas used in electric bulbs to prevent the filament from reacting and burning out at high temperatures [12].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "What is the primary product formed when carbon dioxide is dissolved in water under normal conditions?",
+    "options": ["Hydrochloric acid", "Sulphuric acid", "Carbonic acid", "Nitric acid"],
+    "answer": "Carbonic acid",
+    "explanation": "The sources identify that when carbon dioxide gas is dissolved in water, it forms carbonic acid [13, 14].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which of the following is considered an 'abiotic' component of the environment that is essential for weather formation?",
+    "options": ["Plants", "Bacteria", "Atmosphere", "Fungi"],
+    "answer": "Atmosphere",
+    "explanation": "The environment consists of biotic (living) and abiotic (non-living) components. The atmosphere is an abiotic component where weather formation occurs [15, 16].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Ozone is extremely useful for living beings because it acts as a protective layer against which of the following?",
+    "options": ["Infrared radiation", "X-rays", "Ultraviolet (UV) radiation", "Microwaves"],
+    "answer": "Ultraviolet (UV) radiation",
+    "explanation": "Ozone in the atmosphere prevents harmful ultraviolet rays from reaching the Earth, protecting living organisms [1, 17].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "When water is heated, bubbles appear on the inner surface of the vessel before boiling begins. This observation proves that:",
+    "options": ["Water is a mixture of hydrogen and oxygen", "Air is dissolved in water", "The container is leaking air", "The heat is creating new air"],
+    "answer": "Air is dissolved in water",
+    "explanation": "Heating water causes the air dissolved within it to escape, which is seen as tiny air bubbles on the inner surface [18].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "In the process of photosynthesis, plants use carbon dioxide and release which gas back into the atmosphere?",
+    "options": ["Nitrogen", "Argon", "Oxygen", "Helium"],
+    "answer": "Oxygen",
+    "explanation": "Plants take in carbon dioxide for photosynthesis and produce oxygen as a byproduct, which is essential for animal respiration [1, 19].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which constituent of air is most variable in its concentration from place to place and time to time?",
+    "options": ["Nitrogen", "Oxygen", "Water vapour and dust particles", "Argon"],
+    "answer": "Water vapour and dust particles",
+    "explanation": "The amounts of nitrogen and oxygen are relatively fixed, but water vapour and dust particles vary significantly depending on the location [1, 10].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "What is the scientific term for the thick, hazy layer of the atmosphere formed when smoke particles mix with fog?",
+    "options": ["Mist", "Soot", "Smog", "Dew"],
+    "answer": "Smog",
+    "explanation": "Smog is a specific mixture of smoke and fog, often occurring in industrial areas or during winter [10, 20].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which gas makes up roughly 0.03% to 0.04% of the atmosphere and is required by plants for making food?",
+    "options": ["Oxygen", "Carbon dioxide", "Nitrogen", "Neon"],
+    "answer": "Carbon dioxide",
+    "explanation": "Carbon dioxide is present in a small quantity (0.03%–0.04%) and is absorbed by plants for photosynthesis [1, 2].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "The instrument used specifically to show the direction of wind at a particular place is called a:",
+    "options": ["Speedometer", "Thermometer", "Weather cock", "Anemometer"],
+    "answer": "Weather cock",
+    "explanation": "A weather cock (or wind vane) is the device used to indicate the direction from which the wind is blowing [19, 21].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which Indian physicist and meteorologist is known for inventing many instruments used to measure weather parameters?",
+    "options": ["C.V. Raman", "Anna Mani", "Homi Bhabha", "Vikram Sarabhai"],
+    "answer": "Anna Mani",
+    "explanation": "Anna Mani, known as the 'Weather Woman of India', was a physicist who invented various instruments for monitoring the atmosphere [22, 23].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which of the following statements about air is FALSE based on the provided material?",
+    "options": ["Air has mass", "Air occupies space", "Air is a single pure element", "Air is present in soil"],
+    "answer": "Air is a single pure element",
+    "explanation": "The sources explicitly state that air is a mixture of many gases, not a single element [2, 24].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Why do factory chimneys have great heights?",
+    "options": ["To catch more wind for power", "To release harmful smoke and gases high up away from ground level", "To collect rainwater more effectively", "To measure the height of the atmosphere"],
+    "answer": "To release harmful smoke and gases high up away from ground level",
+    "explanation": "Factories use tall chimneys to release pollutants high in the atmosphere, reducing the direct impact on living beings at the surface [25].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Earthworms come out of the soil during heavy rains primarily because:",
+    "options": ["They need water to swim", "Rainwater fills the air spaces in the soil, preventing respiration", "The soil becomes too hot", "They follow the sound of the rain"],
+    "answer": "Rainwater fills the air spaces in the soil, preventing respiration",
+    "explanation": "Organisms in the soil use air in the pores to breathe; heavy rain fills these spaces, forcing them to come to the surface for air [19, 26].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "What is the approximate total percentage of the atmosphere made up of Nitrogen and Oxygen combined?",
+    "options": ["78%", "21%", "99%", "1%"],
+    "answer": "99%",
+    "explanation": "Nitrogen accounts for ~78% and Oxygen for ~21%, together making up about 99% of the air [1, 18].",
+    "difficulty": "easy"
+  }
+    ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor((i + 1) * Math.random());
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    document.getElementById("startBtn").onclick = startQuiz;
+    document.getElementById("endQuizBtn").onclick = endQuiz;
+    document.getElementById("restart").onclick = restartQuiz;
+
+    function startQuiz() {
+      document.getElementById("startBtn").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "block";
+      document.getElementById("timerDisplay").style.display = "block";
+
+      renderQuiz(questionsData);
+    }
+
+    function endQuiz() {
+      clearInterval(timerInterval);
+
+      document.getElementById("quiz").innerHTML = "";
+      document.getElementById("score").innerHTML = "";
+      document.getElementById("timerDisplay").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "none";
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("startBtn").style.display = "block";
+    }
+
+    function restartQuiz() {
+      renderQuiz(questionsData);
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("score").innerHTML = "";
+    }
+
+    function renderQuiz(questions) {
+      score = 0;
+      answered = 0;
+
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = "";
+
+      quizStartTime = Date.now();
+      startGlobalTimer();
+
+      questions = shuffle([...questions]);
+
+      questions.forEach((q, index) => {
+        const container = document.createElement("div");
+        container.className = "question";
+
+        const questionText = document.createElement("p");
+        const badge = `<span class="difficulty-badge ${q.difficulty}">${q.difficulty.toUpperCase()}</span>`;
+        questionText.innerHTML = `${index + 1}. ${q.text} ${badge}`;
+        container.appendChild(questionText);
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "options";
+
+        const shuffledOptions = shuffle([...q.options]);
+
+        shuffledOptions.forEach(opt => {
+          const btn = document.createElement("button");
+          btn.textContent = opt;
+
+          btn.onclick = () => {
+            lockQuestion(container, q, opt, btn);
+          };
+
+          optionsDiv.appendChild(btn);
+        });
+
+        container.appendChild(optionsDiv);
+        quizDiv.appendChild(container);
+      });
+    }
+
+    function startGlobalTimer() {
+      clearInterval(timerInterval);
+
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - quizStartTime) / 1000);
+
+        const hrs = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+        const secs = String(elapsed % 60).padStart(2, '0');
+
+        document.getElementById("timerDisplay").textContent =
+          `⏳ Time: ${hrs}:${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function lockQuestion(container, question, selected, selectedBtn) {
+      if (container.dataset.answered) return;
+      container.dataset.answered = true;
+
+      const buttons = container.querySelectorAll("button");
+
+      selectedBtn.style.background = "#007bff";
+      selectedBtn.style.color = "white";
+
+      buttons.forEach(btn => btn.disabled = true);
+
+      const result = document.createElement("p");
+      result.className = "result";
+
+      if (selected === question.answer) {
+        result.textContent = `✅ Correct!`;
+        result.style.color = "green";
+        score++;
+      } else {
+        result.textContent = `❌ Incorrect.`;
+        result.style.color = "red";
+      }
+
+      buttons.forEach(btn => {
+        if (btn.textContent === question.answer) {
+          btn.style.background = "#28a745";
+          btn.style.color = "white";
+        }
+      });
+
+      const explanation = document.createElement("p");
+      explanation.innerHTML = `<strong>Correct Answer:</strong> ${question.answer}<br>
+                               <strong>Explanation:</strong> ${question.explanation}`;
+
+      container.appendChild(result);
+      container.appendChild(explanation);
+
+      answered++;
+
+      if (answered === questionsData.length) {
+        clearInterval(timerInterval);
+
+        const totalTime = Math.floor((Date.now() - quizStartTime) / 1000);
+        const hrs = String(Math.floor(totalTime / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((totalTime % 3600) / 60)).padStart(2, '0');
+        const secs = String(totalTime % 60).padStart(2, '0');
+
+        document.getElementById("score").textContent =
+          `Final Score: ${score} / ${questionsData.length}  
+           Total Time Taken: ${hrs}:${mins}:${secs}`;
+
+        document.getElementById("restart").style.display = "block";
+      }
+    }
+  </script>
+
+</body>
+</html>
