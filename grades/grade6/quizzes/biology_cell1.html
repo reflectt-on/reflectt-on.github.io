@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Science Quiz - Reflectt-On</title>
+
+  <style>
+    body {
+      <a href="/" class="logo-watermark" title="Home">
+    <img src="images/logo.png" alt="Logo Watermark"></a>
+	
+	font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      padding: 20px;
+      margin: 0;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 400px;
+      background-image: url('YOUR_LOGO_PATH_HERE');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.05;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header-logo img {
+      max-width: 50px;
+      height: auto;
+    }
+
+    h1 {
+      color: #2e8b57;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #555;
+      font-size: 14px;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+
+    #timerDisplay {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #d9534f;
+      margin: 15px 0;
+      display: none;
+    }
+
+    #startBtn, #endQuizBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 25px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #startBtn:hover, #endQuizBtn:hover {
+      background: #246b45;
+    }
+
+    .question {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .difficulty-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
+    .easy { background: #d4edda; color: #155724; }
+    .medium { background: #fff3cd; color: #856404; }
+    .hard { background: #f8d7da; color: #721c24; }
+    .numerical { background: #d1ecf1; color: #0c5460; }
+
+    .options button {
+      width: 100%;
+      margin: 6px 0;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .options button:disabled {
+      background: #e0e0e0;
+      cursor: not-allowed;
+    }
+
+    .result {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #score {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+      color: #2e8b57;
+    }
+
+    #restart {
+      display: none;
+      margin: 30px auto;
+      padding: 12px 20px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 200px;
+    }
+
+    #restart:hover {
+      background: #246b45;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 10px; }
+      .options button { font-size: 15px; padding: 10px; }
+      .header-logo img { max-width: 200px; }
+      body::before { width: 250px; height: 250px; }
+    }
+.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    	.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="logo-watermark" title="Home">
+        <img src="images/logo.png" alt="Logo Watermark">
+    </a>
+
+<body>
+
+  <div class="header-logo">
+    <img src="images/logo.png" alt="Exam Prep Logo">
+  </div>
+
+  <h1>Science Quiz - Biology- Cell </h1>
+  <p class="subtitle">IIT JEE Foundation - Grade 6</p>
+
+  <button id="startBtn">Start Quiz</button>
+
+  <div id="timerDisplay">⏳ Time: 00:00:00</div>
+
+  <button id="endQuizBtn" style="display:none;">End Quiz</button>
+
+  <div id="quiz"></div>
+  <div id="score"></div>
+
+  <button id="restart" style="display:none;">Restart Quiz</button>
+
+
+  <script>
+    let score = 0;
+    let answered = 0;
+    let quizStartTime = 0;
+    let timerInterval;
+
+    const questionsData = [
+            {
+    "text": "What is considered the basic structural and functional unit of all living organisms?",
+    "options": ["Tissue", "Organ", "Cell", "Muscle"],
+    "answer": "Cell",
+    "explanation": "According to the sources, a cell is the basic unit of life and is the structural and functional unit of organisms [1], [2], [3].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Living things that consist of only a single cell are known as:",
+    "options": ["Multicellular organisms", "Unicellular organisms", "Abiotic components", "Tissues"],
+    "answer": "Unicellular organisms",
+    "explanation": "Organisms consisting of only a single cell, such as Amoeba or bacteria, are called unicellular organisms [1], [3].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which of the following is an example of a unicellular organism?",
+    "options": ["Mango plant", "Amoeba", "Rose plant", "Dog"],
+    "answer": "Amoeba",
+    "explanation": "The sources list Amoeba, yeast, and bacteria as examples of unicellular organisms [1], [2].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Living things made up of millions of cells are called:",
+    "options": ["Unicellular organisms", "Multicellular organisms", "Inert gases", "Molecules"],
+    "answer": "Multicellular organisms",
+    "explanation": "Most living things are made up of millions of cells and are referred to as multicellular organisms [1], [4].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "A group of cells similar in structure and function that perform a particular task is called a/an:",
+    "options": ["Organ", "Organ-system", "Tissue", "Organism"],
+    "answer": "Tissue",
+    "explanation": "The sources define a tissue as a group of cells that are similar in structure and function, working together to perform a specific job [5], [6].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which specific structure is found in plant cells but is absent from animal cells?",
+    "options": ["Nucleus", "Cell wall", "Protoplasm", "Cytoplasm"],
+    "answer": "Cell wall",
+    "explanation": "In terms of cell structure, plant cells possess a cell wall, while this structure is absent from animal cells [7], [8].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Besides a cell wall, what other structures are present in plant cells but lacking in animal cells?",
+    "options": ["Tissues", "Organs", "Chloroplasts", "Molecules"],
+    "answer": "Chloroplasts",
+    "explanation": "Plant cells contain chloroplasts, which are absent in animal cells, helping plants prepare their own food [7], [8].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "In multicellular organisms, which type of cells are specialized to conduct messages?",
+    "options": ["Muscle cells", "Nerve cells", "Blood cells", "Skin cells"],
+    "answer": "Nerve cells",
+    "explanation": "Cells in multicellular organisms are specialized; for example, nerve cells are specialized to conduct messages [5].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which type of specialized cells are responsible for helping in locomotion in animals?",
+    "options": ["Nerve cells", "Bone cells", "Muscle cells", "Chlorophyll"],
+    "answer": "Muscle cells",
+    "explanation": "In multicellular bodies, muscle cells are specialized to conduct and help in locomotion [5].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Different tissues grouped together into larger units to perform specific tasks form a/an:",
+    "options": ["Cell", "Organ", "Organism", "Species"],
+    "answer": "Organ",
+    "explanation": "Different tissues are often grouped together into larger units called organs, such as the heart or stomach [5].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "What is formed when different organs function together as a coordinated unit?",
+    "options": ["A tissue", "An organ-system", "A multicellular cell", "A kingdom"],
+    "answer": "An organ-system",
+    "explanation": "Organs are organized into organ-systems, where different organs function together, such as the digestive system [5].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "The stomach, which is used to digest food, is classified as a/an:",
+    "options": ["Tissue", "Cell", "Organ", "Organ-system"],
+    "answer": "Organ",
+    "explanation": "The stomach is an organ made up of different tissues, like epithelial and muscular tissues, that works to digest food [5].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Most living things follow a life cycle that begins from:",
+    "options": ["A tissue", "An organ", "A single cell", "A seed only"],
+    "answer": "A single cell",
+    "explanation": "Living things start their life from a single cell, following a life cycle consisting of birth, growth, reproduction, and death [9], [10].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which of the following is NOT a characteristic of cells in living beings according to the sources?",
+    "options": ["Basic unit of life", "Structural and functional unit", "Can be seen with the naked eye", "Carry out nutrition and respiration"],
+    "answer": "Can be seen with the naked eye",
+    "explanation": "Most cells are too small to be seen with the naked eye and require an instrument called a microscope to be observed [11], [12].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Growth in living things is internal and occurs by the addition of which material?",
+    "options": ["Water", "Sand", "Protoplasm", "Chlorophyll"],
+    "answer": "Protoplasm",
+    "explanation": "Growth in living things takes place internally by the addition of new body material called protoplasm [13].",
+    "difficulty": "hard"
+  },
+  {
+    "text": "Which of the following groups contains only multicellular organisms?",
+    "options": ["Amoeba, Bacteria, Yeast", "Mango plant, Dog, Man", "Bacteria, Rose plant, Cow", "Yeast, Mushroom, Fish"],
+    "answer": "Mango plant, Dog, Man",
+    "explanation": "The sources identify the mango plant, rose plant, man, dog, and cat as multicellular organisms [1], [14].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "What does a 'structural unit' refer to in the context of living things?",
+    "options": ["Molecules", "Cells", "Organs", "Bones"],
+    "answer": "Cells",
+    "explanation": "Living things have a structural unit called cells, while non-living things have molecules as their structural unit [15], [2].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "According to the sources, why is a car considered non-living even though it moves?",
+    "options": ["It moves too fast", "It does not have tires", "It does not grow or show other life characteristics", "It is made of metal"],
+    "answer": "It does not grow or show other life characteristics",
+    "explanation": "A car is non-living because it does not grow, respire, or reproduce, and it lacks the internal cellular organization of living beings [16], [17].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which of the following organisms belongs to the plant kingdom but is unicellular?",
+    "options": ["Rose", "Mushroom", "Bacteria", "Dog"],
+    "answer": "Bacteria",
+    "explanation": "Bacteria are described as unicellular, microscopic non-flowering plants [18].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "The heart is an organ that consists of which types of tissues?",
+    "options": ["Only muscular", "Only nervous", "Muscular and nervous", "Epithelial and blood"],
+    "answer": "Muscular and nervous",
+    "explanation": "The heart is an organ consisting of muscular and nervous tissues [5].",
+    "difficulty": "hard"
+  },
+  {
+    "text": "The digestive system is an example of a/an:",
+    "options": ["Organ", "Tissue", "Organ-system", "Cellular group"],
+    "answer": "Organ-system",
+    "explanation": "The digestive system is an organ-system because it consists of various organs like the mouth, stomach, and intestine functioning together [5].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which of these is a non-living thing and therefore does not exist in the form of cells?",
+    "options": ["Bacteria", "Yeast", "Rocks", "Rose plant"],
+    "answer": "Rocks",
+    "explanation": "Cells do not exist in non-living things like rocks, chairs, or tables [19], [15].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which division of biology deals with the study of plants?",
+    "options": ["Zoology", "Botany", "Geology", "Physics"],
+    "answer": "Botany",
+    "explanation": "Biology has two main divisions: botany, which deals with plants, and zoology, which deals with animals [20], [7].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which instrument is required to see microscopic organisms like bacteria or Amoeba?",
+    "options": ["Telescope", "Periscope", "Microscope", "Stethoscope"],
+    "answer": "Microscope",
+    "explanation": "Very small organisms that cannot be seen with the naked eye are seen with the help of a microscope [11], [12].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "The period during which an organism completes its life cycle from birth to death is called its:",
+    "options": ["Life stage", "Life span", "Life process", "Life habit"],
+    "answer": "Life span",
+    "explanation": "The period during which an organism completes its entire life cycle is called its life span [9], [13].",
+    "difficulty": "medium"
+  }
+    ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor((i + 1) * Math.random());
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    document.getElementById("startBtn").onclick = startQuiz;
+    document.getElementById("endQuizBtn").onclick = endQuiz;
+    document.getElementById("restart").onclick = restartQuiz;
+
+    function startQuiz() {
+      document.getElementById("startBtn").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "block";
+      document.getElementById("timerDisplay").style.display = "block";
+
+      renderQuiz(questionsData);
+    }
+
+    function endQuiz() {
+      clearInterval(timerInterval);
+
+      document.getElementById("quiz").innerHTML = "";
+      document.getElementById("score").innerHTML = "";
+      document.getElementById("timerDisplay").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "none";
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("startBtn").style.display = "block";
+    }
+
+    function restartQuiz() {
+      renderQuiz(questionsData);
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("score").innerHTML = "";
+    }
+
+    function renderQuiz(questions) {
+      score = 0;
+      answered = 0;
+
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = "";
+
+      quizStartTime = Date.now();
+      startGlobalTimer();
+
+      questions = shuffle([...questions]);
+
+      questions.forEach((q, index) => {
+        const container = document.createElement("div");
+        container.className = "question";
+
+        const questionText = document.createElement("p");
+        const badge = `<span class="difficulty-badge ${q.difficulty}">${q.difficulty.toUpperCase()}</span>`;
+        questionText.innerHTML = `${index + 1}. ${q.text} ${badge}`;
+        container.appendChild(questionText);
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "options";
+
+        const shuffledOptions = shuffle([...q.options]);
+
+        shuffledOptions.forEach(opt => {
+          const btn = document.createElement("button");
+          btn.textContent = opt;
+
+          btn.onclick = () => {
+            lockQuestion(container, q, opt, btn);
+          };
+
+          optionsDiv.appendChild(btn);
+        });
+
+        container.appendChild(optionsDiv);
+        quizDiv.appendChild(container);
+      });
+    }
+
+    function startGlobalTimer() {
+      clearInterval(timerInterval);
+
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - quizStartTime) / 1000);
+
+        const hrs = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+        const secs = String(elapsed % 60).padStart(2, '0');
+
+        document.getElementById("timerDisplay").textContent =
+          `⏳ Time: ${hrs}:${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function lockQuestion(container, question, selected, selectedBtn) {
+      if (container.dataset.answered) return;
+      container.dataset.answered = true;
+
+      const buttons = container.querySelectorAll("button");
+
+      selectedBtn.style.background = "#007bff";
+      selectedBtn.style.color = "white";
+
+      buttons.forEach(btn => btn.disabled = true);
+
+      const result = document.createElement("p");
+      result.className = "result";
+
+      if (selected === question.answer) {
+        result.textContent = `✅ Correct!`;
+        result.style.color = "green";
+        score++;
+      } else {
+        result.textContent = `❌ Incorrect.`;
+        result.style.color = "red";
+      }
+
+      buttons.forEach(btn => {
+        if (btn.textContent === question.answer) {
+          btn.style.background = "#28a745";
+          btn.style.color = "white";
+        }
+      });
+
+      const explanation = document.createElement("p");
+      explanation.innerHTML = `<strong>Correct Answer:</strong> ${question.answer}<br>
+                               <strong>Explanation:</strong> ${question.explanation}`;
+
+      container.appendChild(result);
+      container.appendChild(explanation);
+
+      answered++;
+
+      if (answered === questionsData.length) {
+        clearInterval(timerInterval);
+
+        const totalTime = Math.floor((Date.now() - quizStartTime) / 1000);
+        const hrs = String(Math.floor(totalTime / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((totalTime % 3600) / 60)).padStart(2, '0');
+        const secs = String(totalTime % 60).padStart(2, '0');
+
+        document.getElementById("score").textContent =
+          `Final Score: ${score} / ${questionsData.length}  
+           Total Time Taken: ${hrs}:${mins}:${secs}`;
+
+        document.getElementById("restart").style.display = "block";
+      }
+    }
+  </script>
+
+</body>
+</html>
