@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Science Quiz - Reflectt-On</title>
+
+  <style>
+    body {
+      <a href="/" class="logo-watermark" title="Home">
+    <img src="images/logo.png" alt="Logo Watermark"></a>
+	
+	font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      padding: 20px;
+      margin: 0;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 400px;
+      background-image: url('YOUR_LOGO_PATH_HERE');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.05;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header-logo img {
+      max-width: 50px;
+      height: auto;
+    }
+
+    h1 {
+      color: #2e8b57;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #555;
+      font-size: 14px;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+
+    #timerDisplay {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #d9534f;
+      margin: 15px 0;
+      display: none;
+    }
+
+    #startBtn, #endQuizBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 25px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #startBtn:hover, #endQuizBtn:hover {
+      background: #246b45;
+    }
+
+    .question {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .difficulty-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
+    .easy { background: #d4edda; color: #155724; }
+    .medium { background: #fff3cd; color: #856404; }
+    .hard { background: #f8d7da; color: #721c24; }
+    .numerical { background: #d1ecf1; color: #0c5460; }
+
+    .options button {
+      width: 100%;
+      margin: 6px 0;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .options button:disabled {
+      background: #e0e0e0;
+      cursor: not-allowed;
+    }
+
+    .result {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #score {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+      color: #2e8b57;
+    }
+
+    #restart {
+      display: none;
+      margin: 30px auto;
+      padding: 12px 20px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 200px;
+    }
+
+    #restart:hover {
+      background: #246b45;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 10px; }
+      .options button { font-size: 15px; padding: 10px; }
+      .header-logo img { max-width: 200px; }
+      body::before { width: 250px; height: 250px; }
+    }
+.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    	.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="logo-watermark" title="Home">
+        <img src="images/logo.png" alt="Logo Watermark">
+    </a>
+
+<body>
+
+  <div class="header-logo">
+    <img src="images/logo.png" alt="Exam Prep Logo">
+  </div>
+
+  <h1>Science Quiz - Biology- Cell </h1>
+  <p class="subtitle">IIT JEE Foundation - Grade 6</p>
+
+  <button id="startBtn">Start Quiz</button>
+
+  <div id="timerDisplay">⏳ Time: 00:00:00</div>
+
+  <button id="endQuizBtn" style="display:none;">End Quiz</button>
+
+  <div id="quiz"></div>
+  <div id="score"></div>
+
+  <button id="restart" style="display:none;">Restart Quiz</button>
+
+
+  <script>
+    let score = 0;
+    let answered = 0;
+    let quizStartTime = 0;
+    let timerInterval;
+
+    const questionsData = [
+          {
+    "text": "While most animals show locomotion, certain organisms like sponges and corals are exceptions. How are they classified despite being stationary?",
+    "options": ["As non-living because they do not move", "As plants because they are fixed to a spot", "As animals because they exhibit other life characteristics like nutrition", "As abiotic components of the ocean"],
+    "answer": "As animals because they exhibit other life characteristics like nutrition",
+    "explanation": "According to the sources, while most animals move, some like sponges and sea-anemones remain fixed. They are still classified as living animals because they perform other essential life functions like respiration and nutrition [1-3].",
+    "difficulty": "hard"
+  },
+  {
+    "text": "Which of the following best describes the difference in growth patterns between a mango tree and a housefly?",
+    "options": ["The tree has limited growth; the fly has unlimited growth", "The tree has unlimited and localised growth; the fly has limited and diffused growth", "Both show unlimited growth until death", "Growth in the tree is external; growth in the fly is internal"],
+    "answer": "The tree has unlimited and localised growth; the fly has limited and diffused growth",
+    "explanation": "The sources state that growth in plants is generally unlimited and localised (occurring at specific points), whereas in animals, it is limited to a certain period and is diffused throughout the body [4, 5].",
+    "difficulty": "hard"
+  },
+  {
+    "text": "A student observes a microscopic organism that is unicellular and non-flowering. It is found in soil, water, and even inside human bodies. This organism is most likely:",
+    "options": ["A virus", "A bacteria", "A moss", "A vertebrate"],
+    "answer": "A bacteria",
+    "explanation": "Bacteria are described as unicellular, microscopic non-flowering plants that occur everywhere, including in air, water, soil, and the food we eat [6, 7].",
+    "difficulty": "hard"
+  },
+  {
+    "text": "When comparing the structural units of a piece of iron and an Amoeba, what is the fundamental difference?",
+    "options": ["Iron is made of cells; Amoeba is made of molecules", "Both are made of cells", "Iron is made of molecules; Amoeba is made of cells", "Neither has a structural unit"],
+    "answer": "Iron is made of molecules; Amoeba is made of cells",
+    "explanation": "The sources distinguish living and non-living things by their structural units: living things (like Amoeba) are made of cells, while non-living things (like iron) are made of molecules [8, 9].",
+    "difficulty": "hard"
+  },
+  {
+    "text": "The heart is an organ that performs a coordinated function. Based on the biological hierarchy, which tissues constitute its structure?",
+    "options": ["Epithelial and blood tissues", "Muscular and nervous tissues", "Bone and muscular tissues", "Nervous and epithelial tissues"],
+    "answer": "Muscular and nervous tissues",
+    "explanation": "In multicellular organisms, organs consist of several different tissues working together; the heart is specifically noted as being made of muscular and nervous tissues [10].",
+    "difficulty": "hard"
+  },
+  {
+    "text": "Growth in a living organism is an internal process. What specific biological material is added to the body to facilitate this growth?",
+    "options": ["Nutrients from the soil", "Water molecules", "Protoplasm", "Chlorophyll"],
+    "answer": "Protoplasm",
+    "explanation": "Growth in living things takes place by the addition of new body material called protoplasm, making the process internal [11, 12].",
+    "difficulty": "hard"
+  },
+  {
+    "text": "Which of the following observations provides the most accurate evidence for the presence of life within a seemingly 'non-living' seed kept in a dry shop?",
+    "options": ["The seed moves slightly when touched", "The seed changes colour over time", "The seed produces heat through respiration", "The seed absorbs water automatically"],
+    "answer": "The seed produces heat through respiration",
+    "explanation": "Respiration is a life process that occurs even in dormant seeds. This can be detected as heat produced inside a sack of grain [13].",
+    "difficulty": "hard"
+  },
+  {
+    "text": "How do Chlamydomonas and Amoeba differ in their biological classification?",
+    "options": ["Chlamydomonas is an animal; Amoeba is a plant", "Chlamydomonas is a unicellular plant (alga); Amoeba is a unicellular animal (protozoan)", "Both are classified as fungi", "Both are classified as multicellular"],
+    "answer": "Chlamydomonas is a unicellular plant (alga); Amoeba is a unicellular animal (protozoan)",
+    "explanation": "Chlamydomonas is an example of a microscopic alga (plant kingdom), while Amoeba is a protozoan (animal kingdom) [6, 14].",
+    "difficulty": "hard"
+  },
+  {
+    "text": "In the process of manufacturing food, plants are called autotrophs. What is the equivalent term for animals, and what does it imply?",
+    "options": ["Saprophytes; they prepare food from soil", "Heterotrophs; they depend on other organisms for food", "Omnivores; they only eat plants", "Decomposers; they produce their own energy"],
+    "answer": "Heterotrophs; they depend on other organisms for food",
+    "explanation": "Organisms that cannot prepare their own food and must depend on plants and other animals are called heterotrophs [15].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which specific cell structure is responsible for the rigid shape of a mango tree leaf but is completely absent in a human cheek cell?",
+    "options": ["Nucleus", "Cytoplasm", "Cell wall", "Chloroplast"],
+    "answer": "Cell wall",
+    "explanation": "Plant cells (like those in a mango leaf) possess a cell wall, which provides structural rigidity, whereas animal cells (like human cheek cells) lack this structure [4, 5, 16].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "A motor car 'breathes' in oxygen and 'excretes' smoke. Why is it still classified as non-living?",
+    "options": ["Because it is made of metal", "Because it does not move on its own", "Because it does not show cellular organisation or reproduction", "Because it is an artificial machine"],
+    "answer": "Because it does not show cellular organisation or reproduction",
+    "explanation": "While a car may show some traits like movement or fuel consumption, only living organisms perform all characteristic life processes, including cellular organisation, reproduction, and internal growth [3, 8].",
+    "difficulty": "hard"
+  },
+  {
+    "text": "Which part of the cell hierarchy represents a group of similar cells performing a particular task, such as message conduction?",
+    "options": ["Organ", "Tissue", "Organism", "Organ-system"],
+    "answer": "Tissue",
+    "explanation": "A tissue is defined as a group of specialized cells (like nerve cells) that are similar in structure and function and work together to perform a specific task [10, 17].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "What is the primary function of chloroplasts within the cells of green plants?",
+    "options": ["To protect the cell from outside damage", "To conduct messages to the roots", "To aid in the preparation of food through photosynthesis", "To help the plant move towards light"],
+    "answer": "To aid in the preparation of food through photosynthesis",
+    "explanation": "Chloroplasts are structures present in plant cells that contain chlorophyll, which helps plants manufacture their own food using sunlight [6, 16].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "If an organism's life cycle begins with a single cell and ends with death, what is the term for the total duration of this period?",
+    "options": ["Life stage", "Life cycle", "Life span", "Life duration"],
+    "answer": "Life span",
+    "explanation": "The period during which an organism completes its entire life cycle from birth to death is called its life span [11, 12].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which of these specialized cells is structurally adapted to help in the locomotion of multicellular animals?",
+    "options": ["Nerve cells", "Blood cells", "Muscle cells", "Stomata"],
+    "answer": "Muscle cells",
+    "explanation": "While nerve cells are specialized to conduct messages, muscle cells are specialized to conduct and assist in locomotion [10].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Which Indian scientist is celebrated for her contributions to meteorology and weather monitoring instruments?",
+    "options": ["Janaki Ammal", "Asima Chatterjee", "Anna Mani", "C.V. Raman"],
+    "answer": "Anna Mani",
+    "explanation": "Anna Mani was a physicist and meteorologist who invented many instruments used to monitor atmospheric parameters [18].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Amoeba and Paramecium belong to which group of organisms, classified under the animal kingdom?",
+    "options": ["Fungi", "Algae", "Protozoa", "Bacteria"],
+    "answer": "Protozoa",
+    "explanation": "Protozoans are single-celled animals. Common examples include Amoeba, Paramecium, and Plasmodium [6, 19].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "What does 'Species' represent in the context of biological classification?",
+    "options": ["A group of different organs", "The highest category of classification", "A group of similar organisms that can reproduce among themselves", "A collection of different organ-systems"],
+    "answer": "A group of similar organisms that can reproduce among themselves",
+    "explanation": "Species is the lowest category in classification, consisting of similar organisms that resemble one another and can reproduce with members of their own group [20, 21].",
+    "difficulty": "hard"
+  },
+  {
+    "text": "Which part of the plant leaf is essential for the exchange of gases like carbon dioxide and oxygen with the atmosphere?",
+    "options": ["Petiole", "Chlorophyll", "Stomata", "Veins"],
+    "answer": "Stomata",
+    "explanation": "Stomata are minute pores on the surface of leaves through which plants absorb carbon dioxide and release oxygen [15, 22].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Who is credited with introducing the 'Binomial System' for naming living organisms?",
+    "options": ["Aristotle", "Carolus Linnaeus", "Charles Darwin", "Brahmagupta"],
+    "answer": "Carolus Linnaeus",
+    "explanation": "The modern system of naming species, which uses a generic name and a specific name, was introduced by Linnaeus [20, 21, 23].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which of the following is a non-flowering plant that lacks the green pigment chlorophyll and must depend on others for food?",
+    "options": ["Algae", "Moss", "Mushroom", "Fern"],
+    "answer": "Mushroom",
+    "explanation": "Mushrooms belong to the fungi group. They are non-flowering and heterotrophic (non-green), meaning they cannot make their own food [7, 14].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "During the nature walk described in the sources, students are warned about stagnant water. Why is preventing water stagnation critical for public health?",
+    "options": ["Stagnant water prevents plant growth", "Stagnant water is necessary for the survival of frogs", "Stagnant water provides a breeding ground for female mosquitoes", "Stagnant water increases atmospheric pressure"],
+    "answer": "Stagnant water provides a breeding ground for female mosquitoes",
+    "explanation": "Preventing stagnant water is crucial because female mosquitoes lay eggs in it, and these insects transmit diseases like malaria and dengue [24, 25].",
+    "difficulty": "medium"
+  },
+  {
+    "text": "In the hierarchical organization of life, which level is formed when different organs function together as a coordinated unit?",
+    "options": ["Tissue", "Cell cluster", "Organ-system", "Species"],
+    "answer": "Organ-system",
+    "explanation": "Organs are organized into organ-systems (like the digestive system), where different organs function together to perform a major body role [10].",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Growth in plants is localized, while growth in animals is diffused. This is because:",
+    "options": ["Plants have cell walls", "Plant growth occurs at specific points; animal growth happens all over", "Animals eat food; plants make it", "Plants have unlimited lifespans"],
+    "answer": "Plant growth occurs at specific points; animal growth happens all over",
+    "explanation": "Plant growth is localised at specific areas (like tips), whereas animal growth is diffused throughout the entire body [4, 5].",
+    "difficulty": "hard"
+  },
+  {
+    "text": "Which of the following correctly describes 'Stimulus' and 'Response'?",
+    "options": ["Response is the cause; Stimulus is the effect", "Stimulus is anything producing an activity; Response is that activity", "They are only found in animals", "Stimulus is internal; Response is always external"],
+    "answer": "Stimulus is anything producing an activity; Response is that activity",
+    "explanation": "The sources define stimulus as anything that produces a response in an organism, and response as the resulting activity in the living body [11, 26].",
+    "difficulty": "medium"
+  }
+    ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor((i + 1) * Math.random());
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    document.getElementById("startBtn").onclick = startQuiz;
+    document.getElementById("endQuizBtn").onclick = endQuiz;
+    document.getElementById("restart").onclick = restartQuiz;
+
+    function startQuiz() {
+      document.getElementById("startBtn").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "block";
+      document.getElementById("timerDisplay").style.display = "block";
+
+      renderQuiz(questionsData);
+    }
+
+    function endQuiz() {
+      clearInterval(timerInterval);
+
+      document.getElementById("quiz").innerHTML = "";
+      document.getElementById("score").innerHTML = "";
+      document.getElementById("timerDisplay").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "none";
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("startBtn").style.display = "block";
+    }
+
+    function restartQuiz() {
+      renderQuiz(questionsData);
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("score").innerHTML = "";
+    }
+
+    function renderQuiz(questions) {
+      score = 0;
+      answered = 0;
+
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = "";
+
+      quizStartTime = Date.now();
+      startGlobalTimer();
+
+      questions = shuffle([...questions]);
+
+      questions.forEach((q, index) => {
+        const container = document.createElement("div");
+        container.className = "question";
+
+        const questionText = document.createElement("p");
+        const badge = `<span class="difficulty-badge ${q.difficulty}">${q.difficulty.toUpperCase()}</span>`;
+        questionText.innerHTML = `${index + 1}. ${q.text} ${badge}`;
+        container.appendChild(questionText);
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "options";
+
+        const shuffledOptions = shuffle([...q.options]);
+
+        shuffledOptions.forEach(opt => {
+          const btn = document.createElement("button");
+          btn.textContent = opt;
+
+          btn.onclick = () => {
+            lockQuestion(container, q, opt, btn);
+          };
+
+          optionsDiv.appendChild(btn);
+        });
+
+        container.appendChild(optionsDiv);
+        quizDiv.appendChild(container);
+      });
+    }
+
+    function startGlobalTimer() {
+      clearInterval(timerInterval);
+
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - quizStartTime) / 1000);
+
+        const hrs = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+        const secs = String(elapsed % 60).padStart(2, '0');
+
+        document.getElementById("timerDisplay").textContent =
+          `⏳ Time: ${hrs}:${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function lockQuestion(container, question, selected, selectedBtn) {
+      if (container.dataset.answered) return;
+      container.dataset.answered = true;
+
+      const buttons = container.querySelectorAll("button");
+
+      selectedBtn.style.background = "#007bff";
+      selectedBtn.style.color = "white";
+
+      buttons.forEach(btn => btn.disabled = true);
+
+      const result = document.createElement("p");
+      result.className = "result";
+
+      if (selected === question.answer) {
+        result.textContent = `✅ Correct!`;
+        result.style.color = "green";
+        score++;
+      } else {
+        result.textContent = `❌ Incorrect.`;
+        result.style.color = "red";
+      }
+
+      buttons.forEach(btn => {
+        if (btn.textContent === question.answer) {
+          btn.style.background = "#28a745";
+          btn.style.color = "white";
+        }
+      });
+
+      const explanation = document.createElement("p");
+      explanation.innerHTML = `<strong>Correct Answer:</strong> ${question.answer}<br>
+                               <strong>Explanation:</strong> ${question.explanation}`;
+
+      container.appendChild(result);
+      container.appendChild(explanation);
+
+      answered++;
+
+      if (answered === questionsData.length) {
+        clearInterval(timerInterval);
+
+        const totalTime = Math.floor((Date.now() - quizStartTime) / 1000);
+        const hrs = String(Math.floor(totalTime / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((totalTime % 3600) / 60)).padStart(2, '0');
+        const secs = String(totalTime % 60).padStart(2, '0');
+
+        document.getElementById("score").textContent =
+          `Final Score: ${score} / ${questionsData.length}  
+           Total Time Taken: ${hrs}:${mins}:${secs}`;
+
+        document.getElementById("restart").style.display = "block";
+      }
+    }
+  </script>
+
+</body>
+</html>
