@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Science Quiz - Reflectt-On</title>
+
+  <style>
+    body {
+      <a href="/" class="logo-watermark" title="Home">
+    <img src="images/logo.png" alt="Logo Watermark"></a>
+	
+	font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      padding: 20px;
+      margin: 0;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 400px;
+      background-image: url('YOUR_LOGO_PATH_HERE');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.05;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header-logo img {
+      max-width: 50px;
+      height: auto;
+    }
+
+    h1 {
+      color: #2e8b57;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #555;
+      font-size: 14px;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+
+    #timerDisplay {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #d9534f;
+      margin: 15px 0;
+      display: none;
+    }
+
+    #startBtn, #endQuizBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 25px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #startBtn:hover, #endQuizBtn:hover {
+      background: #246b45;
+    }
+
+    .question {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .difficulty-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
+    .easy { background: #d4edda; color: #155724; }
+    .medium { background: #fff3cd; color: #856404; }
+    .hard { background: #f8d7da; color: #721c24; }
+    .numerical { background: #d1ecf1; color: #0c5460; }
+
+    .options button {
+      width: 100%;
+      margin: 6px 0;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .options button:disabled {
+      background: #e0e0e0;
+      cursor: not-allowed;
+    }
+
+    .result {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #score {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+      color: #2e8b57;
+    }
+
+    #restart {
+      display: none;
+      margin: 30px auto;
+      padding: 12px 20px;
+      font-size: 18px;
+      background: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 200px;
+    }
+
+    #restart:hover {
+      background: #246b45;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 10px; }
+      .options button { font-size: 15px; padding: 10px; }
+      .header-logo img { max-width: 200px; }
+      body::before { width: 250px; height: 250px; }
+    }
+.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    	.logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+        }
+        .logo-watermark:hover {
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="logo-watermark" title="Home">
+        <img src="images/logo.png" alt="Logo Watermark">
+    </a>
+
+<body>
+
+  <div class="header-logo">
+    <img src="images/logo.png" alt="Exam Prep Logo">
+  </div>
+
+  <h1>Science Quiz - Mathematics Simple Equations </h1>
+  <p class="subtitle">IIT JEE Foundation - Grade 6</p>
+
+  <button id="startBtn">Start Quiz</button>
+
+  <div id="timerDisplay">⏳ Time: 00:00:00</div>
+
+  <button id="endQuizBtn" style="display:none;">End Quiz</button>
+
+  <div id="quiz"></div>
+  <div id="score"></div>
+
+  <button id="restart" style="display:none;">Restart Quiz</button>
+
+
+  <script>
+    let score = 0;
+    let answered = 0;
+    let quizStartTime = 0;
+    let timerInterval;
+
+    const questionsData = [
+          {
+    "text": "The present age of a father is 3 years more than 3 times the age of his son. Three years hence, the father's age will be 10 years more than twice the age of the son. Which equation correctly represents the father's present age (f) in terms of the son's present age (s)?",
+    "options": ["f = 3s + 3", "f = 3(s + 3)", "f + 3 = 3s", "f = 3s - 3"],
+    "answer": "f = 3s + 3",
+    "explanation": "According to the problem, the father's present age is '3 years more than (+3) 3 times (3s)' the son's age.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Following the age problem, if the father's age three years hence is (f + 3) and the son's age is (s + 3), which equation satisfies the condition that the father will be 10 years more than twice the son's age?",
+    "options": ["f + 3 = 2s + 3 + 10", "f + 3 = 2(s + 3) + 10", "f = 2s + 10", "f + 3 = 2s + 10"],
+    "answer": "f + 3 = 2(s + 3) + 10",
+    "explanation": "Three years hence, the father is f+3 and the son is s+3. The condition '10 years more than twice the son's age' translates to 2(s + 3) + 10.",
+    "difficulty": "hard"
+  },
+  {
+    "text": "Which of the following equations has x = 3 as its solution?",
+    "options": ["3x + 2(x + 5) = 40", "8x + 2(x - 2) = 35 - 3x", "3x + 9 = 33", "x / 3 + 5 = 10"],
+    "answer": "8x + 2(x - 2) = 35 - 3x",
+    "explanation": "Substituting x = 3 into the LHS: 8(3) + 2(3-2) = 24 + 2 = 26. RHS: 35 - 3(3) = 35 - 9 = 26. Since LHS = RHS, x = 3 is the solution.",
+    "difficulty": "hard"
+  },
+  {
+    "text": "Two numbers are in the ratio 3:4. If each number is increased by 9, the ratio becomes 6:7. Which equation can be used to find the original numbers?",
+    "options": ["(3x + 9) / (4x + 9) = 6/7", "3x + 9 = 6 and 4x + 9 = 7", "3/4 + 9 = 6/7", "7(3x) = 6(4x) + 9"],
+    "answer": "(3x + 9) / (4x + 9) = 6/7",
+    "explanation": "If the numbers are 3x and 4x, increasing each by 9 gives (3x + 9) and (4x + 9). Their ratio is then set to 6/7.",
+    "difficulty": "hard"
+  },
+  {
+    "text": "In a garden, there are 25 rows of vegetables. There are 5 more rows of peppers than tomatoes and 2 fewer rows of cucumbers than tomatoes. If y represents the number of rows of tomatoes, which equation represents the total rows?",
+    "options": ["y + (y + 5) + (y + 2) = 25", "(y + 5) + y = 25", "(y + 5) + (y - 2) = 25", "(y + 5) + (y - 2) + y = 25"],
+    "answer": "(y + 5) + (y - 2) + y = 25",
+    "explanation": "Tomatoes = y, Peppers = y + 5, Cucumbers = y - 2. The sum of these three types must equal the total number of rows, 25.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "A mathematical statement that indicates the Left Hand Side (LHS) is equal to the Right Hand Side (RHS) is an equation. Which of the following is NOT an equation?",
+    "options": ["x - 2 = 30", "72 / 9 = 8", "x + 5 > 6", "20x = 400"],
+    "answer": "x + 5 > 6",
+    "explanation": "An equation must contain an equality sign (=). Statements with 'greater than' (>) or 'less than' (<) are inequalities, not equations.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "If n / 15 = 3, what is the value of n?",
+    "options": ["5", "12", "18", "45"],
+    "answer": "45",
+    "explanation": "To solve for n, multiply both sides by 15. n = 3 * 15 = 45.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Translate the following into an algebraic equation: 'the double of the sum of fourteen and twice a number a equals forty.'",
+    "options": ["14 + 2a = 40", "2(14 + 2a) = 40", "2 * 2a + 14 = 40", "2(a + 14) = 40"],
+    "answer": "2(14 + 2a) = 40",
+    "explanation": "Twice the number a is 2a. The sum of 14 and 2a is (14 + 2a). Doubling that whole sum gives 2(14 + 2a) = 40.",
+    "difficulty": "hard"
+  },
+  {
+    "text": "A weightlifter lifts a 100 kg load through a height of 5 metres. If work done is defined as W = mgh, find the work done (Take g = 9.8 m/s²).",
+    "options": ["490 J", "980 J", "4900 J", "5000 J"],
+    "answer": "4900 J",
+    "explanation": "W = 100 kg * 9.8 m/s² * 5 m = 4900 J.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Solve for m in the equation: 3m - 7 = 11.",
+    "options": ["3", "4", "6", "9"],
+    "answer": "6",
+    "explanation": "3m = 11 + 7, so 3m = 18. m = 18 / 3 = 6.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "What is the value of the expression 0 - (-3) - (-4)?",
+    "options": ["-7", "-1", "1", "7"],
+    "answer": "7",
+    "explanation": "0 - (-3) becomes 0 + 3. Then 3 - (-4) becomes 3 + 4 = 7.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "If -30 + (-y) + 20 = 0, what is the value of y?",
+    "options": ["20", "10", "-10", "-20"],
+    "answer": "-10",
+    "explanation": "-30 + 20 = -10. The equation becomes -10 - y = 0. Thus, y = -10.",
+    "difficulty": "hard"
+  },
+  {
+    "text": "A rectangle ABCD has a length that is thrice its breadth. If the breadth is x, what is the expression for the perimeter?",
+    "options": ["x + 3x", "2(x + 3x)", "x * 3x", "4x"],
+    "answer": "2(x + 3x)",
+    "explanation": "Breadth = x, Length = 3x. Perimeter = 2(length + breadth) = 2(3x + x).",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Half a number is added to 18, and the sum is 46. What is the original number?",
+    "options": ["28", "38", "56", "64"],
+    "answer": "56",
+    "explanation": "Equation: x/2 + 18 = 46. x/2 = 46 - 18 = 28. x = 28 * 2 = 56.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "A car covers a distance of 39.25 km using 2.5 L of petrol. Which equation represents the distance (d) it can cover with 1 L of petrol?",
+    "options": ["d = 39.25 * 2.5", "d = 39.25 / 2.5", "d = 2.5 / 39.25", "d + 2.5 = 39.25"],
+    "answer": "d = 39.25 / 2.5",
+    "explanation": "To find the distance per unit of petrol, divide the total distance by the total petrol used.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "In the formula P = 2l + 2w, what are the variables?",
+    "options": ["P and 2", "l and w", "P, l, and w", "2 only"],
+    "answer": "P, l, and w",
+    "explanation": "P, l, and w change depending on the rectangle, making them variables. The number 2 remains constant.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "Which verbal expression matches the mathematical term 5(z - 6) / 2?",
+    "options": ["Six less than five times z divided by two", "Five times the difference of z and six, divided by two", "Five divided by two times z minus six", "Half of five times z minus six"],
+    "answer": "Five times the difference of z and six, divided by two",
+    "explanation": "The term (z-6) represents the difference of z and 6, which is then multiplied by 5 and divided by 2.",
+    "difficulty": "hard"
+  },
+  {
+    "text": "Find the value of 'a' that satisfies 45 - 5a = 25.",
+    "options": ["2", "3", "4", "5"],
+    "answer": "4",
+    "explanation": "45 - 25 = 5a, so 20 = 5a. a = 20 / 5 = 4.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "A truck weighs 4.4 tonnes. Given that 1 tonne = 1000 kg, which equation converts this to kg?",
+    "options": ["x = 4.4 / 1000", "x = 1000 / 4.4", "x = 4.4 * 1000", "x + 4.4 = 1000"],
+    "answer": "x = 4.4 * 1000",
+    "explanation": "To convert tonnes to kilograms, multiply the value by 1000.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "An elephant and a tiger are in a habitat. If the sum of their ages is 100 and the elephant is 36 years older than the tiger, find the tiger's age (t).",
+    "options": ["32", "64", "68", "36"],
+    "answer": "32",
+    "explanation": "Equation: t + (t + 36) = 100. 2t = 100 - 36 = 64. t = 32.",
+    "difficulty": "hard"
+  },
+  {
+    "text": "Which of the following describes a 'solution' of an equation?",
+    "options": ["The sum of all numbers in the equation", "The value of the variable that makes LHS equal to RHS", "Any number on the right side of the equals sign", "The variable itself"],
+    "answer": "The value of the variable that makes LHS equal to RHS",
+    "explanation": "A solution is the specific numerical value for which the equation is satisfied.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "If 3k + 5 = 32, find k.",
+    "options": ["1", "4", "6", "9"],
+    "answer": "9",
+    "explanation": "3k = 32 - 5 = 27. k = 27 / 3 = 9.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "Simplify the expression 7m + 5m - 3(-3m) into a single term.",
+    "options": ["3m", "9m", "15m", "21m"],
+    "answer": "21m",
+    "explanation": "7m + 5m + 9m = (7 + 5 + 9)m = 21m.",
+    "difficulty": "medium"
+  },
+  {
+    "text": "A lift starts at the ground floor (0). It moves up 5 floors and then down 3 floors. Using tokens where positive is up and negative is down, what is the final floor?",
+    "options": ["-2", "2", "8", "-8"],
+    "answer": "2",
+    "explanation": "The operation is (+5) + (-3) = 2.",
+    "difficulty": "easy"
+  },
+  {
+    "text": "In a competitive quiz, 5 marks are given for correct answers and 3 are deducted for wrong ones. Mahesh answered 35 correctly and 5 incorrectly (out of 40). What was his score?",
+    "options": ["175", "160", "150", "140"],
+    "answer": "160",
+    "explanation": "Score = (35 * 5) - (5 * 3) = 175 - 15 = 160.",
+    "difficulty": "hard"
+  } ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor((i + 1) * Math.random());
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    document.getElementById("startBtn").onclick = startQuiz;
+    document.getElementById("endQuizBtn").onclick = endQuiz;
+    document.getElementById("restart").onclick = restartQuiz;
+
+    function startQuiz() {
+      document.getElementById("startBtn").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "block";
+      document.getElementById("timerDisplay").style.display = "block";
+
+      renderQuiz(questionsData);
+    }
+
+    function endQuiz() {
+      clearInterval(timerInterval);
+
+      document.getElementById("quiz").innerHTML = "";
+      document.getElementById("score").innerHTML = "";
+      document.getElementById("timerDisplay").style.display = "none";
+      document.getElementById("endQuizBtn").style.display = "none";
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("startBtn").style.display = "block";
+    }
+
+    function restartQuiz() {
+      renderQuiz(questionsData);
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("score").innerHTML = "";
+    }
+
+    function renderQuiz(questions) {
+      score = 0;
+      answered = 0;
+
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = "";
+
+      quizStartTime = Date.now();
+      startGlobalTimer();
+
+      questions = shuffle([...questions]);
+
+      questions.forEach((q, index) => {
+        const container = document.createElement("div");
+        container.className = "question";
+
+        const questionText = document.createElement("p");
+        const badge = `<span class="difficulty-badge ${q.difficulty}">${q.difficulty.toUpperCase()}</span>`;
+        questionText.innerHTML = `${index + 1}. ${q.text} ${badge}`;
+        container.appendChild(questionText);
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "options";
+
+        const shuffledOptions = shuffle([...q.options]);
+
+        shuffledOptions.forEach(opt => {
+          const btn = document.createElement("button");
+          btn.textContent = opt;
+
+          btn.onclick = () => {
+            lockQuestion(container, q, opt, btn);
+          };
+
+          optionsDiv.appendChild(btn);
+        });
+
+        container.appendChild(optionsDiv);
+        quizDiv.appendChild(container);
+      });
+    }
+
+    function startGlobalTimer() {
+      clearInterval(timerInterval);
+
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - quizStartTime) / 1000);
+
+        const hrs = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+        const secs = String(elapsed % 60).padStart(2, '0');
+
+        document.getElementById("timerDisplay").textContent =
+          `⏳ Time: ${hrs}:${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function lockQuestion(container, question, selected, selectedBtn) {
+      if (container.dataset.answered) return;
+      container.dataset.answered = true;
+
+      const buttons = container.querySelectorAll("button");
+
+      selectedBtn.style.background = "#007bff";
+      selectedBtn.style.color = "white";
+
+      buttons.forEach(btn => btn.disabled = true);
+
+      const result = document.createElement("p");
+      result.className = "result";
+
+      if (selected === question.answer) {
+        result.textContent = `✅ Correct!`;
+        result.style.color = "green";
+        score++;
+      } else {
+        result.textContent = `❌ Incorrect.`;
+        result.style.color = "red";
+      }
+
+      buttons.forEach(btn => {
+        if (btn.textContent === question.answer) {
+          btn.style.background = "#28a745";
+          btn.style.color = "white";
+        }
+      });
+
+      const explanation = document.createElement("p");
+      explanation.innerHTML = `<strong>Correct Answer:</strong> ${question.answer}<br>
+                               <strong>Explanation:</strong> ${question.explanation}`;
+
+      container.appendChild(result);
+      container.appendChild(explanation);
+
+      answered++;
+
+      if (answered === questionsData.length) {
+        clearInterval(timerInterval);
+
+        const totalTime = Math.floor((Date.now() - quizStartTime) / 1000);
+        const hrs = String(Math.floor(totalTime / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((totalTime % 3600) / 60)).padStart(2, '0');
+        const secs = String(totalTime % 60).padStart(2, '0');
+
+        document.getElementById("score").textContent =
+          `Final Score: ${score} / ${questionsData.length}  
+           Total Time Taken: ${hrs}:${mins}:${secs}`;
+
+        document.getElementById("restart").style.display = "block";
+      }
+    }
+  </script>
+
+</body>
+</html>
